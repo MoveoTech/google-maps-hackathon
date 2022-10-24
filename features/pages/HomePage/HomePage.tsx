@@ -1,23 +1,18 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import React from "react";
+import { StyleSheet, View, Text, SafeAreaView } from "react-native";
 import Map from "../../components/Map/Map";
-
-import WizardComponent from "../../components/Wizard/WizardComponent";
+import { useCurrentLocation } from "../../hooks/useCurrentLocation";
 
 const HomePage = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const { location, errorMsg } = useCurrentLocation();
+
+  if (errorMsg) return <Text>{errorMsg}</Text>;
+  if (!location) return <Text>Loading...</Text>;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Celine the Queen!</Text>
-      {/* <Text>Here is going to be the map in the background</Text> */}
-      {!isWizardOpen && <Map />}
-      {isWizardOpen ? (
-        <WizardComponent />
-      ) : (
-        <Button onPress={() => setIsWizardOpen(true)} title="Start" />
-      )}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Map location={location} />
+    </SafeAreaView>
   );
 };
 
@@ -27,13 +22,8 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     height: "100%",
-    flexDirection: "column",
-    padding: 20,
     width: "100%",
+    alignItems: "center",
     backgroundColor: "#78b9e4",
-    justifyContent: "space-between",
-  },
-  title: {
-    fontSize: 22,
   },
 });
