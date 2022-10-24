@@ -57,6 +57,27 @@ export const getNearByPlaces = (
   options: Location & INearByPlaces
 ): Promise<INearByPlacesApiRes> => {
   const { lat, lng, radius, type } = options;
-  const nearbyPlacesUrl = `${baseUrl}/place/nearbysearch/json?keyword=cruise&location=${lat}%2C${lng}&radius=${radius}&type=${type}&key=${GOOGLE_MAPS_APIKEY}`;
-  return axios.get(nearbyPlacesUrl);
+  const params = {
+    radius,
+    type,
+    key: GOOGLE_MAPS_APIKEY,
+  };
+  const nearbyPlacesUrl = `${baseUrl}/place/nearbysearch/json?location=${lat}%2C${lng}`;
+  return axios.get(nearbyPlacesUrl, { params });
+};
+
+export const autocompletePlace = (
+  input: string
+  // location: Location,
+  // radius: number
+): Promise<any> => {
+  const params = {
+    input: input,
+    // radius,
+    key: GOOGLE_MAPS_APIKEY,
+  };
+  // const nearbyPlacesUrl = `${baseUrl}/place/autocomplete/json?location=${location.lat}%2C${location.lng}`;
+  const nearbyPlacesUrl = `${baseUrl}/place/autocomplete/json`;
+
+  return axios.get(nearbyPlacesUrl, { params });
 };

@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, View, Text, SafeAreaView } from "react-native";
+import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { LocationAutoComplete } from "../../components/LocationAutoComplete/LocationAutoComplete";
 import Map from "../../components/Map/Map";
 import { useCurrentLocation } from "../../hooks/useCurrentLocation";
 
 const HomePage = () => {
   const { location, errorMsg } = useCurrentLocation();
 
-  if (errorMsg) return <Text>{errorMsg}</Text>;
+  if (errorMsg) return <LocationAutoComplete />;
   if (!location) return <Text>Loading...</Text>;
 
   return (

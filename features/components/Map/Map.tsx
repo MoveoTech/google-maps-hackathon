@@ -7,15 +7,20 @@ import MapViewDirections, {
 } from "react-native-maps-directions";
 import { useNearbyPlaces } from "../../hooks/useNearbyPlaces";
 import { GOOGLE_MAPS_APIKEY } from "@env";
+import { GoogleMapsPlaces } from "../../types";
 
 interface Props {
   location: LocationObject;
 }
 
 const Map = ({ location }: Props) => {
+  const [locationType, setLocationType] =
+    useState<GoogleMapsPlaces>("restaurant");
+  const [searchRadius, setSearchRadius] = useState<number>(50);
+
   const { places } = useNearbyPlaces(
     { lat: location?.coords?.latitude, lng: location?.coords?.longitude },
-    { radius: 1500, type: "restaurant" }
+    { radius: searchRadius, type: locationType }
   );
 
   const [dis, setDis] = useState(0);

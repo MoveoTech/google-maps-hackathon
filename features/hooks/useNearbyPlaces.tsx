@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getNearByPlaces, IPlace } from "../api/api";
-import { Location } from "../types";
+import { GoogleMapsPlaces, Location } from "../types";
 
 export interface INearByPlaces {
   radius: number;
-  type: "restaurant";
+  type: GoogleMapsPlaces;
 }
 
 export const useNearbyPlaces = (
