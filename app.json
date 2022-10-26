@@ -16,9 +16,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.googleMaps.dayway"
     },
     "android": {
+      "package":"com.googleMaps.dayway",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCiy2F_V4mgzcnbh3TmaYeJgw7w_rBiMt8"
