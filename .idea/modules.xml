@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/dayway.iml" filepath="$PROJECT_DIR$/.idea/dayway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/google-maps-hackathon.iml" filepath="$PROJECT_DIR$/.idea/google-maps-hackathon.iml" />
     </modules>
   </component>
 </project>

@@ -81,6 +81,28 @@ interface INearByPlacesApiRes {
   data: INearByPlacesRes;
 }
 
+interface IDistanceAndDuration {
+  text: string;
+  value: string;
+}
+
+interface IElement {
+  elements: IDistanceAndDuration[]
+}
+
+interface IRows {
+  rows: IElement[]
+}
+
+interface IDistanceMatrix {
+  data: any,
+  destination_addresses: string[];
+  origin_addresses: string[];
+  rows: IRows[];
+  status: string;
+}
+
+
 interface IAutocompletePlacesApiRes {
   data: IAutocompletePlacesRes;
 }
@@ -113,3 +135,14 @@ export const autocompletePlace = (
 
   return axios.get(nearbyPlacesUrl, { params });
 };
+
+export const getDistanceCalculation = (origin_id: string, destinations_id: string): Promise<IDistanceMatrix> => {
+  const params = {
+    origins: `place_id:${origin_id}`,
+    destinations: `place_id:${destinations_id}`,
+    units: "imperial",
+    key: GOOGLE_MAPS_APIKEY,
+  }
+  const getDistance = `${baseUrl}/distancematrix/json`;
+  return axios.get(getDistance, { params });
+}
