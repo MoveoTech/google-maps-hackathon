@@ -1,16 +1,9 @@
 import React, { FC, useRef, useState } from "react";
 // import Wizard
 import Wizard from "react-native-wizard";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Button,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View } from "react-native";
 import { TextInput } from "@react-native-material/core";
+import { StyledButton, StyledLabel } from "./styles";
 
 // Import your own step components
 // import Step1 from "./yourStepsDir/Step1";
@@ -89,20 +82,18 @@ const WizardComponent: FC = () => {
             justifyContent: "space-between",
           }}
         >
-          <TouchableOpacity
+          <StyledButton
             disabled={isFirstStep}
-            style={styles.button}
             onPress={() => wizard.current.prev()}
           >
-            <Text style={styles.label}>Prev</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            <StyledLabel>Prev</StyledLabel>
+          </StyledButton>
+          <StyledButton
             disabled={isLastStep}
-            style={styles.button}
             onPress={() => wizard.current.next()}
           >
-            <Text style={styles.label}>Next</Text>
-          </TouchableOpacity>
+            <StyledLabel>Next</StyledLabel>
+          </StyledButton>
         </View>
       </View>
       {/* </SafeAreaView> */}
@@ -149,20 +140,3 @@ const WizardComponent: FC = () => {
 };
 
 export default WizardComponent;
-
-const styles = StyleSheet.create({
-  button: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "8%",
-    width: 130,
-
-    backgroundColor: "#3367df",
-    padding: 8,
-    borderRadius: 4,
-  },
-  label: {
-    color: "#FFF",
-  },
-});

@@ -24,6 +24,7 @@
     "react-native-maps-directions": "1.9.0",
     "react-native-web": "0.18.7",
     "react-native-wizard": "2.1.0",
+    "styled-components": "5.3.6",
     "typescript": "4.6.3"
   },
   "devDependencies": {
