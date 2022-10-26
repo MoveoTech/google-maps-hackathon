@@ -48,9 +48,45 @@ export interface INearByPlacesRes {
   results: IPlace[];
   status: string;
 }
+export interface IAutocompletePlacesRes {
+  predictions: IPrediction[];
+  status: string;
+}
+
+export interface StructuredFormatting {
+  main_text: string;
+  main_text_matched_substrings: MainTextMatchedSubstring[];
+  secondary_text: string;
+}
+export interface MatchedSubstring {
+  length: number;
+  offset: number;
+}
+
+export interface MainTextMatchedSubstring {
+  length: number;
+  offset: number;
+}
+export interface Term {
+  offset: number;
+  value: string;
+}
+export interface IPrediction {
+  description: string;
+  matched_substrings: MatchedSubstring[];
+  place_id: string;
+  reference: string;
+  structured_formatting: StructuredFormatting;
+  terms: Term[];
+  types: string[];
+}
 
 interface INearByPlacesApiRes {
   data: INearByPlacesRes;
+}
+
+interface IAutocompletePlacesApiRes {
+  data: IAutocompletePlacesRes;
 }
 
 export const getNearByPlaces = (
@@ -70,7 +106,7 @@ export const autocompletePlace = (
   input: string
   // location: Location,
   // radius: number
-): Promise<any> => {
+): Promise<IAutocompletePlacesApiRes> => {
   const params = {
     input: input,
     // radius,

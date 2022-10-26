@@ -1,30 +1,22 @@
 import React from "react";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { Text } from "react-native";
+
 import { LocationAutoComplete } from "../../components/LocationAutoComplete/LocationAutoComplete";
 import Map from "../../components/Map/Map";
-import { useCurrentLocation } from "../../hooks/useCurrentLocation";
+import { useUser } from "../../contexts/UserContext";
+import { HomepageContainer } from "./styles";
 
 const HomePage = () => {
-  const { location, errorMsg } = useCurrentLocation();
+  const { currentLocation, errorMsg } = useUser();
 
   if (errorMsg) return <LocationAutoComplete />;
-  if (!location) return <Text>Loading...</Text>;
+  if (!currentLocation) return <Text>Loading...</Text>;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Map location={location} />
-    </SafeAreaView>
+    <HomepageContainer>
+      <Map location={currentLocation} />
+    </HomepageContainer>
   );
 };
 
 export default HomePage;
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    height: "100%",
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "#78b9e4",
-  },
-});
