@@ -1,7 +1,7 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import axios from "axios";
 import { INearByPlaces } from "../hooks/useNearbyPlaces";
-import { Location } from "../types";
+import {Location} from "../types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
 
@@ -81,3 +81,14 @@ export const autocompletePlace = (
 
   return axios.get(nearbyPlacesUrl, { params });
 };
+
+export const getDistanceCalculation = (origins: string, destinations: string): Promise<any> => {
+  const params = {
+    origins: `place_id:${origins}`,
+    destinations: `place_id:${destinations}`,
+    units: "imperial",
+    key: GOOGLE_MAPS_APIKEY,
+  }
+  const getDistance = `${baseUrl}/distancematrix/json`;
+  return axios.get(getDistance, { params });
+}
