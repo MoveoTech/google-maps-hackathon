@@ -1,7 +1,7 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import axios from "axios";
 import { INearByPlaces } from "../hooks/useNearbyPlaces";
-import {Location} from "../types";
+import { Location } from "../types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
 
@@ -48,6 +48,34 @@ export interface INearByPlacesRes {
   results: IPlace[];
   status: string;
 }
+export interface IAutocompletePlacesRes {
+  predictions: IPrediction[];
+  status: string;
+}
+
+export interface StructuredFormatting {
+  main_text: string;
+  matched_substrings: MatchedSubstring[];
+  secondary_text: string;
+}
+export interface MatchedSubstring {
+  length: number;
+  offset: number;
+}
+
+export interface Term {
+  offset: number;
+  value: string;
+}
+export interface IPrediction {
+  description: string;
+  matched_substrings: MatchedSubstring[];
+  place_id: string;
+  reference: string;
+  structured_formatting: StructuredFormatting;
+  terms: Term[];
+  types: string[];
+}
 
 interface INearByPlacesApiRes {
   data: INearByPlacesRes;
@@ -75,6 +103,10 @@ interface IDistanceMatrix {
 }
 
 
+interface IAutocompletePlacesApiRes {
+  data: IAutocompletePlacesRes;
+}
+
 export const getNearByPlaces = (
   options: Location & INearByPlaces
 ): Promise<INearByPlacesApiRes> => {
@@ -92,7 +124,7 @@ export const autocompletePlace = (
   input: string
   // location: Location,
   // radius: number
-): Promise<any> => {
+): Promise<IAutocompletePlacesApiRes> => {
   const params = {
     input: input,
     // radius,
