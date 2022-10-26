@@ -85,11 +85,7 @@ export default function App() {
               <Button
                 title={accessToken ? "Get User Data" : "Login"}
                 disabled={!request}
-                onPress={
-                  accessToken
-                    ? getUserData
-                    : () => promptAsync({ useProxy: false })
-                }
+                onPress={accessToken ? getUserData : () => promptAsync()}
               />
             )}
           </View>
