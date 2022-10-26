@@ -2,22 +2,26 @@ import {useEffect, useState} from "react";
 import {getDistanceCalculation} from "../api/api";
 
 export const useDistanceCalculator = (
-    origins: string,
-    destinations: string
+    origins_id: string,
+    destinations_id: string
 ) => {
     const [timeToDestination, setTimeToDestination] = useState<string>();
-    const [distanceTpDestination, setDistanceToDestination] = useState<string>()
+    const [distanceToDestination, setDistanceToDestination] = useState<string>()
 
-    const calculateDistance = async () => {
-        const timeToDestination = await getDistanceCalculation(origins, destinations);
-        setTimeToDestination(JSON.stringify(timeToDestination.data.rows[0].elements[0].duration));
-        setDistanceToDestination(JSON.stringify(timeToDestination.data.rows[0].elements[0].distance.text));
-    };
+        const calculateDistance = async () => {
+        try {
+            const timeToDestination = await getDistanceCalculation(origins_id, destinations_id);
+            setTimeToDestination(JSON.stringify(timeToDestination.data.rows[0].elements[0].duration));
+            setDistanceToDestination(JSON.stringify(timeToDestination.data.rows[0].elements[0].distance.text));
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     useEffect(() => {
-        if (!origins || !destinations) return;
+        if (!origins_id || !destinations_id) return;
         calculateDistance();
-    }, [origins, destinations]);
+    }, [origins_id, destinations_id]);
 
-    return { timeToDestination, distanceTpDestination };
+    return { timeToDestination, distanceToDestination };
 };

@@ -53,6 +53,28 @@ interface INearByPlacesApiRes {
   data: INearByPlacesRes;
 }
 
+interface IDistanceAndDuration {
+  text: string;
+  value: string;
+}
+
+interface IElement {
+  elements: IDistanceAndDuration[]
+}
+
+interface IRows {
+  rows: IElement[]
+}
+
+interface IDistanceMatrix {
+  data: any,
+  destination_addresses: string[];
+  origin_addresses: string[];
+  rows: IRows[];
+  status: string;
+}
+
+
 export const getNearByPlaces = (
   options: Location & INearByPlaces
 ): Promise<INearByPlacesApiRes> => {
@@ -82,10 +104,10 @@ export const autocompletePlace = (
   return axios.get(nearbyPlacesUrl, { params });
 };
 
-export const getDistanceCalculation = (origins: string, destinations: string): Promise<any> => {
+export const getDistanceCalculation = (origin_id: string, destinations_id: string): Promise<IDistanceMatrix> => {
   const params = {
-    origins: `place_id:${origins}`,
-    destinations: `place_id:${destinations}`,
+    origins: `place_id:${origin_id}`,
+    destinations: `place_id:${destinations_id}`,
     units: "imperial",
     key: GOOGLE_MAPS_APIKEY,
   }
