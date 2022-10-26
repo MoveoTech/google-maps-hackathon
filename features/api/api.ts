@@ -55,7 +55,7 @@ export interface IAutocompletePlacesRes {
 
 export interface StructuredFormatting {
   main_text: string;
-  main_text_matched_substrings: MainTextMatchedSubstring[];
+  matched_substrings: MatchedSubstring[];
   secondary_text: string;
 }
 export interface MatchedSubstring {
@@ -63,10 +63,6 @@ export interface MatchedSubstring {
   offset: number;
 }
 
-export interface MainTextMatchedSubstring {
-  length: number;
-  offset: number;
-}
 export interface Term {
   offset: number;
   value: string;
