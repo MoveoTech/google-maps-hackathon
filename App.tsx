@@ -7,6 +7,7 @@ import HomePage from "./features/pages/HomePage/HomePage";
 import { requestLocationPermission } from "./features/permissions/requestLocationPermission";
 import { AppContainer } from "./features/globalStyle";
 import { UserProvider } from "./features/contexts/UserContext";
+import { testApi } from "./features/api/api";
 
 export default function App() {
   const [locationStatus, setLocationStatus] =
