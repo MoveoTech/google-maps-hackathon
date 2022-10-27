@@ -7,7 +7,12 @@
         "moduleName": "@env",
         "path": ".env",
         "blocklist": null,
-        "allowlist": ["GOOGLE_MAPS_APIKEY"],
+        "allowlist": [
+          "GOOGLE_MAPS_APIKEY",
+          "EXPO_CLIENT_ID",
+          "ANDROID_CLIENT_ID",
+          "IOS_CLIENT_ID"
+        ],
         "blacklist": null, // DEPRECATED
         "whitelist": null, // DEPRECATED
         "safe": false,

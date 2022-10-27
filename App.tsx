@@ -1,32 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Text } from "react-native";
-import * as CurrentLocation from "expo-location";
-
+import { Image, StyleSheet, Button, Text, View } from "react-native";
 import HomePage from "./features/pages/HomePage/HomePage";
-import { requestLocationPermission } from "./features/permissions/requestLocationPermission";
 import { AppContainer } from "./features/globalStyle";
 import { UserProvider } from "./features/contexts/UserContext";
+import { useAuthentication } from "./features/hooks/useAuthentication";
+import { useLocationPermissionStatus } from "./features/hooks/useLocationPermissionStatus";
 import { testApi } from "./features/api/api";
 
 export default function App() {
-  const [locationStatus, setLocationStatus] =
-    useState<CurrentLocation.PermissionStatus>();
+  const { promptAsync, request, getUserData, accessToken, userInfo } =
+    useAuthentication();
 
-  const RequestLocation = async () => {
-    const status = await requestLocationPermission();
-    setLocationStatus(status);
+  const { locationStatus } = useLocationPermissionStatus();
+
+  const showUserInfo = () => {
+    if (userInfo) {
+      return (
+        <View style={styles.userInfo}>
+          <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
+          <Text>Welcome {userInfo.name}</Text>
+          <Text>{userInfo.email}</Text>
+        </View>
+      );
+    }
   };
-
-  useEffect(() => {
-    RequestLocation();
-  }, []);
 
   return (
     <UserProvider>
       <AppContainer>
         {locationStatus === "granted" ? (
-          <HomePage />
+          <View style={styles.container}>
+            {userInfo ? (
+              <>
+                {showUserInfo()}
+                <HomePage />
+              </>
+            ) : (
+              <Button
+                title={accessToken ? "Get User Data" : "Login"}
+                disabled={!request}
+                onPress={
+                  accessToken
+                    ? getUserData
+                    : () => promptAsync({ useProxy: true })
+                }
+              />
+            )}
+          </View>
         ) : (
           <Text>Allow location services to use app</Text>
         )}
@@ -35,3 +56,20 @@ export default function App() {
     </UserProvider>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  userInfo: {
+    marginTop: 200,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  profilePic: {
+    width: 50,
+    height: 50,
+  },
+});
