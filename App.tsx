@@ -6,6 +6,7 @@ import { AppContainer } from "./features/globalStyle";
 import { UserProvider } from "./features/contexts/UserContext";
 import { useAuthentication } from "./features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./features/hooks/useLocationPermissionStatus";
+import { testApi } from "./features/api/api";
 
 export default function App() {
   const { promptAsync, request, getUserData, accessToken, userInfo } =
