@@ -1,53 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  Image,
-  StyleSheet,
-  Button,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
-import * as CurrentLocation from "expo-location";
-import * as Google from "expo-auth-session/providers/google";
-import * as WebBrowser from "expo-web-browser";
-
+import { Image, StyleSheet, Button, Text, View } from "react-native";
 import HomePage from "./features/pages/HomePage/HomePage";
-import { requestLocationPermission } from "./features/permissions/requestLocationPermission";
 import { AppContainer } from "./features/globalStyle";
 import { UserProvider } from "./features/contexts/UserContext";
+import { useAuthentication } from "./features/hooks/useAuthentication";
+import { useLocationPermissionStatus } from "./features/hooks/useLocationPermissionStatus";
 
 export default function App() {
-  const [locationStatus, setLocationStatus] =
-    useState<CurrentLocation.PermissionStatus>();
+  const { promptAsync, request, getUserData, accessToken, userInfo } =
+    useAuthentication();
 
-  const [accessToken, setAccessToken] = useState<string>();
-  const [userInfo, setUserInfo] = useState<any>();
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId:
-      "180552994170-lfo449ms3eo3onit71fn933br05thgi0.apps.googleusercontent.com",
-    iosClientId:
-      "180552994170-5uk5vtf4p30ini8527cfo3j9bmrl6nft.apps.googleusercontent.com",
-    androidClientId:
-      "180552994170-q7decoum332vr3u1kpprd57faktubiel.apps.googleusercontent.com",
-  });
-
-  const RequestLocation = async () => {
-    const status = await requestLocationPermission();
-    setLocationStatus(status);
-  };
-  const getUserData = async () => {
-    let userInfoResponse = await fetch(
-      "https://www.googleapis.com/userinfo/v2/me",
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
-    userInfoResponse.json().then((data: any) => {
-      setUserInfo(data);
-    });
-  };
+  const { locationStatus } = useLocationPermissionStatus();
 
   const showUserInfo = () => {
     if (userInfo) {
@@ -61,31 +25,25 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      setAccessToken(response.authentication.accessToken);
-      accessToken && getUserData();
-    }
-  }, [response, accessToken]);
-
-  useEffect(() => {
-    RequestLocation();
-  }, []);
-
-  WebBrowser.maybeCompleteAuthSession();
-
   return (
     <UserProvider>
       <AppContainer>
         {locationStatus === "granted" ? (
           <View style={styles.container}>
             {userInfo ? (
-              <HomePage />
+              <>
+                {showUserInfo()}
+                <HomePage />
+              </>
             ) : (
               <Button
                 title={accessToken ? "Get User Data" : "Login"}
                 disabled={!request}
-                onPress={accessToken ? getUserData : () => promptAsync()}
+                onPress={
+                  accessToken
+                    ? getUserData
+                    : () => promptAsync({ useProxy: true })
+                }
               />
             )}
           </View>
@@ -105,6 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   userInfo: {
+    marginTop: 200,
     alignItems: "center",
     justifyContent: "center",
   },
