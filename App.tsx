@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Button, Text, View } from "react-native";
 import HomePage from "./features/pages/HomePage/HomePage";
@@ -6,9 +6,11 @@ import { AppContainer } from "./features/globalStyle";
 import { UserProvider } from "./features/contexts/UserContext";
 import { useAuthentication } from "./features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./features/hooks/useLocationPermissionStatus";
-import { testApi } from "./features/api/api";
+import { addUser } from "./features/api/api";
+import { IUser } from "./features/types";
 
 export default function App() {
+  const [user, setUser] = useState<IUser>();
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
 
@@ -26,25 +28,34 @@ export default function App() {
     }
   };
 
+  const getOrAddUser = async () => {
+    const currentUser = await addUser({
+      username: userInfo.name,
+      email: userInfo.email,
+      picture: userInfo.picture,
+    });
+    setUser(currentUser);
+  };
+
+  useEffect(() => {
+    if (userInfo) getOrAddUser();
+  }, [userInfo]);
+
   return (
     <UserProvider>
       <AppContainer>
         {locationStatus === "granted" ? (
           <View style={styles.container}>
-            {userInfo ? (
+            {user ? (
               <>
                 {showUserInfo()}
                 <HomePage />
               </>
             ) : (
               <Button
-                title={accessToken ? "Get User Data" : "Login"}
+                title={"Login"}
                 disabled={!request}
-                onPress={
-                  accessToken
-                    ? getUserData
-                    : () => promptAsync({ useProxy: true })
-                }
+                onPress={() => promptAsync({ useProxy: true })}
               />
             )}
           </View>
