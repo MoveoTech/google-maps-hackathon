@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "com.googleMaps.dayway",
     "name": "dayway",
     "slug": "dayway",
     "version": "1.0.0",
@@ -16,9 +17,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.googleMaps.dayway"
     },
     "android": {
+      "package": "com.googleMaps.dayway",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCiy2F_V4mgzcnbh3TmaYeJgw7w_rBiMt8"

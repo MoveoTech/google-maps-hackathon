@@ -100,3 +100,10 @@ export type GoogleMapsPlaces =
   | "university"
   | "veterinary_care"
   | "zoo";
+
+export interface IUser {
+  _id: string;
+  username: string;
+  email: string;
+  picture: string;
+}

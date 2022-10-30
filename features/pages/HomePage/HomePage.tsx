@@ -1,5 +1,6 @@
-import React from "react";
 import {Text, View} from "react-native";
+import React, { useEffect } from "react";
+import { testApi } from "../../api/api";
 
 import { LocationAutoComplete } from "../../components/LocationAutoComplete/LocationAutoComplete";
 import Map from "../../components/Map/Map";

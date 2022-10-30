@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, Text } from "react-native";
-import { autocompletePlace } from "../../api/api";
+import { autocompletePlace } from "../../api/googleApi";
 import useDebounce from "../../hooks/useDebounce";
 
 export const LocationAutoComplete = () => {

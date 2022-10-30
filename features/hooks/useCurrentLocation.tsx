@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import * as CurrentLocation from "expo-location";
 import { LocationObject } from "expo-location";
 
 const mockLocation = {
