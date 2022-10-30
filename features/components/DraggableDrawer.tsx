@@ -1,48 +1,46 @@
-import React, {useCallback, useMemo, useRef} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-const DraggableDrawer = () => {
+const App = () => {
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     // variables
-    const snapPoints = useMemo(() => [300, '90%'], []);
+    const snapPoints = useMemo(() => ['20%', '50%', '90%'], []);
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
     }, []);
 
-    const handleSnapPress = useCallback((index) => {
-        bottomSheetRef.current?.snapToIndex(index);
-    }, []);
-    const handleClosePress = useCallback(() => {
-        bottomSheetRef.current?.close();
-    }, []);
-
     // renders
     return (
-        <BottomSheet
-            ref={bottomSheetRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-        >
-            <Button title="Close" onPress={() => handleClosePress()} />
-            <View style={styles.contentContainer}>
-                <Text>Awesome 🎉 celine is so sexyyyy</Text>
-            </View>
-        </BottomSheet>
+        <View style={styles.container}>
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+            >
+                <View style={styles.contentContainer}>
+                    <Text>Awesome 🎉</Text>
+                </View>
+            </BottomSheet>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    contentContainer: {
-        alignItems: 'center',
+    container: {
+        flex: 1,
+        width: 370,
         height: 2000,
-        backgroundColor: 'red',
+    },
+    contentContainer: {
+        flex: 1,
+        alignItems: 'center',
     },
 });
 
-export default DraggableDrawer;
+export default App;
