@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getNearByPlaces, IPlace } from "../api/googleApi";
+import { getNearByPlaces, IPlace } from "../../api/googleApi";
 import { GoogleMapsPlaces, Location } from "../types";
 
 export interface INearByPlaces {

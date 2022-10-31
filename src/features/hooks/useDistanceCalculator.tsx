@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDistanceCalculation } from "../api/googleApi";
+import { getDistanceCalculation } from "../../api/googleApi";
 
 export const useDistanceCalculator = (
   origins_id: string,
