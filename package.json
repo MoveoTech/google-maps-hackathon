@@ -32,8 +32,10 @@
     "react-native-paper": "^5.0.0-rc.8",
     "react-native-reanimated": "~2.9.1",
     "react-native-redash": "^18.1.0",
+    "react-native-timeline-flatlist": "^0.8.0",
     "react-native-web": "0.18.7",
     "react-native-wizard": "2.1.0",
+    "react-vertical-timeline-component": "^3.5.2",
     "styled-components": "5.3.6",
     "typescript": "4.6.3"
   },
