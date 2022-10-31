@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "../types";
+import { IUser } from "../features/types";
 
 const baseUrl = "https://dayway-server.herokuapp.com";
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Button, Text, View } from "react-native";
-import HomePage from "./features/pages/HomePage/HomePage";
-import { AppContainer } from "./features/globalStyle";
-import { UserProvider } from "./features/contexts/UserContext";
-import { useAuthentication } from "./features/hooks/useAuthentication";
-import { useLocationPermissionStatus } from "./features/hooks/useLocationPermissionStatus";
-import { addUser } from "./features/api/api";
-import { IUser } from "./features/types";
+import HomePage from "./src/features/pages/HomePage/HomePage";
+import { AppContainer } from "./src/features/globalStyle";
+import { UserProvider } from "./src/features/contexts/UserContext";
+import { useAuthentication } from "./src/features/hooks/useAuthentication";
+import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
+import { addUser } from "./src/api/api";
+import { IUser } from "./src/features/types";
 
 export default function App() {
   const [user, setUser] = useState<IUser>();

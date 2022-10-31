@@ -1,7 +1,7 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import axios from "axios";
-import { INearByPlaces } from "../hooks/useNearbyPlaces";
-import { Location } from "../types";
+import { INearByPlaces } from "../features/hooks/useNearbyPlaces";
+import { Location } from "../features/types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
 
@@ -87,21 +87,20 @@ interface IDistanceAndDuration {
 }
 
 interface IElement {
-  elements: IDistanceAndDuration[]
+  elements: IDistanceAndDuration[];
 }
 
 interface IRows {
-  rows: IElement[]
+  rows: IElement[];
 }
 
 interface IDistanceMatrix {
-  data: any,
+  data: any;
   destination_addresses: string[];
   origin_addresses: string[];
   rows: IRows[];
   status: string;
 }
-
 
 interface IAutocompletePlacesApiRes {
   data: IAutocompletePlacesRes;
@@ -136,13 +135,16 @@ export const autocompletePlace = (
   return axios.get(nearbyPlacesUrl, { params });
 };
 
-export const getDistanceCalculation = (origin_id: string, destinations_id: string): Promise<IDistanceMatrix> => {
+export const getDistanceCalculation = (
+  origin_id: string,
+  destinations_id: string
+): Promise<IDistanceMatrix> => {
   const params = {
     origins: `place_id:${origin_id}`,
     destinations: `place_id:${destinations_id}`,
     units: "imperial",
     key: GOOGLE_MAPS_APIKEY,
-  }
+  };
   const getDistance = `${baseUrl}/distancematrix/json`;
   return axios.get(getDistance, { params });
-}
+};
