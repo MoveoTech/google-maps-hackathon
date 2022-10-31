@@ -5,6 +5,8 @@ import {LocationAutoComplete} from "../../components/LocationAutoComplete/Locati
 import Map from "../../components/Map/Map";
 import {useUser} from "../../contexts/UserContext";
 import {HomepageContainer} from "./styles";
+import {DraggableDrawer} from "../../components/DraggableDrawer";
+import {Cards} from "../../components/Card/Cards";
 
 const HomePage = () => {
     const {currentLocation, errorMsg} = useUser();
@@ -14,7 +16,8 @@ const HomePage = () => {
 
     return (
         <HomepageContainer>
-            <Map location={currentLocation}/>
+            {/*<Map location={currentLocation}/>*/}
+            <DraggableDrawer children={<Cards/>}/>
         </HomepageContainer>
     );
 };

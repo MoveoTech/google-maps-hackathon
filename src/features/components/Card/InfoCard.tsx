@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {Card} from 'react-native-paper';
-import {StyleSheet, Text, View} from "react-native";
+import {ImageSourcePropType, StyleSheet, Text, View} from "react-native";
 
 
 interface ICardComponentProps {
     isPressed: boolean,
     onPress: (number) => void,
     index: number,
-    vicinity?: any,
+    vicinity?: string,
     rating?: number,
-    photo?: any,
+    photo?: ImageSourcePropType,
     name?: string,
-    price_level?: any,
+    price_level?: number,
     editorial_summary?: string
 }
 
-export const CardComponent: React.FC<ICardComponentProps> =
+export const InfoCard: React.FC<ICardComponentProps> =
     ({
          isPressed,
          onPress,
