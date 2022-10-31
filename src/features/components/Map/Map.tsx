@@ -1,13 +1,12 @@
 import { LocationObject } from "expo-location/build/Location.types";
 import React, { useState } from "react";
 import { StyleSheet, Dimensions, Text } from "react-native";
-import MapView, { Callout, Marker } from "react-native-maps";
-import MapViewDirections, {
-  MapDirectionsResponse,
-} from "react-native-maps-directions";
+import MapView from "react-native-maps";
+import { MapDirectionsResponse } from "react-native-maps-directions";
 import { useNearbyPlaces } from "../../hooks/useNearbyPlaces";
-import { GOOGLE_MAPS_APIKEY } from "@env";
 import { GoogleMapsPlaces } from "../../types";
+import { Directions } from "./components/Directions";
+import { CustomMarker } from "./components/CustomMarker";
 
 interface Props {
   location: LocationObject;
@@ -51,18 +50,15 @@ const Map = ({ location }: Props) => {
       followsUserLocation
       userLocationCalloutEnabled
     >
-      <Marker
-        coordinate={{
+      <CustomMarker
+        coordinates={{
           latitude: location?.coords?.latitude,
           longitude: location?.coords?.longitude,
         }}
-        pinColor="pink"
-      >
-        <Callout>
-          <Text>tooltip of marker</Text>
-        </Callout>
-      </Marker>
-      <MapViewDirections
+        type="purpleCircle"
+        tooltip="title"
+      />
+      <Directions
         origin={{
           latitude: location?.coords?.latitude,
           longitude: location?.coords?.longitude,
@@ -71,7 +67,6 @@ const Map = ({ location }: Props) => {
           latitude: 32.077637,
           longitude: 34.774517,
         }}
-        apikey={GOOGLE_MAPS_APIKEY}
         onReady={onDirectionsReady}
       />
       <Text>
