@@ -1,9 +1,9 @@
-import {InfoCard} from "./InfoCard";
 import {ScrollView} from "react-native-gesture-handler";
 import React, {useState} from "react";
-import {styles} from "../DraggableDrawer";
+import * as _ from "lodash";
 
-const _ = require("lodash");
+import {InfoCard} from "./InfoCard";
+import {styles} from "../DraggableDrawer";
 
 export const Cards = () => {
 
@@ -12,7 +12,7 @@ export const Cards = () => {
     return (
         <ScrollView contentContainerStyle={styles.cardContainers}>
             {_.times(4).map((index) =>
-                <InfoCard isPressed={currentIndexPressed === index} onPress={setCurrentIndexPressed}
+                <InfoCard key={index} isPressed={currentIndexPressed === index} onPress={setCurrentIndexPressed}
                           index={index}/>
             )}
         </ScrollView>
