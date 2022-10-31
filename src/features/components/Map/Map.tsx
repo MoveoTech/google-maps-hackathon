@@ -59,6 +59,7 @@ const Map = ({ location }: Props) => {
         tooltip="title"
       />
       <Directions
+        isDashed
         origin={{
           latitude: location?.coords?.latitude,
           longitude: location?.coords?.longitude,
