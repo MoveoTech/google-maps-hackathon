@@ -46,9 +46,9 @@ export default function App() {
       <AppContainer>
         {locationStatus === "granted" ? (
           <View style={styles.container}>
-            {user ? (
+            {user || true ? (
               <>
-                {showUserInfo()}
+                {/* {showUserInfo()} */}
                 <HomePage />
               </>
             ) : (
