@@ -47,7 +47,7 @@ export default function App() {
         <UserProvider>
             <AppContainer>
                 {locationStatus === "granted" ? (
-                    <View style={styles.container}>
+                    <>
                         {user || true ? (
                             <>
                                 {/* {showUserInfo()} */}
@@ -60,11 +60,10 @@ export default function App() {
                                 onPress={() => promptAsync({useProxy: true})}
                             />
                         )}
-                    </View>
+                    </>
                 ) : (
                     <Text>Allow location services to use app</Text>
                 )}
-                <DraggableDrawer children={<Cards/>}/>
                 <StatusBar style="auto"/>
             </AppContainer>
         </UserProvider>

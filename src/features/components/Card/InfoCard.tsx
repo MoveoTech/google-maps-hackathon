@@ -1,17 +1,13 @@
 import * as React from 'react';
 import {Card} from 'react-native-paper';
 import {StyleSheet, Text, View} from "react-native";
+import {GOOGLE_MAPS_APIKEY} from "@env";
 
 interface ICardComponentProps {
     isPressed: boolean,
     onPress: (number) => void,
     index: number,
-    vicinity?: number,
-    rating?: number[],
-    photo?: string,
-    name?: string[],
-    price_level?: string,
-    editorial_summary?: string
+    places: any,
 }
 
 export const InfoCard: React.FC<ICardComponentProps> =
@@ -19,27 +15,37 @@ export const InfoCard: React.FC<ICardComponentProps> =
          isPressed,
          onPress,
          index,
-         vicinity,
-         rating,
-         photo,
-         name,
-         price_level,
-         editorial_summary
+         places,
      }) => {
+
+        const pricing = (price_level) => {
+            if (price_level > 3) {
+                return '$'
+            } else if (price_level > 1 && price_level < 3) {
+                return '$$'
+            } else {
+                return '$$$'
+            }
+        }
+
+        const PhotosBaseURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400'
+        const photoReference = places?.photos[0].photo_reference
+
         return (
             <Card style={styles(isPressed).cardWrapper}
                   onPress={() => onPress(index)}>
-                <Card.Cover style={{height: 130}} source={{uri: photo}}/>
+                <Card.Cover style={{height: 130}}
+                            source={{uri: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`}}/>
                 <Card.Content>
-                    <Text style={styles(isPressed).rating}>{rating}</Text>
+                    <Text style={styles(isPressed).rating}>{places?.rating}</Text>
                 </Card.Content>
                 <Card.Content>
-                    <Text style={styles(isPressed).header}>{name}</Text>
-                    <Text style={styles(isPressed).description}>{editorial_summary}</Text>
+                    <Text style={styles(isPressed).header}>{places?.name}</Text>
+                    <Text style={styles(isPressed).description}>{places?.types.slice(0, 1).join(', ')}</Text>
                 </Card.Content>
                 <View style={styles(isPressed).bottomContainer}/>
                 <Card.Content>
-                    <Text style={styles(isPressed).distanceDetails}>{price_level} • {vicinity}</Text>
+                    <Text style={styles(isPressed).distanceDetails}>{pricing(places?.price_level)} • {20}</Text>
                 </Card.Content>
             </Card>)
     };

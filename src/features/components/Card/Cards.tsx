@@ -1,51 +1,20 @@
 import {ScrollView} from "react-native-gesture-handler";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 
 import {InfoCard} from "./InfoCard";
-import {useCurrentLocation} from "../../hooks/useCurrentLocation";
-import {getNearByPlaces} from "../../../api/googleApi";
-import {GOOGLE_MAPS_APIKEY} from "@env";
+import {IPlace} from "../../../api/googleApi";
 import {Dimensions, StyleSheet, View} from "react-native";
 
-export const Cards = () => {
+export const Cards: React.FC<{ topFourPlaces: IPlace[] }> = ({topFourPlaces}) => {
 
     const [currentIndexPressed, setCurrentIndexPressed] = useState(0)
-    const [places, setPlaces] = useState(null)
-    const {location} = useCurrentLocation()
-
-    useEffect(() => {
-        if (!location) return
-        const findNearbyPlaces = async () => {
-            const nearbyPlaces = await getNearByPlaces(
-                {latitude: location?.coords.latitude, longitude: location?.coords.longitude},
-                400,
-                "restaurant",
-            );
-            setPlaces(nearbyPlaces.data.results);
-        };
-        findNearbyPlaces();
-    }, [location])
-
-    const pricing = (price_level) => {
-        if (price_level > 3) {
-            return '$'
-        } else if (price_level > 1 && price_level < 3) {
-            return '$$'
-        } else {
-            return '$$$'
-        }
-    }
-
-    const PhotosBaseURL = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='
 
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.cardContainers}>
-                {places?.slice(0, 4).map((x: any, index: any) =>
+                {topFourPlaces?.map((place: object, index: number) =>
                     <InfoCard key={index} isPressed={currentIndexPressed === index} onPress={setCurrentIndexPressed}
-                              index={index} name={x?.name} rating={x?.rating} price_level={pricing(x?.price_level)}
-                              editorial_summary={x?.types.slice(0, 1).join(', ')} vicinity={20}
-                              photo={`${PhotosBaseURL}${x?.photos[0].photo_reference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`}
+                              index={index} places={place}
                     />
                 )}
             </ScrollView>
