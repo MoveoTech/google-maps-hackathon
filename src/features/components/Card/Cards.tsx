@@ -16,12 +16,11 @@ export const Cards = () => {
     useEffect(() => {
         if (!location) return
         const findNearbyPlaces = async () => {
-            const nearbyPlaces = await getNearByPlaces({
-                lat: location?.coords.latitude,
-                lng: location?.coords.longitude,
-                type: "restaurant",
-                radius: 400
-            });
+            const nearbyPlaces = await getNearByPlaces(
+                {latitude: location?.coords.latitude, longitude: location?.coords.longitude},
+                400,
+                "restaurant",
+            );
             setPlaces(nearbyPlaces.data.results);
         };
         findNearbyPlaces();
