@@ -8,8 +8,6 @@ import {
   View,
   Dimensions,
 } from "react-native";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 
 import HomePage from "./src/features/pages/HomePage/HomePage";
 import { AppContainer } from "./src/features/globalStyle";
@@ -18,7 +16,6 @@ import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
 import { addUser } from "./src/api/api";
 import { IUser } from "./src/features/types";
-import Button from "./src/features/components/Button/Button";
 
 export default function App() {
   const [user, setUser] = useState<IUser>();

@@ -16,12 +16,6 @@ const HomePage = () => {
   return (
     <HomepageContainer>
       <Map location={currentLocation} />
-      <Button
-        onPress={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-        title={"Primary button"}
-      />
     </HomepageContainer>
   );
 };

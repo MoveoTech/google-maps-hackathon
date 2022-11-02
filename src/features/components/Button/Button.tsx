@@ -35,20 +35,18 @@ const Button = ({
   isSearchButton = false,
   iconName,
 }: IButtonProps) => (
-  <TouchableRipple rippleColor="red">
-    <PaperButton
-      icon={(isSearchButton && "magnify") || iconName || undefined}
-      uppercase={false}
-      color={getBackgroundColor(isDisabled, buttonType)}
-      mode={getButtonMode(buttonType)}
-      labelStyle={styles(isDisabled, buttonType).labelStyle}
-      style={styles(isDisabled, buttonType).buttonStyle}
-      disabled={isDisabled}
-      onPress={onPress}
-    >
-      {title}
-    </PaperButton>
-  </TouchableRipple>
+  <PaperButton
+    icon={(isSearchButton && "magnify") || iconName}
+    uppercase={false}
+    color={getBackgroundColor(isDisabled, buttonType)}
+    mode={getButtonMode(buttonType)}
+    labelStyle={styles(isDisabled, buttonType).labelStyle}
+    style={styles(isDisabled, buttonType).buttonStyle}
+    disabled={isDisabled}
+    onPress={onPress}
+  >
+    {title}
+  </PaperButton>
 );
 
 const styles = (isDisabled: boolean, buttonType: ButtonType) =>
