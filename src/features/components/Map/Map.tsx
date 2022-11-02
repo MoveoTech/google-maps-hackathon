@@ -55,11 +55,13 @@ const Map = ({ location }: Props) => {
           latitude: location?.coords?.latitude,
           longitude: location?.coords?.longitude,
         }}
-        type="purpleCircle"
+        type="circle"
         tooltip="title"
+        bgImg="https://picsum.photos/200/"
       />
+
       <Directions
-        isDashed
+        type="dashedLight"
         origin={{
           latitude: location?.coords?.latitude,
           longitude: location?.coords?.longitude,
