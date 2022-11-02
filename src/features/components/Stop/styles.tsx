@@ -34,14 +34,6 @@ export const Time = styled(Typography)``;
 export const DurationAndDistance = styled(FlexedView)`
   margin-left: 20px;
 `;
-// export const CapitalizedText = styled(Typography).attrs<ITypographyProps>(
-//   () => ({
-//     fontWeight: "900",
-//     fontSize: 12,
-//     color: "pink",
-//     style: { "text-transform": "capitalize" },
-//   })
-// )``;
 
 export const TripInfo = styled(FlexedView)`
   justify-content: flex-start;
