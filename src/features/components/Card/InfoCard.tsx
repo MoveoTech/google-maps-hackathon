@@ -1,17 +1,16 @@
 import * as React from 'react';
 import {Card} from 'react-native-paper';
-import {ImageSourcePropType, StyleSheet, Text, View} from "react-native";
-
+import {StyleSheet, Text, View} from "react-native";
 
 interface ICardComponentProps {
     isPressed: boolean,
     onPress: (number) => void,
     index: number,
-    vicinity?: string,
-    rating?: number,
-    photo?: ImageSourcePropType,
-    name?: string,
-    price_level?: number,
+    vicinity?: number,
+    rating?: number[],
+    photo?: string,
+    name?: string[],
+    price_level?: string,
     editorial_summary?: string
 }
 
@@ -27,11 +26,10 @@ export const InfoCard: React.FC<ICardComponentProps> =
          price_level,
          editorial_summary
      }) => {
-
         return (
             <Card style={styles(isPressed).cardWrapper}
                   onPress={() => onPress(index)}>
-                <Card.Cover source={photo}/>
+                <Card.Cover style={{height: 130}} source={{uri: photo}}/>
                 <Card.Content>
                     <Text style={styles(isPressed).rating}>{rating}</Text>
                 </Card.Content>
