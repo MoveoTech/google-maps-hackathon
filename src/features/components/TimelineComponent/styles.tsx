@@ -1,15 +1,14 @@
 import styled from "styled-components/native";
+import { Dimensions } from "react-native";
+
 import Stop from "../Stop/Stop";
 
 export const Container = styled.View`
   margin: 24px;
-  margin-bottom: 24px;
-  margin-left: 24px;
-  margin-right: 24px;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
+  /* width: ${Dimensions.get("window").width}; */
 `;
 
 export const StartPoint = styled(Stop)`

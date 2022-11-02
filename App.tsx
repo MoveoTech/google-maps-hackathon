@@ -16,6 +16,8 @@ import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
 import { addUser } from "./src/api/api";
 import { IUser } from "./src/features/types";
+import { DraggableDrawer } from "./src/features/components/DraggableDrawer";
+import TimelineComponent from "./src/features/components/TimelineComponent/TimelineComponent";
 
 export default function App() {
   const [user, setUser] = useState<IUser>();
@@ -70,6 +72,12 @@ export default function App() {
         ) : (
           <Text>Allow location services to use app</Text>
         )}
+        <DraggableDrawer>
+          {/* <View>
+            <Text>TESTING</Text>
+          </View> */}
+          <TimelineComponent />
+        </DraggableDrawer>
         <StatusBar style="auto" />
       </AppContainer>
     </UserProvider>

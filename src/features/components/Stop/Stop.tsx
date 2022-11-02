@@ -1,15 +1,18 @@
 import React, { FC, ReactNode } from "react";
 import { Image, ImageSourcePropType } from "react-native";
+import { capitalize } from "lodash";
 
 import locationIcon from "../../../icons/location.png";
 import walkIcon from "../../../icons/walk.png";
 import { FlexedView } from "../../globalStyle";
 
 import { GoogleMapsPlaces } from "../../types";
+import Typography from "../Typography/Typography";
 import {
   Container,
   DurationAndDistance,
   Left,
+  LocationImage,
   Right,
   Row,
   StopAddressName,
@@ -49,23 +52,27 @@ const Stop: FC<IStopProps> = ({
             source={walkIcon}
             style={{ width: 16, height: 48, marginLeft: 10 }}
           />
-          <DurationAndDistance
-            style={{ fontWeight: "400", fontSize: 12, lineHeight: 18 }}
-          >
-            {duration} - {distance}
+          <DurationAndDistance>
+            <Typography
+              style={{
+                textTransform: "capitalize",
+                fontWeight: "400",
+                fontSize: 12,
+              }}
+            >
+              {duration}
+            </Typography>{" "}
+            - <Typography>{distance}</Typography>
           </DurationAndDistance>
         </TripInfo>
       )}
       <Row>
         <Left>
-          <Image
-            source={imageToDisplay}
-            style={{ width: 40, height: 40, borderRadius: 50 }}
-          />
+          <LocationImage source={imageToDisplay} />
           <StopInfo>
             {stopType && (
               <StopType ellipsizeMode="tail" numberOfLines={1}>
-                {stopType}
+                {capitalize(stopType)}
               </StopType>
             )}
             {typeof addressName === "string" ? (

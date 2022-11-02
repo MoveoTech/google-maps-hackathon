@@ -5,6 +5,7 @@ import Stop from "../Stop/Stop";
 import { Container, StartPoint, EndPoint } from "./styles";
 import { GoogleMapsPlaces } from "../../types";
 import { FlexedView, MAIN } from "../../globalStyle";
+import Typography from "../Typography/Typography";
 const MOCK_ADDRESSESS = {
   destination_addresses: ["New York, NY, USA"],
   origin_addresses: ["Washington, DC, USA"],
@@ -110,16 +111,9 @@ const TimelineComponent = () => {
         displayLineIcon={false}
         addressName={
           <FlexedView>
-            <Text
-              style={{
-                color: MAIN,
-                fontWeight: "900",
-                fontSize: 14,
-                lineHeight: 18,
-              }}
-            >
-              Start:{" "}
-            </Text>
+            {/* <Typography color={MAIN} fontSize="m" weight="900"> */}
+            <Text>Start:</Text>
+            {/* </Typography> */}
             <Text
               style={{
                 fontWeight: "900",
