@@ -1,7 +1,7 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import axios from "axios";
-import { INearByPlaces } from "../features/hooks/useNearbyPlaces";
-import { Location } from "../features/types";
+import { LatLng } from "react-native-maps";
+import { GoogleMapsPlaces, Location } from "../features/types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
 
@@ -107,15 +107,16 @@ interface IAutocompletePlacesApiRes {
 }
 
 export const getNearByPlaces = (
-  options: Location & INearByPlaces
+  location: LatLng,
+  radius: number,
+  type: GoogleMapsPlaces
 ): Promise<INearByPlacesApiRes> => {
-  const { lat, lng, radius, type } = options;
   const params = {
     radius,
     type,
     key: GOOGLE_MAPS_APIKEY,
   };
-  const nearbyPlacesUrl = `${baseUrl}/place/nearbysearch/json?location=${lat}%2C${lng}`;
+  const nearbyPlacesUrl = `${baseUrl}/place/nearbysearch/json?location=${location.latitude}%2C${location.longitude}`;
   return axios.get(nearbyPlacesUrl, { params });
 };
 

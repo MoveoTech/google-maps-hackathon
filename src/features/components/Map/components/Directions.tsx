@@ -4,11 +4,17 @@ import MapViewDirections, {
   MapViewDirectionsProps,
 } from "react-native-maps-directions";
 
-interface Directions extends MapViewDirectionsProps {
-  type?: "primary" | "dashed" | "dashedLight";
+export type DirectionsType =
+  | "primary"
+  | "dashed"
+  | "dashedLight"
+  | "transparent";
+
+interface DirectionTypes extends MapViewDirectionsProps {
+  type?: DirectionsType;
 }
 type DirectionProps = Omit<
-  Directions,
+  DirectionTypes,
   "apikey" | "stokeWidth" | "strokeColor" | "lineDashPattern" | "mode"
 >;
 

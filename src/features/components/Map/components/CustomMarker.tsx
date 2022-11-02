@@ -2,15 +2,15 @@ import React from "react";
 import { Image, View, Text, StyleSheet, ImageBackground } from "react-native";
 import { Callout, LatLng, Marker } from "react-native-maps";
 
-type Markers = "dot" | "circle" | "pin";
+export type MarkerTypes = "dot" | "circle" | "pin";
 interface MarkerProps {
-  type: Markers;
+  type: MarkerTypes;
   tooltip?: string;
   coordinates: LatLng;
   bgImg?: string;
 }
 type MarkersObj = {
-  [key in Markers]?: number;
+  [key in MarkerTypes]?: number;
 };
 const MARKERS: MarkersObj = {
   dot: require("../../../../../assets/dot.png"),
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   BgImageContainer: {
-    width: 75,
-    height: 75,
+    width: 55,
+    height: 55,
     position: "relative",
     top: 25,
     display: "flex",
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   BgImage: {
-    width: 65,
-    height: 65,
+    width: 45,
+    height: 45,
     borderRadius: 6,
     overflow: "hidden",
   },
