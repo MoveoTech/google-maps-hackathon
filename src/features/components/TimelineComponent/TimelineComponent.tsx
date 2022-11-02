@@ -1,11 +1,19 @@
 import React from "react";
-import { Text, Image, ImageSourcePropType } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ImageSourcePropType,
+  ScrollView,
+  View,
+} from "react-native";
 
 import Stop from "../Stop/Stop";
 import { Container, StartPoint, EndPoint } from "./styles";
 import { GoogleMapsPlaces } from "../../types";
 import { FlexedView, MAIN } from "../../globalStyle";
 import Typography from "../Typography/Typography";
+import { useUser } from "../../contexts/UserContext";
+
 const MOCK_ADDRESSESS = {
   destination_addresses: ["New York, NY, USA"],
   origin_addresses: ["Washington, DC, USA"],
@@ -105,25 +113,21 @@ const MOCK_DATA = [
   },
 ];
 const TimelineComponent = () => {
+  //TODO: convert location coords to a name and replace mock data
+  const { currentLocation } = useUser();
+
   return (
     <Container>
       <StartPoint
         displayLineIcon={false}
         addressName={
           <FlexedView>
-            {/* <Typography color={MAIN} fontSize="m" weight="900"> */}
-            <Text>Start:</Text>
-            {/* </Typography> */}
-            <Text
-              style={{
-                fontWeight: "900",
-                fontSize: 14,
-                lineHeight: 18,
-              }}
-            >
-              {" "}
+            <Typography color={MAIN} weight="700">
+              Start:&nbsp;
+            </Typography>
+            <Typography fontFamily="Inter_600SemiBold">
               {MOCK_ADDRESSESS.destination_addresses[0]}
-            </Text>
+            </Typography>
           </FlexedView>
         }
       />
@@ -143,26 +147,12 @@ const TimelineComponent = () => {
       <EndPoint
         addressName={
           <FlexedView>
-            <Text
-              style={{
-                color: MAIN,
-                fontWeight: "900",
-                fontSize: 14,
-                lineHeight: 18,
-              }}
-            >
-              End:{" "}
-            </Text>
-            <Text
-              style={{
-                fontWeight: "900",
-                fontSize: 14,
-                lineHeight: 18,
-              }}
-            >
-              {" "}
+            <Typography color={MAIN} weight="700">
+              End:&nbsp;
+            </Typography>
+            <Typography fontFamily="Inter_600SemiBold">
               {MOCK_ADDRESSESS.origin_addresses[0]}
-            </Text>
+            </Typography>
           </FlexedView>
         }
       />

@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import AppLoading from "expo-app-loading";
 
 import {
   useFonts,
@@ -15,6 +14,7 @@ import {
 } from "@expo-google-fonts/inter";
 import { Text, TextStyle } from "react-native";
 import { ColorValue } from "react-native";
+import { PRIMARY } from "../../globalStyle";
 
 export type TFontSize = "s" | "m" | "l"; // 12px, 14px, 16px
 
@@ -33,7 +33,7 @@ export interface ITypographyProps {
     | "700"
     | "800"
     | "900";
-  children: string;
+  children: string | string[];
   fontFamily?:
     | "Inter_100Thin"
     | "Inter_200ExtraLight"
@@ -47,10 +47,10 @@ export interface ITypographyProps {
   style?: TextStyle;
 }
 const Typography: FC<ITypographyProps> = ({
-  color = "black",
+  color = PRIMARY,
   fontSize = "m",
-  weight = "600",
-  fontFamily = "Inter_500Medium",
+  weight = "400",
+  fontFamily = "Inter_400Regular",
   style,
   children,
 }) => {
@@ -66,7 +66,7 @@ const Typography: FC<ITypographyProps> = ({
     Inter_900Black,
   });
 
-  if (!fontsLoaded) return <AppLoading />;
+  if (!fontsLoaded) return null; //TODO: add loader
 
   return (
     <Text

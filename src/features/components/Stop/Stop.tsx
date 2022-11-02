@@ -4,7 +4,7 @@ import { capitalize } from "lodash";
 
 import locationIcon from "../../../icons/location.png";
 import walkIcon from "../../../icons/walk.png";
-import { FlexedView } from "../../globalStyle";
+import { FlexedView, SECONDARY } from "../../globalStyle";
 
 import { GoogleMapsPlaces } from "../../types";
 import Typography from "../Typography/Typography";
@@ -50,19 +50,22 @@ const Stop: FC<IStopProps> = ({
         <TripInfo>
           <Image
             source={walkIcon}
-            style={{ width: 16, height: 48, marginLeft: 10 }}
+            style={{ width: 16, height: 48, marginLeft: 11.5 }}
           />
           <DurationAndDistance>
             <Typography
+              fontSize="s"
+              color={SECONDARY}
               style={{
                 textTransform: "capitalize",
-                fontWeight: "400",
-                fontSize: 12,
               }}
             >
-              {duration}
-            </Typography>{" "}
-            - <Typography>{distance}</Typography>
+              {duration} &#x2022;&nbsp;
+            </Typography>
+
+            <Typography fontSize="s" color={SECONDARY}>
+              {distance}
+            </Typography>
           </DurationAndDistance>
         </TripInfo>
       )}
@@ -71,13 +74,13 @@ const Stop: FC<IStopProps> = ({
           <LocationImage source={imageToDisplay} />
           <StopInfo>
             {stopType && (
-              <StopType ellipsizeMode="tail" numberOfLines={1}>
+              <StopType fontSize="s" ellipsizeMode="tail" numberOfLines={1}>
                 {capitalize(stopType)}
               </StopType>
             )}
             {typeof addressName === "string" ? (
               <StopAddressName llipsizeMode="tail" numberOfLines={1}>
-                {addressName}
+                {capitalize(addressName)}
               </StopAddressName>
             ) : (
               <FlexedView>{addressName}</FlexedView>

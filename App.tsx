@@ -73,9 +73,6 @@ export default function App() {
           <Text>Allow location services to use app</Text>
         )}
         <DraggableDrawer>
-          {/* <View>
-            <Text>TESTING</Text>
-          </View> */}
           <TimelineComponent />
         </DraggableDrawer>
         <StatusBar style="auto" />

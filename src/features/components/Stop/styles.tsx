@@ -13,18 +13,8 @@ export const StopInfo = styled.View`
   flex: 1;
   margin-left: 8;
 `;
-export const StopType = styled(Typography)`
-  text-transform: capitalize;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-`;
-export const StopAddressName = styled(Typography)`
-  text-transform: capitalize;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-`;
+export const StopType = styled(Typography)``;
+export const StopAddressName = styled(Typography)``;
 
 export const Row = styled(FlexedView)`
   width: 100%;
@@ -41,7 +31,9 @@ export const Right = styled(FlexedView)`
 `;
 export const Time = styled(Typography)``;
 
-export const DurationAndDistance = styled(Typography)``;
+export const DurationAndDistance = styled(FlexedView)`
+  margin-left: 20px;
+`;
 // export const CapitalizedText = styled(Typography).attrs<ITypographyProps>(
 //   () => ({
 //     fontWeight: "900",
@@ -52,8 +44,7 @@ export const DurationAndDistance = styled(Typography)``;
 // )``;
 
 export const TripInfo = styled(FlexedView)`
-  width: 215px;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 `;
 
