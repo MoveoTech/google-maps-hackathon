@@ -22,28 +22,16 @@ import Button from "./src/features/components/Button/Button";
 
 export default function App() {
   const [user, setUser] = useState<IUser>();
-  const [fontsLoaded] = useFonts({
-    "AvenirLTStd-Black": require("./src/assets/fonts/AvenirLTStd-Black.otf"),
-  });
 
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
 
   const { locationStatus } = useLocationPermissionStatus();
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
   const showUserInfo = () => {
-    if (!fontsLoaded) {
-      return null;
-    }
     if (userInfo) {
       return (
-        <View style={styles.userInfo} onLayout={onLayoutRootView}>
+        <View style={styles.userInfo}>
           <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
           <Text>Welcome {userInfo.name}</Text>
           <Text>{userInfo.email}</Text>

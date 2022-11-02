@@ -65,10 +65,7 @@ const styles = (isDisabled: boolean, buttonType: ButtonType) =>
     },
     labelStyle: {
       color: getLabelText(isDisabled, buttonType),
-      fontWeight: "800",
       fontSize: 14,
-      textTransform: "capitalize",
-      fontFamily: "AvenirLTStd-Black",
     },
   });
 

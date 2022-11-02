@@ -5,6 +5,7 @@ import { LocationAutoComplete } from "../../components/LocationAutoComplete/Loca
 import Map from "../../components/Map/Map";
 import { useUser } from "../../contexts/UserContext";
 import { HomepageContainer } from "./styles";
+import Button from "../../components/Button/Button";
 
 const HomePage = () => {
   const { currentLocation, errorMsg } = useUser();
@@ -15,6 +16,12 @@ const HomePage = () => {
   return (
     <HomepageContainer>
       <Map location={currentLocation} />
+      <Button
+        onPress={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+        title={"Primary button"}
+      />
     </HomepageContainer>
   );
 };
