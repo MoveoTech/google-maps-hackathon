@@ -4,13 +4,21 @@ import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import Typography from "./Typography/Typography";
 import { Button } from "react-native-paper";
 
-export const DraggableDrawer: React.FC<{
+interface Props {
   activeStep: number;
   children;
   maxSteps;
   setActiveStep: (activeStep: number) => void;
   topTitle: string;
-}> = ({ children, activeStep, maxSteps, setActiveStep, topTitle }) => {
+}
+
+export const DraggableDrawer = ({
+  children,
+  activeStep,
+  maxSteps,
+  setActiveStep,
+  topTitle,
+}: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "60%", "88%"], []);
   const handleSheetChanges = useCallback((index: number) => {

@@ -53,12 +53,12 @@ export const HomePageMap = ({ location }: Props) => {
   const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>(null);
   const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
   const [allPlacesIndex, setAllPlacesIndex] = useState(0);
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = useState(1);
   const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
   const maxSteps = 4;
   const title = [
     "Choose an amazing breakfast",
-    "Choose and acitvity",
+    "Choose and activity",
     "Choose another one",
     "Choose another one",
   ];
@@ -110,7 +110,7 @@ export const HomePageMap = ({ location }: Props) => {
     setLocationType(newLocationType);
     //TODO: trigger indication Toast for user
     setAllPlacesIndex(0);
-    setActiveStep(activeStep + 1);
+    setActiveStep((activeStep) => activeStep + 1);
     calculateStep(newStartingLocation, newLocationType);
     changeTitle(activeStep);
   };
