@@ -10,13 +10,13 @@ export function Cards(props: { topFourPlaces: IPlace[] }) {
 
   return (
     <>
-      {topFourPlaces?.map((place: object, index: number) => (
+      {topFourPlaces?.map((place: IPlace, index: number) => (
         <InfoCard
           key={index}
           isPressed={currentIndexPressed === index}
           onPress={setCurrentIndexPressed}
           index={index}
-          places={place}
+          place={place}
         />
       ))}
     </>
