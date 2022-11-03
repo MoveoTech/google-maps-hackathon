@@ -93,6 +93,10 @@ export const HomePageMap = ({ location }: Props) => {
   };
 
   const createMarker = (place: IPlaceOnMap): IMarker => {
+    const photoReference =
+      (place?.photos as any[])?.length > 0
+        ? place?.photos[0]?.photo_reference
+        : null;
     return {
       id: place.place_id,
       coordinates: {
@@ -101,7 +105,7 @@ export const HomePageMap = ({ location }: Props) => {
       },
       type: "dot",
       tooltip: "dot",
-      bgImg: `${PhotosBaseURL}&photoreference=${place.photos[0].photo_reference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
+      bgImg: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
       bgIcon: placesIcon[locationType],
     };
   };
