@@ -107,3 +107,5 @@ export interface IUser {
   email: string;
   picture: string;
 }
+
+export type ButtonType = "primary" | "secondary" | "tertiary";

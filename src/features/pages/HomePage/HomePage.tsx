@@ -8,6 +8,7 @@ import { HomepageContainer } from "./styles";
 import { Cards } from "../../components/Card/Cards";
 import { DraggableDrawer } from "../../components/DraggableDrawer";
 import { IPlace } from "../../../api/googleApi";
+import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 
 const HomePage = () => {
   const { currentLocation, errorMsg } = useUser();
@@ -26,6 +27,7 @@ const HomePage = () => {
       </HomepageContainer>
       <DraggableDrawer>
         <Cards topFourPlaces={topFourPlaces} />
+          <TimelineComponent />
       </DraggableDrawer>
     </>
   );

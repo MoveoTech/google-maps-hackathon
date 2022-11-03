@@ -1,20 +1,28 @@
-import React, {useEffect, useState} from "react";
-import {StatusBar} from "expo-status-bar";
+import React, { useCallback, useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import {
+  Button as ReactButton,
+} from "react-native";
 import {Image, StyleSheet, Button, Text, View, Dimensions} from "react-native";
 import HomePage from "./src/features/pages/HomePage/HomePage";
-import {AppContainer} from "./src/features/globalStyle";
-import {UserProvider} from "./src/features/contexts/UserContext";
-import {useAuthentication} from "./src/features/hooks/useAuthentication";
-import {useLocationPermissionStatus} from "./src/features/hooks/useLocationPermissionStatus";
-import {addUser} from "./src/api/api";
-import {IUser} from "./src/features/types";
+import { AppContainer } from "./src/features/globalStyle";
+import { UserProvider } from "./src/features/contexts/UserContext";
+import { useAuthentication } from "./src/features/hooks/useAuthentication";
+import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
+import { addUser } from "./src/api/api";
+import { IUser } from "./src/features/types";
+import { useFonts } from "expo-font";
 import {DraggableDrawer} from "./src/features/components/DraggableDrawer";
 import {Cards} from "./src/features/components/Card/Cards";
 
 export default function App() {
-    const [user, setUser] = useState<IUser>();
-    const {promptAsync, request, getUserData, accessToken, userInfo} =
-        useAuthentication();
+  const [loaded] = useFonts({
+    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
+  });
+  const [user, setUser] = useState<IUser>();
+
+  const { promptAsync, request, getUserData, accessToken, userInfo } =
+    useAuthentication();
 
     const {locationStatus} = useLocationPermissionStatus();
 
@@ -43,6 +51,35 @@ export default function App() {
         if (userInfo) getOrAddUser();
     }, [userInfo]);
 
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <UserProvider>
+      <AppContainer>
+        {locationStatus === "granted" ? (
+          <View style={styles.container}>
+            {user || true ? (
+              <>
+                {/* {showUserInfo()} */}
+                <HomePage />
+              </>
+            ) : (
+              <ReactButton
+                title={"Login"}
+                disabled={!request}
+                onPress={() => promptAsync({ useProxy: true })}
+              />
+            )}
+          </View>
+        ) : (
+          <Text>Allow location services to use app</Text>
+        )}
+        <StatusBar style="auto" />
+      </AppContainer>
+    </UserProvider>
+  );
     return (
         <UserProvider>
             <AppContainer>
@@ -70,19 +107,22 @@ export default function App() {
     );
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    userInfo: {
-        marginTop: 200,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    profilePic: {
-        width: 50,
-        height: 50,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
+  userInfo: {
+    marginTop: 200,
+    alignItems: "center",
+    justifyContent: "center",
+    width: Dimensions.get("window").width * 0.95,
+  },
+  profilePic: {
+    width: 50,
+    height: 50,
+  },
 });
