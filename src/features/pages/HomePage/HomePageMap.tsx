@@ -12,6 +12,8 @@ import { MarkerTypes } from "../../components/Map/components/CustomMarker";
 import { DirectionsType } from "../../components/Map/components/Directions";
 import { GoogleMapsPlaces } from "../../types";
 import { Button } from "react-native";
+import { PhotosBaseURL } from "../../components/Card/InfoCard";
+import { GOOGLE_MAPS_APIKEY } from "@env";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -24,6 +26,7 @@ export interface IMarker {
   type: MarkerTypes;
   tooltip?: string;
   bgImg?: string;
+  bgIcon?: number;
 }
 export interface IDirections {
   id: string;
@@ -33,6 +36,10 @@ export interface IDirections {
   distance?: number;
   duration?: number;
 }
+
+const placesIcon = {
+  restaurant: require(`../../../../assets/restaurant.png`),
+};
 
 const SEARCH_RADIUS = 100;
 
@@ -85,17 +92,19 @@ export const HomePageMap = ({ location }: Props) => {
     createTopPlaces();
   };
 
-  const createMarker = (place: IPlaceOnMap): IMarker => ({
-    id: place.place_id,
-    coordinates: {
-      latitude: place.geometry.location.lat,
-      longitude: place.geometry.location.lng,
-    },
-    type: "dot",
-    tooltip: "dot",
-    bgImg: "https://picsum.photos/200/",
-  });
-
+  const createMarker = (place: IPlaceOnMap): IMarker => {
+    return {
+      id: place.place_id,
+      coordinates: {
+        latitude: place.geometry.location.lat,
+        longitude: place.geometry.location.lng,
+      },
+      type: "dot",
+      tooltip: "dot",
+      bgImg: `${PhotosBaseURL}&photoreference=${place.photos[0].photo_reference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
+      bgIcon: placesIcon[locationType],
+    };
+  };
   const createDirection = (place: IPlace): IDirections => ({
     id: place.place_id,
     origin: startingLocation,

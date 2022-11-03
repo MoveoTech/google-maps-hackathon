@@ -8,6 +8,8 @@ interface MarkerProps {
   tooltip?: string;
   coordinates: LatLng;
   bgImg?: string;
+  bgIcon?: number;
+  isSelected: boolean;
 }
 type MarkersObj = {
   [key in MarkerTypes]?: number;
@@ -22,13 +24,19 @@ export const CustomMarker = ({
   tooltip,
   coordinates,
   bgImg,
+  bgIcon,
+  isSelected,
 }: MarkerProps) => {
   return (
     <Marker coordinate={coordinates}>
       <View style={styles.MarkerContainer}>
-        {bgImg && (
+        {isSelected ? (
           <View style={styles.BgImageContainer}>
             <ImageBackground source={{ uri: bgImg }} style={styles.BgImage} />
+          </View>
+        ) : (
+          <View style={styles.BgImageContainer}>
+            <ImageBackground source={bgIcon} style={styles.BgImage} />
           </View>
         )}
         <Image source={MARKERS[type]} />
