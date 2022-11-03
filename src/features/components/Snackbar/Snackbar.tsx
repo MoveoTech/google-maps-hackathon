@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
 });
 
+//TODO: find better way to work with svg
 const CheckSvgCmp = () => (
   <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
     <Path
