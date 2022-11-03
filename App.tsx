@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Image,
   StyleSheet,
-  Button,
+  Button as ReactButton,
   Text,
   View,
   Dimensions,
@@ -16,9 +16,14 @@ import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
 import { addUser } from "./src/api/api";
 import { IUser } from "./src/features/types";
+import { useFonts } from "expo-font";
 
 export default function App() {
+  const [loaded] = useFonts({
+    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
+  });
   const [user, setUser] = useState<IUser>();
+
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
 
@@ -49,6 +54,10 @@ export default function App() {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
 
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <UserProvider>
       <AppContainer>
@@ -60,8 +69,8 @@ export default function App() {
                 <HomePage />
               </>
             ) : (
-              <Button
-                title="Login"
+              <ReactButton
+                title={"Login"}
                 disabled={!request}
                 onPress={() => promptAsync({ useProxy: true })}
               />
@@ -88,6 +97,7 @@ const styles = StyleSheet.create({
     marginTop: 200,
     alignItems: "center",
     justifyContent: "center",
+    width: Dimensions.get("window").width * 0.95,
   },
   profilePic: {
     width: 50,

@@ -4,8 +4,8 @@ import React from "react";
 import { LocationAutoComplete } from "../../components/LocationAutoComplete/LocationAutoComplete";
 import Map from "../../components/Map/Map";
 import { useUser } from "../../contexts/UserContext";
-import { HomepageContainer } from "./styles";
 import { DraggableDrawer } from "../../components/DraggableDrawer";
+import { HomepageContainer } from "./styles";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 
 const HomePage = () => {
