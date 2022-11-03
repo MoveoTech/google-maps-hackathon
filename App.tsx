@@ -16,11 +16,19 @@ import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
 import { addUser } from "./src/api/api";
 import { IUser } from "./src/features/types";
+import { useFonts } from "expo-font";
 
 export default function App() {
   const [user, setUser] = useState<IUser>();
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
+
+  const [loaded] = useFonts({
+    "Avenir-regular": require("./assets/fonts/Avenir-Regular.ttf"),
+    "Avenir-light": require("./assets/fonts/Avenir-Light.ttf"),
+    "Avenir-heavy": require("./assets/fonts/Avenir-Heavy.ttf"),
+    "Avenir-book": require("./assets/fonts/Avenir-Heavy.ttf"),
+  });
 
   const { locationStatus } = useLocationPermissionStatus();
 
@@ -48,6 +56,10 @@ export default function App() {
   useEffect(() => {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <UserProvider>

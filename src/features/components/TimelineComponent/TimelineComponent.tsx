@@ -122,10 +122,10 @@ const TimelineComponent = () => {
         displayLineIcon={false}
         addressName={
           <FlexedView>
-            <Typography color={MAIN} weight="700">
+            <Typography color={MAIN} fontFamily="Avenir-heavy">
               Start:&nbsp;
             </Typography>
-            <Typography fontFamily="Inter_600SemiBold">
+            <Typography fontFamily="Avenir-heavy">
               {MOCK_ADDRESSESS.destination_addresses[0]}
             </Typography>
           </FlexedView>
@@ -147,10 +147,10 @@ const TimelineComponent = () => {
       <EndPoint
         addressName={
           <FlexedView>
-            <Typography color={MAIN} weight="700">
+            <Typography color={MAIN} fontFamily="Avenir-heavy">
               End:&nbsp;
             </Typography>
-            <Typography fontFamily="Inter_600SemiBold">
+            <Typography fontFamily="Avenir-heavy">
               {MOCK_ADDRESSESS.origin_addresses[0]}
             </Typography>
           </FlexedView>
