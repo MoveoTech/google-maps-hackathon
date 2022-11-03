@@ -2,33 +2,30 @@ import * as React from "react";
 import { Card } from "react-native-paper";
 import { StyleSheet, Text, View } from "react-native";
 import { GOOGLE_MAPS_APIKEY } from "@env";
+import { IPlace } from "../../../api/googleApi";
 
 interface ICardComponentProps {
   isPressed: boolean;
   onPress: (number) => void;
   index: number;
-  places: any;
+  place: IPlace;
 }
 
 export const InfoCard: React.FC<ICardComponentProps> = ({
   isPressed,
   onPress,
   index,
-  places,
+  place,
 }) => {
   const pricing = (price_level) => {
-    if (price_level > 3) {
-      return "$";
-    } else if (price_level > 1 && price_level < 3) {
-      return "$$";
-    } else {
-      return "$$$";
-    }
+    if (price_level > 3) return "$";
+    if (price_level === 2) return "$$";
+    return "$$$";
   };
 
   const PhotosBaseURL =
     "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
-  const photoReference = places?.photos[0].photo_reference;
+  const photoReference = place?.photos[0].photo_reference;
 
   return (
     <Card style={styles(isPressed).cardWrapper} onPress={() => onPress(index)}>
@@ -39,18 +36,18 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
         }}
       />
       <Card.Content>
-        <Text style={styles(isPressed).rating}>{places?.rating}</Text>
+        <Text style={styles(isPressed).rating}>{place?.rating}</Text>
       </Card.Content>
       <Card.Content>
-        <Text style={styles(isPressed).header}>{places?.name}</Text>
+        <Text style={styles(isPressed).header}>{place?.name}</Text>
         <Text style={styles(isPressed).description}>
-          {places?.types.slice(0, 1).join(", ")}
+          {place?.types.slice(0, 1).join(", ")}
         </Text>
       </Card.Content>
       <View style={styles(isPressed).bottomContainer} />
       <Card.Content>
         <Text style={styles(isPressed).distanceDetails}>
-          {pricing(places?.price_level)} • {20}
+          {pricing(place?.price_level)} • {20}
         </Text>
       </Card.Content>
     </Card>
