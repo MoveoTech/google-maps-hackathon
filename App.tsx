@@ -15,6 +15,10 @@ export default function App() {
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
 
+  const [loaded] = useFonts({
+    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
+  });
+
   const { locationStatus } = useLocationPermissionStatus();
 
   const showUserInfo = () => {
@@ -42,11 +46,15 @@ export default function App() {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
 
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <UserProvider>
       <AppContainer>
         {locationStatus === "granted" ? (
-          <View style={styles.container}>
+          <>
             {user || true ? (
               <>
                 {/* {showUserInfo()} */}
@@ -59,7 +67,7 @@ export default function App() {
                 onPress={() => promptAsync({ useProxy: true })}
               />
             )}
-          </View>
+          </>
         ) : (
           <Text>Allow location services to use app</Text>
         )}

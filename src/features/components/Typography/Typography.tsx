@@ -1,16 +1,4 @@
 import React, { FC } from "react";
-import {
-  useFonts,
-  Inter_100Thin,
-  Inter_200ExtraLight,
-  Inter_300Light,
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  Inter_800ExtraBold,
-  Inter_900Black,
-} from "@expo-google-fonts/inter";
 import { Text, TextStyle } from "react-native";
 import { ColorValue } from "react-native";
 
@@ -40,40 +28,18 @@ export interface ITypographyProps {
     | "800"
     | "900";
   children: string | string[];
-  fontFamily?:
-    | "Inter_100Thin"
-    | "Inter_200ExtraLight"
-    | "Inter_300Light"
-    | "Inter_400Regular"
-    | "Inter_500Medium"
-    | "Inter_600SemiBold"
-    | "Inter_700Bold"
-    | "Inter_800ExtraBold"
-    | "Inter_900Black";
+  fontFamily?: string;
   style?: TextStyle;
 }
+
 const Typography: FC<ITypographyProps> = ({
   color = PRIMARY,
   fontSize = "m",
   weight = "400",
-  fontFamily = "Inter_400Regular",
+  fontFamily = "Avenir",
   style,
   children,
 }) => {
-  const [fontsLoaded] = useFonts({
-    Inter_100Thin,
-    Inter_200ExtraLight,
-    Inter_300Light,
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
-    Inter_800ExtraBold,
-    Inter_900Black,
-  });
-
-  if (!fontsLoaded) return null; //TODO: add loader
-
   return (
     <Text
       style={{

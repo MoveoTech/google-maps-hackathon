@@ -34,9 +34,10 @@ const Button = ({
   buttonType = "primary",
   isSearchButton = false,
   iconName,
+  icon,
 }: IButtonProps) => (
   <PaperButton
-    icon={(isSearchButton && "magnify") || iconName}
+    icon={(isSearchButton && "magnify") || iconName || icon}
     uppercase={false}
     color={getBackgroundColor(isDisabled, buttonType)}
     mode={getButtonMode(buttonType)}
