@@ -27,7 +27,7 @@ const HomePage = () => {
       </HomepageContainer>
       <DraggableDrawer>
         <Cards topFourPlaces={topFourPlaces} />
-          <TimelineComponent />
+        <TimelineComponent />
       </DraggableDrawer>
     </>
   );

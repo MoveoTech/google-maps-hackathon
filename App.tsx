@@ -1,9 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  Button as ReactButton,
-} from "react-native";
-import {Image, StyleSheet, Button, Text, View, Dimensions} from "react-native";
+import { Image, StyleSheet, Button, Text, View } from "react-native";
 import HomePage from "./src/features/pages/HomePage/HomePage";
 import { AppContainer } from "./src/features/globalStyle";
 import { UserProvider } from "./src/features/contexts/UserContext";
@@ -12,48 +9,38 @@ import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPer
 import { addUser } from "./src/api/api";
 import { IUser } from "./src/features/types";
 import { useFonts } from "expo-font";
-import {DraggableDrawer} from "./src/features/components/DraggableDrawer";
-import {Cards} from "./src/features/components/Card/Cards";
 
 export default function App() {
-  const [loaded] = useFonts({
-    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
-  });
   const [user, setUser] = useState<IUser>();
-
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
 
-    const {locationStatus} = useLocationPermissionStatus();
+  const { locationStatus } = useLocationPermissionStatus();
 
-    const showUserInfo = () => {
-        if (userInfo) {
-            return (
-                <View style={styles.userInfo}>
-                    <Image source={{uri: userInfo.picture}} style={styles.profilePic}/>
-                    <Text>Welcome {userInfo.name}</Text>
-                    <Text>{userInfo.email}</Text>
-                </View>
-            );
-        }
-    };
+  const showUserInfo = () => {
+    if (userInfo) {
+      return (
+        <View style={styles.userInfo}>
+          <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
+          <Text>Welcome {userInfo.name}</Text>
+          <Text>{userInfo.email}</Text>
+        </View>
+      );
+    }
+  };
 
-    const getOrAddUser = async () => {
-        const currentUser = await addUser({
-            username: userInfo.name,
-            email: userInfo.email,
-            picture: userInfo.picture,
-        });
-        setUser(currentUser);
-    };
+  const getOrAddUser = async () => {
+    const currentUser = await addUser({
+      username: userInfo.name,
+      email: userInfo.email,
+      picture: userInfo.picture,
+    });
+    setUser(currentUser);
+  };
 
-    useEffect(() => {
-        if (userInfo) getOrAddUser();
-    }, [userInfo]);
-
-  if (!loaded) {
-    return null;
-  }
+  useEffect(() => {
+    if (userInfo) getOrAddUser();
+  }, [userInfo]);
 
   return (
     <UserProvider>
@@ -66,8 +53,8 @@ export default function App() {
                 <HomePage />
               </>
             ) : (
-              <ReactButton
-                title={"Login"}
+              <Button
+                title="Login"
                 disabled={!request}
                 onPress={() => promptAsync({ useProxy: true })}
               />
@@ -80,31 +67,6 @@ export default function App() {
       </AppContainer>
     </UserProvider>
   );
-    return (
-        <UserProvider>
-            <AppContainer>
-                {locationStatus === "granted" ? (
-                    <>
-                        {user || true ? (
-                            <>
-                                {/* {showUserInfo()} */}
-                                <HomePage/>
-                            </>
-                        ) : (
-                            <Button
-                                title={"Login"}
-                                disabled={!request}
-                                onPress={() => promptAsync({useProxy: true})}
-                            />
-                        )}
-                    </>
-                ) : (
-                    <Text>Allow location services to use app</Text>
-                )}
-                <StatusBar style="auto"/>
-            </AppContainer>
-        </UserProvider>
-    );
 }
 const styles = StyleSheet.create({
   container: {
@@ -112,14 +74,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
   },
   userInfo: {
     marginTop: 200,
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width * 0.95,
   },
   profilePic: {
     width: 50,
