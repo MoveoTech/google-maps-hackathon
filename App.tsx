@@ -90,6 +90,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   userInfo: {
     marginTop: 200,
