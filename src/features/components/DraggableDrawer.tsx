@@ -9,7 +9,8 @@ export const DraggableDrawer: React.FC<{
   children;
   maxSteps;
   setActiveStep: (activeStep: number) => void;
-}> = ({ children, activeStep, maxSteps, setActiveStep }) => {
+  topTitle: string;
+}> = ({ children, activeStep, maxSteps, setActiveStep, topTitle }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "60%", "88%"], []);
   const handleSheetChanges = useCallback((index: number) => {
@@ -25,12 +26,7 @@ export const DraggableDrawer: React.FC<{
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
     >
-      <View
-        style={{
-          position: "absolute",
-          zIndex: 200,
-        }}
-      >
+      <View style={styles.topViewWrapper}>
         <Button
           icon={require("../../../assets/chevron.png")}
           onPress={() => setActiveStep(activeStep - 1)}
@@ -38,9 +34,7 @@ export const DraggableDrawer: React.FC<{
         />
       </View>
       <View style={{ alignItems: "center" }}>
-        <Typography style={{ fontWeight: "500" }}>
-          Choose an amazing breakfast
-        </Typography>
+        <Typography style={{ fontWeight: "500" }}>{topTitle}</Typography>
         <Typography>
           Step {activeStep.toString()} out of {maxSteps.toString()}
         </Typography>
@@ -71,5 +65,9 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     borderBottomColor: "lightgrey",
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  topViewWrapper: {
+    position: "absolute",
+    zIndex: 200,
   },
 });
