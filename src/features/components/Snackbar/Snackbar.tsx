@@ -28,7 +28,7 @@ const MyComponent = () => {
           {/* <Image source={checkSvg} /> */}
           You've added it to your trip
         </Text>
-        <Image source={{ uri: checkSvg }} />
+        {/* <Image source={{ uri: checkSvg }} /> */}
       </Snackbar>
     </View>
   );

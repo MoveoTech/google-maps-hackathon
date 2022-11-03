@@ -6,6 +6,8 @@ import Map from "../../components/Map/Map";
 import { useUser } from "../../contexts/UserContext";
 import { HomepageContainer } from "./styles";
 import MyComponent from "../../components/Snackbar/Snackbar";
+import { DraggableDrawer } from "../../components/DraggableDrawer";
+import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 
 const HomePage = () => {
   const { currentLocation, errorMsg } = useUser();
@@ -17,6 +19,9 @@ const HomePage = () => {
     <HomepageContainer>
       <Map location={currentLocation} />
       <MyComponent />
+      <DraggableDrawer>
+        <TimelineComponent />
+      </DraggableDrawer>
     </HomepageContainer>
   );
 };
