@@ -35,6 +35,7 @@ export interface ITypographyProps {
     | "Avenir-book";
   style?: TextStyle;
 }
+
 const Typography: FC<ITypographyProps> = ({
   color = PRIMARY,
   fontSize = "m",

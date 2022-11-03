@@ -21,6 +21,7 @@ export interface IPlaceOnMap extends IPlace {
   direction: IDirections;
   isSelected: boolean;
 }
+
 export interface IMarker {
   id: string;
   coordinates: LatLng;
@@ -29,6 +30,7 @@ export interface IMarker {
   bgImg?: string;
   bgIcon?: number;
 }
+
 export interface IDirections {
   id: string;
   origin: LatLng;
@@ -47,10 +49,20 @@ const SEARCH_RADIUS = 100;
 interface Props {
   location: LocationObject;
 }
+
 export const HomePageMap = ({ location }: Props) => {
   const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>(null);
   const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
   const [allPlacesIndex, setAllPlacesIndex] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
+  const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
+  const maxSteps = 4;
+  const title = [
+    "Choose an amazing breakfast",
+    "Choose and activity",
+    "Choose another one",
+    "Choose another one",
+  ];
 
   const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>(null);
 
@@ -74,6 +86,19 @@ export const HomePageMap = ({ location }: Props) => {
     setTopFourPlaces([...topFourPlaces]);
   };
 
+  const changeTitle = (activeStep) => {
+    switch (activeStep) {
+      case 1:
+        setTopTitle(title[0]);
+      case 2:
+        setTopTitle(title[1]);
+      case 3:
+        setTopTitle(title[2]);
+      case 4:
+        setTopTitle(title[3]);
+    }
+  };
+
   const onNextStep = () => {
     const selectedPlace = topFourPlaces.find((place) => place.isSelected);
     setTripPlaces((prev) => [...(prev || []), selectedPlace]);
@@ -86,7 +111,9 @@ export const HomePageMap = ({ location }: Props) => {
     setLocationType(newLocationType);
     //TODO: trigger indication Toast for user
     setAllPlacesIndex(0);
+    setActiveStep((activeStep) => activeStep + 1);
     calculateStep(newStartingLocation, newLocationType);
+    changeTitle(activeStep);
   };
 
   const replaceTopFour = () => {
@@ -184,7 +211,12 @@ export const HomePageMap = ({ location }: Props) => {
         />
         <Snackbar label="bla bla" visible />
       </HomepageContainer>
-      <DraggableDrawer>
+      <DraggableDrawer
+        activeStep={activeStep}
+        maxSteps={maxSteps}
+        setActiveStep={setActiveStep}
+        topTitle={topTitle}
+      >
         <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
         <Button title="replace places" onPress={replaceTopFour} />
         <Button

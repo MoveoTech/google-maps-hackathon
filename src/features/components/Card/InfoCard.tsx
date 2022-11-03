@@ -2,11 +2,11 @@ import * as React from "react";
 import { Card } from "react-native-paper";
 import { StyleSheet, Text, View } from "react-native";
 import { GOOGLE_MAPS_APIKEY } from "@env";
-import { IPlace } from "../../../api/googleApi";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 
 export const PhotosBaseURL =
   "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
+
 interface ICardComponentProps {
   isPressed: boolean;
   onPress: (number) => void;
@@ -41,13 +41,18 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
           }}
         />
       ) : (
-        <Text>no image</Text>
+        <Card.Cover
+          style={{ height: 130 }}
+          source={{ uri: "../../../../assets/default.png" }}
+        />
       )}
       <Card.Content>
         <Text style={styles(isPressed).rating}>{place?.rating}</Text>
       </Card.Content>
       <Card.Content>
-        <Text style={styles(isPressed).header}>{place?.name}</Text>
+        <Text style={styles(isPressed).header} numberOfLines={1}>
+          {place?.name}
+        </Text>
         <Text style={styles(isPressed).description}>
           {place?.types.slice(0, 1).join(", ")}
         </Text>
@@ -68,7 +73,7 @@ const styles = (isPressed) =>
       margin: 5,
       width: 180,
       borderWidth: 2,
-      borderColor: isPressed ? "#8755F2" : "transparent",
+      borderColor: isPressed ? "#0AC2A1" : "transparent",
     },
     rating: {
       display: "flex",
@@ -84,6 +89,8 @@ const styles = (isPressed) =>
     header: {
       fontSize: 15,
       display: "flex",
+      height: 20,
+      overflow: "hidden",
       marginTop: 5,
     },
     bottomContainer: {
