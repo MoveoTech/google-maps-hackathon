@@ -3,12 +3,15 @@ import { Card } from "react-native-paper";
 import { StyleSheet, Text, View } from "react-native";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { IPlace } from "../../../api/googleApi";
+import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 
+export const PhotosBaseURL =
+  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
 interface ICardComponentProps {
   isPressed: boolean;
   onPress: (number) => void;
   index: number;
-  place: IPlace;
+  place: IPlaceOnMap;
 }
 
 export const InfoCard: React.FC<ICardComponentProps> = ({
@@ -23,18 +26,23 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
     return "$$$";
   };
 
-  const PhotosBaseURL =
-    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
-  const photoReference = place?.photos[0].photo_reference;
+  const photoReference =
+    (place?.photos as any[])?.length > 0
+      ? place?.photos[0]?.photo_reference
+      : null;
 
   return (
     <Card style={styles(isPressed).cardWrapper} onPress={() => onPress(index)}>
-      <Card.Cover
-        style={{ height: 130 }}
-        source={{
-          uri: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
-        }}
-      />
+      {photoReference ? (
+        <Card.Cover
+          style={{ height: 130 }}
+          source={{
+            uri: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
+          }}
+        />
+      ) : (
+        <Text>no image</Text>
+      )}
       <Card.Content>
         <Text style={styles(isPressed).rating}>{place?.rating}</Text>
       </Card.Content>
