@@ -12,7 +12,7 @@ export const DraggableDrawer = ({ children }) => {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={1}
+      index={0}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
     >

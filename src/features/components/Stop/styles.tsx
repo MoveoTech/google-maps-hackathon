@@ -11,7 +11,7 @@ export const StopInfo = styled.View`
   display: flex;
   flex-direction: column;
   flex: 1;
-  margin-left: 8;
+  margin-left: 8px;
 `;
 export const StopType = styled(Typography)``;
 export const StopAddressName = styled(Typography)``;

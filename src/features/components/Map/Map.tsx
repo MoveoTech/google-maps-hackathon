@@ -1,113 +1,33 @@
 import { LocationObject } from "expo-location/build/Location.types";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import MapView, { LatLng } from "react-native-maps";
+import MapView from "react-native-maps";
+import { Directions } from "./components/Directions";
+import { CustomMarker } from "./components/CustomMarker";
+import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 import { MapDirectionsResponse } from "react-native-maps-directions";
-import { GoogleMapsPlaces } from "../../types";
-import { Directions, DirectionsType } from "./components/Directions";
-import { CustomMarker, MarkerTypes } from "./components/CustomMarker";
-import { getNearByPlaces, IPlace } from "../../../api/googleApi";
+
+const { height, width } = Dimensions.get("window");
+const LATITUDE_DELTA = 0.009;
+const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
 interface Props {
   location: LocationObject;
-  onLocationChanged: (iPlace: IPlace[]) => void;
-}
-
-interface IMarker {
-  coordinates: LatLng;
-  type: MarkerTypes;
-  tooltip?: string;
-  bgImg?: string;
-}
-
-interface IDirections {
-  id: string;
-  origin: LatLng;
-  destination: LatLng;
-  type: DirectionsType;
-  distance?: number;
-  duration?: number;
-}
-
-const SEARCH_RADIUS = 100;
-
-const Map = ({ location, onLocationChanged }: Props) => {
-  const [startingLocation, setStartingLocation] = useState<LatLng>({
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
-  });
-  const [locationType, setLocationType] =
-    useState<GoogleMapsPlaces>("restaurant");
-  const [optionalMarkers, setOptionalMarkers] = useState<IMarker[]>([]);
-  const [optionalDirections, setOptionalDirections] = useState<IDirections[]>(
-    []
-  );
-
-  const createMarkers = (places: IPlace[]): IMarker[] => {
-    return places.map((place) => ({
-      coordinates: {
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-      },
-      type: "dot",
-      tooltip: "dot",
-      bgImg: "https://picsum.photos/200/",
-    }));
-  };
-
-  const createDirections = (places: IPlace[]): IDirections[] => {
-    return places.map((place) => ({
-      id: place.place_id,
-      origin: startingLocation,
-      destination: {
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-      },
-      type: "primary",
-    }));
-  };
-
-  const calculateStep = async () => {
-    try {
-      const nearbyPlacesResponse = await getNearByPlaces(
-        startingLocation,
-        SEARCH_RADIUS,
-        locationType
-      );
-      const topFourPlaces = nearbyPlacesResponse.data.results.slice(0, 4);
-      onLocationChanged(topFourPlaces);
-      const markers = createMarkers(topFourPlaces);
-      setOptionalMarkers(markers);
-
-      const directions = createDirections(topFourPlaces);
-      setOptionalDirections(directions);
-    } catch (e) {}
-  };
-
-  useEffect(() => {
-    calculateStep();
-  }, []);
-
-  const onDirectionsReady: (
-    direction_id: string,
+  topFourPlaces: IPlaceOnMap[];
+  onDirectionsReady: (
+    place_id: string,
     ...args: MapDirectionsResponse[]
-  ) => void = (direction_id, args) => {
-    const newDirections = [...optionalDirections];
-    const directionIndex = newDirections.findIndex(
-      (direction) => direction.id === direction_id
-    );
-    newDirections[directionIndex].distance = args.distance;
-    newDirections[directionIndex].duration = args.duration;
-    setOptionalDirections(newDirections);
-  };
+  ) => void;
+}
 
+const Map = ({ location, topFourPlaces, onDirectionsReady }: Props) => {
   return (
     <MapView
       initialRegion={{
         latitude: location?.coords?.latitude,
         longitude: location?.coords?.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
       }}
       style={styles.map}
       provider="google"
@@ -120,32 +40,32 @@ const Map = ({ location, onLocationChanged }: Props) => {
       userLocationCalloutEnabled
     >
       <>
-        {optionalMarkers.map((marker, index) => (
+        {topFourPlaces?.map((place) => (
           <CustomMarker
-            key={index}
+            key={place.marker.id}
             coordinates={{
-              latitude: marker.coordinates.latitude,
-              longitude: marker.coordinates.longitude,
+              latitude: place.marker.coordinates.latitude,
+              longitude: place.marker.coordinates.longitude,
             }}
-            type={marker.type}
-            tooltip={marker.tooltip}
-            bgImg={marker.bgImg}
+            type={place.marker.type}
+            tooltip={place.marker.tooltip}
+            bgImg={place.marker.bgImg}
           />
         ))}
 
-        {optionalDirections.map((direction) => (
+        {topFourPlaces?.map((place) => (
           <Directions
-            key={direction.id}
-            type={direction.type}
+            key={place.direction.id}
+            type={place.direction.type}
             origin={{
-              latitude: direction.origin.latitude,
-              longitude: direction.origin.longitude,
+              latitude: place.direction.origin.latitude,
+              longitude: place.direction.origin.longitude,
             }}
             destination={{
-              latitude: direction.destination.latitude,
-              longitude: direction.destination.longitude,
+              latitude: place.direction.destination.latitude,
+              longitude: place.direction.destination.longitude,
             }}
-            onReady={(...args) => onDirectionsReady(direction.id, ...args)}
+            onReady={(...args) => onDirectionsReady(place.place_id, ...args)}
           />
         ))}
       </>

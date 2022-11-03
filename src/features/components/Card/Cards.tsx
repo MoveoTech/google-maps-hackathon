@@ -2,19 +2,21 @@ import React, { useState } from "react";
 
 import { InfoCard } from "./InfoCard";
 import { IPlace } from "../../../api/googleApi";
+import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 
-export function Cards(props: { topFourPlaces: IPlace[] }) {
-  let { topFourPlaces } = props;
+interface Props {
+  topFourPlaces: IPlaceOnMap[];
+  onCardSelect: (place_id: string) => void;
+}
 
-  const [currentIndexPressed, setCurrentIndexPressed] = useState(0);
-
+export function Cards({ topFourPlaces, onCardSelect }: Props) {
   return (
     <>
-      {topFourPlaces?.map((place: IPlace, index: number) => (
+      {topFourPlaces?.map((place, index) => (
         <InfoCard
           key={index}
-          isPressed={currentIndexPressed === index}
-          onPress={setCurrentIndexPressed}
+          isPressed={place.isSelected}
+          onPress={() => onCardSelect(place.place_id)}
           index={index}
           place={place}
         />
