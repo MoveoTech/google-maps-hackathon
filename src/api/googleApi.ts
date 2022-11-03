@@ -41,6 +41,7 @@ export interface IPlace {
   types: string[];
   user_ratings_total: number;
   vicinity: string;
+  photos: {}
 }
 
 export interface INearByPlacesRes {
