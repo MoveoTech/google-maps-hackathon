@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef } from "react";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { ScrollView } from "react-native";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 
 export const DraggableDrawer = ({ children }) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -16,11 +16,25 @@ export const DraggableDrawer = ({ children }) => {
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
     >
-      <ScrollView>
-        <BottomSheetView style={{ flex: 1, paddingBottom: 250 }}>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.cardContainers}>
           {children}
-        </BottomSheetView>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </BottomSheet>
   );
 };
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+  },
+  cardContainers: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "center",
+    display: "flex",
+    marginTop: 30,
+  },
+});

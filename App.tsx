@@ -1,14 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  Image,
-  StyleSheet,
-  Button as ReactButton,
-  Text,
-  View,
-  Dimensions,
-} from "react-native";
-
+import { Image, StyleSheet, Button, Text, View } from "react-native";
 import HomePage from "./src/features/pages/HomePage/HomePage";
 import { AppContainer } from "./src/features/globalStyle";
 import { UserProvider } from "./src/features/contexts/UserContext";
@@ -19,11 +11,7 @@ import { IUser } from "./src/features/types";
 import { useFonts } from "expo-font";
 
 export default function App() {
-  const [loaded] = useFonts({
-    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
-  });
   const [user, setUser] = useState<IUser>();
-
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
 
@@ -54,10 +42,6 @@ export default function App() {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
 
-  if (!loaded) {
-    return null;
-  }
-
   return (
     <UserProvider>
       <AppContainer>
@@ -69,8 +53,8 @@ export default function App() {
                 <HomePage />
               </>
             ) : (
-              <ReactButton
-                title={"Login"}
+              <Button
+                title="Login"
                 disabled={!request}
                 onPress={() => promptAsync({ useProxy: true })}
               />
@@ -90,14 +74,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
   },
   userInfo: {
     marginTop: 200,
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width * 0.95,
   },
   profilePic: {
     width: 50,

@@ -1,6 +1,6 @@
 import { LocationObject } from "expo-location/build/Location.types";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Dimensions, Text, FlatList } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import MapView, { LatLng } from "react-native-maps";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 import { GoogleMapsPlaces } from "../../types";
@@ -10,6 +10,7 @@ import { getNearByPlaces, IPlace } from "../../../api/googleApi";
 
 interface Props {
   location: LocationObject;
+  onLocationChanged: (iPlace: IPlace[]) => void;
 }
 
 interface IMarker {
@@ -18,6 +19,7 @@ interface IMarker {
   tooltip?: string;
   bgImg?: string;
 }
+
 interface IDirections {
   id: string;
   origin: LatLng;
@@ -29,7 +31,7 @@ interface IDirections {
 
 const SEARCH_RADIUS = 100;
 
-const Map = ({ location }: Props) => {
+const Map = ({ location, onLocationChanged }: Props) => {
   const [startingLocation, setStartingLocation] = useState<LatLng>({
     latitude: location.coords.latitude,
     longitude: location.coords.longitude,
@@ -73,6 +75,7 @@ const Map = ({ location }: Props) => {
         locationType
       );
       const topFourPlaces = nearbyPlacesResponse.data.results.slice(0, 4);
+      onLocationChanged(topFourPlaces);
       const markers = createMarkers(topFourPlaces);
       setOptionalMarkers(markers);
 
