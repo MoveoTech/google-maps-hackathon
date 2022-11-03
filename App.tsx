@@ -16,7 +16,10 @@ export default function App() {
     useAuthentication();
 
   const [loaded] = useFonts({
-    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
+    "Avenir-regular": require("./assets/fonts/Avenir-Regular.ttf"),
+    "Avenir-light": require("./assets/fonts/Avenir-Light.ttf"),
+    "Avenir-heavy": require("./assets/fonts/Avenir-Heavy.ttf"),
+    "Avenir-book": require("./assets/fonts/Avenir-Heavy.ttf"),
   });
 
   const { locationStatus } = useLocationPermissionStatus();

@@ -14,6 +14,7 @@ import { GoogleMapsPlaces } from "../../types";
 import { Button } from "react-native";
 import { PhotosBaseURL } from "../../components/Card/InfoCard";
 import { GOOGLE_MAPS_APIKEY } from "@env";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -208,6 +209,7 @@ export const HomePageMap = ({ location }: Props) => {
           topFourPlaces={topFourPlaces}
           onDirectionsReady={onDirectionsReady}
         />
+        <Snackbar label="bla bla" visible />
       </HomepageContainer>
       <DraggableDrawer
         activeStep={activeStep}

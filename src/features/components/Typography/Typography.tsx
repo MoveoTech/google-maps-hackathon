@@ -28,7 +28,11 @@ export interface ITypographyProps {
     | "800"
     | "900";
   children: string | string[];
-  fontFamily?: string;
+  fontFamily?:
+    | "Avenir-regular"
+    | "Avenir-light"
+    | "Avenir-heavy"
+    | "Avenir-book";
   style?: TextStyle;
 }
 
@@ -36,7 +40,7 @@ const Typography: FC<ITypographyProps> = ({
   color = PRIMARY,
   fontSize = "m",
   weight = "400",
-  fontFamily = "Avenir",
+  fontFamily = "Avenir-regular",
   style,
   children,
 }) => {
