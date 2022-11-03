@@ -1,20 +1,26 @@
-import {ScrollView} from "react-native-gesture-handler";
-import React, {useState} from "react";
-import * as _ from "lodash";
+import React, { useState } from "react";
 
-import {InfoCard} from "./InfoCard";
-import {styles} from "../DraggableDrawer";
+import { InfoCard } from "./InfoCard";
+import { IPlace } from "../../../api/googleApi";
+import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 
-export const Cards = () => {
+interface Props {
+  topFourPlaces: IPlaceOnMap[];
+  onCardSelect: (place_id: string) => void;
+}
 
-    const [currentIndexPressed, setCurrentIndexPressed] = useState(0)
-
-    return (
-        <ScrollView contentContainerStyle={styles.cardContainers}>
-            {_.times(4).map((index) =>
-                <InfoCard key={index} isPressed={currentIndexPressed === index} onPress={setCurrentIndexPressed}
-                          index={index}/>
-            )}
-        </ScrollView>
-    )
+export function Cards({ topFourPlaces, onCardSelect }: Props) {
+  return (
+    <>
+      {topFourPlaces?.map((place, index) => (
+        <InfoCard
+          key={index}
+          isPressed={place.isSelected}
+          onPress={() => onCardSelect(place.place_id)}
+          index={index}
+          place={place}
+        />
+      ))}
+    </>
+  );
 }

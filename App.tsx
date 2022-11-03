@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  Image,
-  StyleSheet,
-  Button,
-  Text,
-  View,
-  Dimensions,
-} from "react-native";
-
+import { Image, StyleSheet, Button, Text, View } from "react-native";
 import HomePage from "./src/features/pages/HomePage/HomePage";
 import { AppContainer } from "./src/features/globalStyle";
 import { UserProvider } from "./src/features/contexts/UserContext";
@@ -93,8 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
   },
   userInfo: {
     marginTop: 200,
