@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-
 import {
   useFonts,
   Inter_100Thin,
@@ -14,9 +13,16 @@ import {
 } from "@expo-google-fonts/inter";
 import { Text, TextStyle } from "react-native";
 import { ColorValue } from "react-native";
+
 import { PRIMARY } from "../../globalStyle";
 
 export type TFontSize = "s" | "m" | "l"; // 12px, 14px, 16px
+
+const getFontSize: { [size in TFontSize]: number } = {
+  s: 12,
+  m: 14,
+  l: 16,
+};
 
 export interface ITypographyProps {
   color?: ColorValue;
@@ -84,9 +90,3 @@ const Typography: FC<ITypographyProps> = ({
 };
 
 export default Typography;
-
-const getFontSize: { [size in TFontSize]: number } = {
-  s: 12,
-  m: 14,
-  l: 16,
-};

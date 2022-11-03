@@ -42,7 +42,6 @@ const Stop: FC<IStopProps> = ({
   displayLineIcon = true,
 }) => {
   const imageToDisplay = image ? { uri: image } : locationIcon;
-  console.log(typeof addressName);
 
   return (
     <Container>
