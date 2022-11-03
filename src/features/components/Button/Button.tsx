@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Button as PaperButton, TouchableRipple } from "react-native-paper";
+import { Button as PaperButton } from "react-native-paper";
 import { ButtonType } from "../../types";
 
 const getButtonMode = (buttonType: ButtonType) => {
@@ -17,15 +17,15 @@ const getBackgroundColor = (isDisabled: Boolean, buttonType: ButtonType) => {
   return buttonType === "secondary" ? "transparent" : "#000000";
 };
 
-interface IButtonProps {
+type IButtonProps = {
   onPress: () => void;
-  title: string;
+  title?: string;
   isDisabled?: boolean;
   buttonType?: ButtonType;
   isSearchButton?: Boolean;
   iconName?: string;
   color?: string;
-}
+} & Partial<React.ComponentProps<typeof PaperButton>>;
 
 const Button = ({
   onPress,
@@ -52,6 +52,7 @@ const Button = ({
 const styles = (isDisabled: boolean, buttonType: ButtonType) =>
   StyleSheet.create({
     buttonStyle: {
+      display: "flex",
       backgroundColor: getBackgroundColor(isDisabled, buttonType),
       borderRadius: 8,
       justifyContent: "center",
@@ -60,10 +61,13 @@ const styles = (isDisabled: boolean, buttonType: ButtonType) =>
       borderWidth: 2,
       height: 44,
       width: "100%", //wrap the button in <View/> with specific width, to extend the button to this width
+      alignContent: "center",
     },
     labelStyle: {
       color: getLabelText(isDisabled, buttonType),
       fontSize: 14,
+      alignContent: "center",
+      fontFamily: "Avenir",
     },
   });
 

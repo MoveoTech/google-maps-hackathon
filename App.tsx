@@ -16,8 +16,12 @@ import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
 import { addUser } from "./src/api/api";
 import { IUser } from "./src/features/types";
+import { useFonts } from "expo-font";
 
 export default function App() {
+  const [loaded] = useFonts({
+    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
+  });
   const [user, setUser] = useState<IUser>();
 
   const { promptAsync, request, getUserData, accessToken, userInfo } =
@@ -49,6 +53,10 @@ export default function App() {
   useEffect(() => {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <UserProvider>

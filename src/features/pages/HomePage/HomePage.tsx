@@ -5,7 +5,6 @@ import { LocationAutoComplete } from "../../components/LocationAutoComplete/Loca
 import Map from "../../components/Map/Map";
 import { useUser } from "../../contexts/UserContext";
 import { HomepageContainer } from "./styles";
-import Button from "../../components/Button/Button";
 
 const HomePage = () => {
   const { currentLocation, errorMsg } = useUser();
