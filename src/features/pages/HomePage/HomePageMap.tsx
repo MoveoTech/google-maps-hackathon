@@ -11,20 +11,26 @@ import { MarkerTypes } from "../../components/Map/components/CustomMarker";
 import { DirectionsType } from "../../components/Map/components/Directions";
 import { GoogleMapsPlaces } from "../../types";
 import { Button } from "react-native";
-import { NativeViewGestureHandler } from "react-native-gesture-handler";
+import { PhotosBaseURL } from "../../components/Card/InfoCard";
+import { GOOGLE_MAPS_APIKEY } from "@env";
+import Snackbar from "../../components/Snackbar/Snackbar";
+import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
   direction: IDirections;
   isSelected: boolean;
 }
+
 export interface IMarker {
   id: string;
   coordinates: LatLng;
   type: MarkerTypes;
   tooltip?: string;
   bgImg?: string;
+  bgIcon?: number;
 }
+
 export interface IDirections {
   id: string;
   origin: LatLng;
@@ -34,15 +40,29 @@ export interface IDirections {
   duration?: number;
 }
 
+const placesIcon = {
+  restaurant: require(`../../../../assets/restaurant.png`),
+};
+
 const SEARCH_RADIUS = 100;
 
 interface Props {
   location: LocationObject;
 }
+
 export const HomePageMap = ({ location }: Props) => {
   const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>(null);
   const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
   const [allPlacesIndex, setAllPlacesIndex] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
+  const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
+  const maxSteps = 4;
+  const title = [
+    "Choose an amazing breakfast",
+    "Choose and activity",
+    "Choose another one",
+    "Choose another one",
+  ];
 
   const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>(null);
 
@@ -66,6 +86,19 @@ export const HomePageMap = ({ location }: Props) => {
     setTopFourPlaces([...topFourPlaces]);
   };
 
+  const changeTitle = (activeStep) => {
+    switch (activeStep) {
+      case 1:
+        setTopTitle(title[0]);
+      case 2:
+        setTopTitle(title[1]);
+      case 3:
+        setTopTitle(title[2]);
+      case 4:
+        setTopTitle(title[3]);
+    }
+  };
+
   const onNextStep = () => {
     const selectedPlace = topFourPlaces.find((place) => place.isSelected);
     setTripPlaces((prev) => [...(prev || []), selectedPlace]);
@@ -78,24 +111,32 @@ export const HomePageMap = ({ location }: Props) => {
     setLocationType(newLocationType);
     //TODO: trigger indication Toast for user
     setAllPlacesIndex(0);
+    setActiveStep((activeStep) => activeStep + 1);
     calculateStep(newStartingLocation, newLocationType);
+    changeTitle(activeStep);
   };
 
   const replaceTopFour = () => {
     createTopPlaces();
   };
 
-  const createMarker = (place: IPlaceOnMap): IMarker => ({
-    id: place.place_id,
-    coordinates: {
-      latitude: place.geometry.location.lat,
-      longitude: place.geometry.location.lng,
-    },
-    type: "dot",
-    tooltip: "dot",
-    bgImg: "https://picsum.photos/200/",
-  });
-
+  const createMarker = (place: IPlaceOnMap): IMarker => {
+    const photoReference =
+      (place?.photos as any[])?.length > 0
+        ? place?.photos[0]?.photo_reference
+        : null;
+    return {
+      id: place.place_id,
+      coordinates: {
+        latitude: place.geometry.location.lat,
+        longitude: place.geometry.location.lng,
+      },
+      type: "dot",
+      tooltip: "dot",
+      bgImg: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
+      bgIcon: placesIcon[locationType],
+    };
+  };
   const createDirection = (place: IPlace): IDirections => ({
     id: place.place_id,
     origin: startingLocation,
@@ -168,10 +209,15 @@ export const HomePageMap = ({ location }: Props) => {
           topFourPlaces={topFourPlaces}
           onDirectionsReady={onDirectionsReady}
         />
+        <Snackbar label="bla bla" visible />
       </HomepageContainer>
-      <DraggableDrawer>
+      <DraggableDrawer
+        activeStep={activeStep}
+        maxSteps={maxSteps}
+        setActiveStep={setActiveStep}
+        topTitle={topTitle}
+      >
         <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
-
         <Button title="replace places" onPress={replaceTopFour} />
         <Button
           disabled={

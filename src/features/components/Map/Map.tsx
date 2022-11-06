@@ -50,6 +50,8 @@ const Map = ({ location, topFourPlaces, onDirectionsReady }: Props) => {
             type={place.marker.type}
             tooltip={place.marker.tooltip}
             bgImg={place.marker.bgImg}
+            bgIcon={place.marker.bgIcon}
+            isSelected={place.isSelected}
           />
         ))}
 

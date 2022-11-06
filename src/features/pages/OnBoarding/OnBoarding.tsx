@@ -8,7 +8,6 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { useLocationPermissionStatus } from "../../hooks/useLocationPermissionStatus";
 import { IUser } from "../../types";
 import HomePage from "../HomePage/HomePage";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function OnBoarding() {
   const [user, setUser] = useState<IUser>();
@@ -20,16 +19,11 @@ export default function OnBoarding() {
   const showUserInfo = () => {
     if (userInfo) {
       return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <View style={styles.userInfo}>
-            <Image
-              source={{ uri: userInfo.picture }}
-              style={styles.profilePic}
-            />
-            <Text>Welcome {userInfo.name}</Text>
-            <Text>{userInfo.email}</Text>
-          </View>
-        </GestureHandlerRootView>
+        <View style={styles.userInfo}>
+          <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
+          <Text>Welcome {userInfo.name}</Text>
+          <Text>{userInfo.email}</Text>
+        </View>
       );
     }
   };
