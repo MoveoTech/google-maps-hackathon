@@ -47,7 +47,12 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
         />
       )}
       <Card.Content>
-        <Text style={styles(isPressed).rating}>{place?.rating}</Text>
+        <Text style={styles(isPressed).rating}>
+          {place?.rating}{" "}
+          <Text style={styles(isPressed).user_ratings_total}>
+            ({place.user_ratings_total})
+          </Text>
+        </Text>
       </Card.Content>
       <Card.Content>
         <Text style={styles(isPressed).header} numberOfLines={1}>
@@ -60,7 +65,7 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
       <View style={styles(isPressed).bottomContainer} />
       <Card.Content>
         <Text style={styles(isPressed).distanceDetails}>
-          {pricing(place?.price_level)} • {20}
+          {pricing(place?.price_level)} • {place.direction.duration} min
         </Text>
       </Card.Content>
     </Card>
@@ -102,5 +107,9 @@ const styles = (isPressed) =>
       display: "flex",
       marginTop: 5,
       color: "#707173",
+    },
+    user_ratings_total: {
+      color: "#707173",
+      fontSize: 10,
     },
   });
