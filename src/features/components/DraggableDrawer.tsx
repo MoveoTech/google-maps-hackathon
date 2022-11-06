@@ -30,27 +30,38 @@ export const DraggableDrawer = ({
         return snapIndex = index
     }, []);
 
-    return (
-        <BottomSheet
-            ref={bottomSheetRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-        >
-            <View style={{alignItems: "center"}}>
-                <Typography style={{fontWeight: "500"}}>{topTitle}</Typography>
-                <Typography>
-                    Step {activeStep.toString()} out of {maxSteps.toString()}
-                </Typography>
-            </View>
-            <View style={styles.bottomContainer}/>
-            <View style={styles.container}>
-                <ScrollView contentContainerStyle={styles.cardContainers}>
-                    {children}
-                </ScrollView>
-            </View>
-        </BottomSheet>
-    );
+  useEffect(() => {});
+
+  return (
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={1}
+      snapPoints={snapPoints}
+      onChange={handleSheetChanges}
+    >
+      <View style={styles.topViewWrapper}>
+        <Button
+          icon={require("../../../assets/chevron.png")}
+          onPress={() => setActiveStep(activeStep - 1)}
+          children={""}
+        />
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <Typography style={{ fontWeight: "500" }}>{topTitle}</Typography>
+        <Typography>
+          {(activeStep <= 4 &&
+            `Step ${activeStep.toString()} out of ${maxSteps.toString()}`) ||
+            "<Duration of the trip>"}
+        </Typography>
+      </View>
+      <View style={styles.bottomContainer} />
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.cardContainers}>
+          {children}
+        </ScrollView>
+      </View>
+    </BottomSheet>
+  );
 };
 
 export const styles = StyleSheet.create({
