@@ -292,7 +292,7 @@ export const HomePageMap = ({location}: Props) => {
                 hide={hideSnackbar}
             />
 
-            <View style={{width: Dimensions.get("window").width, zIndex: 4000}}>
+            <View style={{width: Dimensions.get("window").width}}>
                 <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}/>
             </View>
 
