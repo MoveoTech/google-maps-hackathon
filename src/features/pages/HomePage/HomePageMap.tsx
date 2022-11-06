@@ -10,12 +10,13 @@ import { MapDirectionsResponse } from "react-native-maps-directions";
 import { MarkerTypes } from "../../components/Map/components/CustomMarker";
 import { DirectionsType } from "../../components/Map/components/Directions";
 import { GoogleMapsPlaces } from "../../types";
-import { Button } from "react-native";
+// import { Button } from "react-native";
 import { PhotosBaseURL } from "../../components/Card/InfoCard";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
-
+import Button from "../../components/Button/Button";
+import RefreshIcon from "../../../../assets/refresh.png";
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
   direction: IDirections;
@@ -218,7 +219,13 @@ export const HomePageMap = ({ location }: Props) => {
         topTitle={topTitle}
       >
         <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
-        <Button title="replace places" onPress={replaceTopFour} />
+        <Button
+          title="Please offer me something else"
+          onPress={replaceTopFour}
+          icon={RefreshIcon}
+          buttonType="secondary"
+          style={{ width: "80%", margin: 8 }}
+        />
         <Button
           disabled={
             !Boolean(topFourPlaces?.find((place) => place.isSelected === true))

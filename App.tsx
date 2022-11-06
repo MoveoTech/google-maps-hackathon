@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
 
-import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnBoarding from "./src/features/pages/OnBoarding/OnBoarding";
 import Welcome from "./src/features/components/Welcome/Welcome";
 import { Image, StyleSheet, Button, Text, View } from "react-native";
-//
+import { useFonts } from "expo-font";
 import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
 import { addUser } from "./src/api/api";
 import Loader from "./src/features/components/Loader/Loader";
 import { IUser } from "./src/features/types";
+import AvenirRegular from "./assets/fonts/Avenir-Regular.ttf";
+import AvenirLight from "./assets/fonts/Avenir-Light.ttf";
+import AvenirHeavy from "./assets/fonts/Avenir-Heavy.ttf";
+import AvenirBook from "./assets/fonts/Avenir-Book.ttf";
+
 export default function App() {
   const [user, setUser] = useState<IUser>();
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
   const Stack = createNativeStackNavigator();
   const [loaded] = useFonts({
-    "Avenir-regular": require("./assets/fonts/Avenir-Regular.ttf"),
-    "Avenir-light": require("./assets/fonts/Avenir-Light.ttf"),
-    "Avenir-heavy": require("./assets/fonts/Avenir-Heavy.ttf"),
-    "Avenir-book": require("./assets/fonts/Avenir-Heavy.ttf"),
+    "Avenir-regular": AvenirRegular,
+    "Avenir-light": AvenirLight,
+    "Avenir-heavy": AvenirHeavy,
+    "Avenir-book": AvenirBook,
   });
 
   // const { locationStatus } = useLocationPermissionStatus();
