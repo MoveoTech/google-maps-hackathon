@@ -11,6 +11,8 @@ import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPer
 import { addUser } from "./src/api/api";
 import Loader from "./src/features/components/Loader/Loader";
 import { IUser } from "./src/features/types";
+
+// Fonts
 import AvenirRegular from "./assets/fonts/Avenir-Regular.ttf";
 import AvenirLight from "./assets/fonts/Avenir-Light.ttf";
 import AvenirHeavy from "./assets/fonts/Avenir-Heavy.ttf";

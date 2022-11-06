@@ -69,7 +69,7 @@ const styles = (isDisabled: boolean, buttonType: ButtonType) =>
       color: getLabelText(isDisabled, buttonType),
       fontSize: 14,
       alignContent: "center",
-      fontFamily: "Avenir",
+      fontFamily: "Avenir-regular",
     },
   });
 
