@@ -17,6 +17,8 @@ import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 import Button from "../../components/Button/Button";
 import RefreshIcon from "../../../../assets/refresh.png";
+import { useSnackbar } from "../../hooks/useSnackbar";
+
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
   direction: IDirections;
@@ -45,7 +47,7 @@ const placesIcon = {
   restaurant: require(`../../../../assets/restaurant.png`),
 };
 
-const SEARCH_RADIUS = 100;
+const SEARCH_RADIUS = 3000;
 
 interface Props {
   location: LocationObject;
@@ -57,6 +59,7 @@ export const HomePageMap = ({ location }: Props) => {
   const [allPlacesIndex, setAllPlacesIndex] = useState(0);
   const [activeStep, setActiveStep] = useState(1);
   const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
+  const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const maxSteps = 4;
   const title = [
     "Choose an amazing breakfast",
@@ -110,7 +113,7 @@ export const HomePageMap = ({ location }: Props) => {
     setStartingLocation(newStartingLocation);
     const newLocationType: GoogleMapsPlaces = "cafe";
     setLocationType(newLocationType);
-    //TODO: trigger indication Toast for user
+    openSnackbar({ title: `You've added it to your trip`, isCheckIcon: true });
     setAllPlacesIndex(0);
     setActiveStep((activeStep) => activeStep + 1);
     calculateStep(newStartingLocation, newLocationType);
@@ -132,15 +135,18 @@ export const HomePageMap = ({ location }: Props) => {
         latitude: place.geometry.location.lat,
         longitude: place.geometry.location.lng,
       },
-      type: "dot",
+      type: "pin",
       tooltip: "dot",
       bgImg: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
       bgIcon: placesIcon[locationType],
     };
   };
-  const createDirection = (place: IPlace): IDirections => ({
+  const createDirection = (
+    place: IPlace,
+    baseLocation: LatLng
+  ): IDirections => ({
     id: place.place_id,
-    origin: startingLocation,
+    origin: baseLocation,
     destination: {
       latitude: place.geometry.location.lat,
       longitude: place.geometry.location.lng,
@@ -148,17 +154,20 @@ export const HomePageMap = ({ location }: Props) => {
     type: "transparent",
   });
 
-  const createTopPlaces = (places?: IPlace[]) => {
+  const createTopPlaces = (places?: IPlace[], newStartingLocation?: LatLng) => {
     const topFourPlaces =
       places || allPlaces.slice(allPlacesIndex * 4, allPlacesIndex * 4 + 4);
     if (topFourPlaces.length === 0) {
-      //TODO: alert user for zero palces left
-      console.log("no more places");
+      openSnackbar({
+        title: `No more ${locationType}'s left`,
+        isCheckIcon: false,
+      });
       return;
     }
+    const location = newStartingLocation || startingLocation;
     (topFourPlaces as IPlaceOnMap[]).forEach((place) => {
       place.marker = createMarker(place);
-      place.direction = createDirection(place);
+      place.direction = createDirection(place, location);
       place.isSelected = false;
     });
     setTopFourPlaces(topFourPlaces as IPlaceOnMap[]);
@@ -169,14 +178,19 @@ export const HomePageMap = ({ location }: Props) => {
     newStartingLocation?: LatLng,
     newLocationType?: GoogleMapsPlaces
   ) => {
+    const baseLocation = newStartingLocation || startingLocation;
+
     try {
       const nearbyPlacesResponse = await getNearByPlaces(
-        newStartingLocation || startingLocation,
+        baseLocation,
         SEARCH_RADIUS,
         newLocationType || locationType
       );
       setAllPlaces(nearbyPlacesResponse.data.results);
-      createTopPlaces(nearbyPlacesResponse.data.results.slice(0, 4));
+      createTopPlaces(
+        nearbyPlacesResponse.data.results.slice(0, 4),
+        baseLocation
+      );
     } catch (e) {
       console.log(e);
     }
@@ -208,9 +222,9 @@ export const HomePageMap = ({ location }: Props) => {
         <Map
           location={location}
           topFourPlaces={topFourPlaces}
+          tripPlaces={tripPlaces}
           onDirectionsReady={onDirectionsReady}
         />
-        <Snackbar label="bla bla" visible />
       </HomepageContainer>
       <DraggableDrawer
         activeStep={activeStep}
@@ -234,6 +248,12 @@ export const HomePageMap = ({ location }: Props) => {
           onPress={onNextStep}
         />
       </DraggableDrawer>
+      <Snackbar
+        label={snackbar.title}
+        isCheckIcon={snackbar.isCheckIcon}
+        visible={snackbar.isVisible}
+        hide={hideSnackbar}
+      />
     </>
   );
 };

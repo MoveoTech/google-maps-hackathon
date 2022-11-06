@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Button, Text, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Button,
+  Text,
+  View,
+  Dimensions,
+} from "react-native";
 import { addUser } from "../../../api/api";
 import { UserProvider } from "../../contexts/UserContext";
 import { AppContainer } from "../../globalStyle";
