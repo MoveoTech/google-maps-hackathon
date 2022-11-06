@@ -1,87 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Button, Text, View } from "react-native";
-import HomePage from "./src/features/pages/HomePage/HomePage";
-import { AppContainer } from "./src/features/globalStyle";
-import { UserProvider } from "./src/features/contexts/UserContext";
-import { useAuthentication } from "./src/features/hooks/useAuthentication";
-import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
-import { addUser } from "./src/api/api";
-import { IUser } from "./src/features/types";
+import React from "react";
+import { StyleSheet } from "react-native";
+
 import { useFonts } from "expo-font";
+import Loader from "./src/features/components/Loader/Loader";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import OnBoarding from "./src/features/pages/OnBoarding/OnBoarding";
+import Welcome from "./src/features/components/Welcome/Welcome";
 
 export default function App() {
-  const [user, setUser] = useState<IUser>();
-  const { promptAsync, request, getUserData, accessToken, userInfo } =
-    useAuthentication();
+  const [loaded] = useFonts({
+    Avenir: require("./assets/fonts/Avenir-Heavy.ttf"),
+  });
+  const Stack = createNativeStackNavigator();
 
-  const { locationStatus } = useLocationPermissionStatus();
-
-  const showUserInfo = () => {
-    if (userInfo) {
-      return (
-        <View style={styles.userInfo}>
-          <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
-          <Text>Welcome {userInfo.name}</Text>
-          <Text>{userInfo.email}</Text>
-        </View>
-      );
-    }
-  };
-
-  const getOrAddUser = async () => {
-    const currentUser = await addUser({
-      username: userInfo.name,
-      email: userInfo.email,
-      picture: userInfo.picture,
-    });
-    setUser(currentUser);
-  };
-
-  useEffect(() => {
-    if (userInfo) getOrAddUser();
-  }, [userInfo]);
-
+  if (!loaded) {
+    return <Loader />;
+  }
   return (
-    <UserProvider>
-      <AppContainer>
-        {locationStatus === "granted" ? (
-          <View style={styles.container}>
-            {user || true ? (
-              <>
-                {/* {showUserInfo()} */}
-                <HomePage />
-              </>
-            ) : (
-              <Button
-                title="Login"
-                disabled={!request}
-                onPress={() => promptAsync({ useProxy: true })}
-              />
-            )}
-          </View>
-        ) : (
-          <Text>Allow location services to use app</Text>
-        )}
-        <StatusBar style="auto" />
-      </AppContainer>
-    </UserProvider>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={() => ({
+          title: "",
+        })}
+      >
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="OnBoarding" component={OnBoarding} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  userInfo: {
-    marginTop: 200,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  profilePic: {
-    width: 50,
-    height: 50,
-  },
+  container: {},
 });

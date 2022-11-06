@@ -4,7 +4,6 @@ import { HomepageContainer } from "./styles";
 import { getNearByPlaces, IPlace } from "../../../api/googleApi";
 import { Cards } from "../../components/Card/Cards";
 import { DraggableDrawer } from "../../components/DraggableDrawer";
-import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 import { LocationObject } from "expo-location";
 import { LatLng } from "react-native-maps";
 import { MapDirectionsResponse } from "react-native-maps-directions";
@@ -12,6 +11,7 @@ import { MarkerTypes } from "../../components/Map/components/CustomMarker";
 import { DirectionsType } from "../../components/Map/components/Directions";
 import { GoogleMapsPlaces } from "../../types";
 import { Button } from "react-native";
+import { NativeViewGestureHandler } from "react-native-gesture-handler";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -171,6 +171,7 @@ export const HomePageMap = ({ location }: Props) => {
       </HomepageContainer>
       <DraggableDrawer>
         <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
+
         <Button title="replace places" onPress={replaceTopFour} />
         <Button
           disabled={
@@ -179,7 +180,6 @@ export const HomePageMap = ({ location }: Props) => {
           title="next"
           onPress={onNextStep}
         />
-        <TimelineComponent />
       </DraggableDrawer>
     </>
   );

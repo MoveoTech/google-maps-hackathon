@@ -77,7 +77,7 @@ export default Map;
 
 const styles = StyleSheet.create({
   map: {
-    width: Dimensions.get("window").width * 0.95,
-    height: Dimensions.get("window").height * 0.9,
+    width: width * 0.95,
+    height: height * 0.9,
   },
 });
