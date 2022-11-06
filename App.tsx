@@ -1,41 +1,48 @@
-import React, {useEffect, useState} from "react";
-import {StatusBar} from "expo-status-bar";
-import {Image, StyleSheet, Button, Text, View, AppRegistry} from "react-native";
-import HomePage from "./src/features/pages/HomePage/HomePage";
-import {AppContainer} from "./src/features/globalStyle";
-import {UserProvider} from "./src/features/contexts/UserContext";
-import {useAuthentication} from "./src/features/hooks/useAuthentication";
-import {useLocationPermissionStatus} from "./src/features/hooks/useLocationPermissionStatus";
-import {addUser} from "./src/api/api";
-import {IUser} from "./src/features/types";
-import {useFonts} from "expo-font";
-import 'react-native-gesture-handler';
+import React, { useEffect, useState } from "react";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import OnBoarding from "./src/features/pages/OnBoarding/OnBoarding";
+import Welcome from "./src/features/components/Welcome/Welcome";
+import { Image, StyleSheet, Button, Text, View } from "react-native";
+import { useFonts } from "expo-font";
+import { useAuthentication } from "./src/features/hooks/useAuthentication";
+import { useLocationPermissionStatus } from "./src/features/hooks/useLocationPermissionStatus";
+import { addUser } from "./src/api/api";
+import Loader from "./src/features/components/Loader/Loader";
+import { IUser } from "./src/features/types";
+
+// Fonts
+import AvenirRegular from "./assets/fonts/Avenir-Regular.ttf";
+import AvenirLight from "./assets/fonts/Avenir-Light.ttf";
+import AvenirHeavy from "./assets/fonts/Avenir-Heavy.ttf";
+import AvenirBook from "./assets/fonts/Avenir-Book.ttf";
 
 export default function App() {
-    const [user, setUser] = useState<IUser>();
-    const {promptAsync, request, getUserData, accessToken, userInfo} =
-        useAuthentication();
+  const [user, setUser] = useState<IUser>();
+  const { promptAsync, request, getUserData, accessToken, userInfo } =
+    useAuthentication();
+  const Stack = createNativeStackNavigator();
+  const [loaded] = useFonts({
+    "Avenir-regular": AvenirRegular,
+    "Avenir-light": AvenirLight,
+    "Avenir-heavy": AvenirHeavy,
+    "Avenir-book": AvenirBook,
+  });
 
-    const [loaded] = useFonts({
-        "Avenir-regular": require("./assets/fonts/Avenir-Regular.ttf"),
-        "Avenir-light": require("./assets/fonts/Avenir-Light.ttf"),
-        "Avenir-heavy": require("./assets/fonts/Avenir-Heavy.ttf"),
-        "Avenir-book": require("./assets/fonts/Avenir-Heavy.ttf"),
-    });
+  // const { locationStatus } = useLocationPermissionStatus();
 
-    const {locationStatus} = useLocationPermissionStatus();
-
-    const showUserInfo = () => {
-        if (userInfo) {
-            return (
-                <View style={styles.userInfo}>
-                    <Image source={{uri: userInfo.picture}} style={styles.profilePic}/>
-                    <Text>Welcome {userInfo.name}</Text>
-                    <Text>{userInfo.email}</Text>
-                </View>
-            );
-        }
-    };
+  // const showUserInfo = () => {
+  //   if (userInfo) {
+  //     return (
+  //       <View style={styles.userInfo}>
+  //         <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
+  //         <Text>Welcome {userInfo.name}</Text>
+  //         <Text>{userInfo.email}</Text>
+  //       </View>
+  //     );
+  //   }
+  // };
 
     const getOrAddUser = async () => {
         const currentUser = await addUser({
@@ -50,35 +57,22 @@ export default function App() {
         if (userInfo) getOrAddUser();
     }, [userInfo]);
 
-    if (!loaded) {
-        return null;
-    }
+  if (!loaded) {
+    return <Loader />;
+  }
 
-    return (
-        <UserProvider>
-            <AppContainer>
-                {locationStatus === "granted" ? (
-                    <>
-                        {user || true ? (
-                            <>
-                                {/* {showUserInfo()} */}
-                                <HomePage/>
-                            </>
-                        ) : (
-                            <Button
-                                title="Login"
-                                disabled={!request}
-                                onPress={() => promptAsync({useProxy: true})}
-                            />
-                        )}
-                    </>
-                ) : (
-                    <Text>Allow location services to use app</Text>
-                )}
-                <StatusBar style="auto"/>
-            </AppContainer>
-        </UserProvider>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={() => ({
+          title: "",
+        })}
+      >
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="OnBoarding" component={OnBoarding} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 const styles = StyleSheet.create({
     container: {

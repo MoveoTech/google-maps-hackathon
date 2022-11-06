@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Card} from "react-native-paper";
-import {StyleSheet, Text, View} from "react-native";
-import {GOOGLE_MAPS_APIKEY} from "@env";
-import {IPlaceOnMap} from "../../pages/HomePage/HomePageMap";
+import { Card } from "react-native-paper";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { GOOGLE_MAPS_APIKEY } from "@env";
+import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 
 export const PhotosBaseURL =
     "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
@@ -68,39 +68,39 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
 };
 
 const styles = (isPressed) =>
-    StyleSheet.create({
-        cardWrapper: {
-            margin: 5,
-            width: 180,
-            borderWidth: 2,
-            borderColor: isPressed ? "#0AC2A1" : "transparent",
-        },
-        rating: {
-            display: "flex",
-            color: "#222222",
-            marginTop: 10,
-        },
-        description: {
-            fontSize: 12,
-            marginTop: 5,
-            display: "flex",
-            color: "#222222",
-        },
-        header: {
-            fontSize: 15,
-            display: "flex",
-            height: 20,
-            overflow: "hidden",
-            marginTop: 5,
-        },
-        bottomContainer: {
-            marginTop: 10,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-        },
-        distanceDetails: {
-            display: "flex",
-            marginTop: 5,
-            color: "#707173",
-        },
-    });
+  StyleSheet.create({
+    cardWrapper: {
+      margin: 5,
+      width: Dimensions.get("window").width * 0.45,
+      borderWidth: 2,
+      borderColor: isPressed ? "#0AC2A1" : "transparent",
+    },
+    rating: {
+      display: "flex",
+      color: "#222222",
+      marginTop: 10,
+    },
+    description: {
+      fontSize: 12,
+      marginTop: 5,
+      display: "flex",
+      color: "#222222",
+    },
+    header: {
+      fontSize: 15,
+      display: "flex",
+      height: 20,
+      overflow: "hidden",
+      marginTop: 5,
+    },
+    bottomContainer: {
+      marginTop: 10,
+      borderBottomColor: "black",
+      borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    distanceDetails: {
+      display: "flex",
+      marginTop: 5,
+      color: "#707173",
+    },
+  });

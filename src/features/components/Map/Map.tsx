@@ -8,19 +8,25 @@ import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 
 const { height, width } = Dimensions.get("window");
-const LATITUDE_DELTA = 0.009;
+const LATITUDE_DELTA = 0.008;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
 interface Props {
   location: LocationObject;
   topFourPlaces: IPlaceOnMap[];
+  tripPlaces: IPlaceOnMap[];
   onDirectionsReady: (
     place_id: string,
     ...args: MapDirectionsResponse[]
   ) => void;
 }
 
-const Map = ({ location, topFourPlaces, onDirectionsReady }: Props) => {
+const Map = ({
+  location,
+  topFourPlaces,
+  tripPlaces,
+  onDirectionsReady,
+}: Props) => {
   return (
     <MapView
       initialRegion={{
@@ -40,6 +46,18 @@ const Map = ({ location, topFourPlaces, onDirectionsReady }: Props) => {
       userLocationCalloutEnabled
     >
       <>
+        {tripPlaces?.map((tripPlace, index) => (
+          <CustomMarker
+            key={tripPlace.marker.id}
+            coordinates={{
+              latitude: tripPlace.marker.coordinates.latitude,
+              longitude: tripPlace.marker.coordinates.longitude,
+            }}
+            type="dot"
+            tooltip={`Stop ${index + 1}`}
+            isSelected={false}
+          />
+        ))}
         {topFourPlaces?.map((place) => (
           <CustomMarker
             key={place.marker.id}
@@ -54,7 +72,20 @@ const Map = ({ location, topFourPlaces, onDirectionsReady }: Props) => {
             isSelected={place.isSelected}
           />
         ))}
-
+        {tripPlaces?.map((tripPlace, index) => (
+          <Directions
+            key={tripPlace.direction.id}
+            type="dashedLight"
+            origin={{
+              latitude: tripPlace.direction.origin.latitude,
+              longitude: tripPlace.direction.origin.longitude,
+            }}
+            destination={{
+              latitude: tripPlace.direction.destination.latitude,
+              longitude: tripPlace.direction.destination.longitude,
+            }}
+          />
+        ))}
         {topFourPlaces?.map((place) => (
           <Directions
             key={place.direction.id}
@@ -79,7 +110,7 @@ export default Map;
 
 const styles = StyleSheet.create({
   map: {
-    width: Dimensions.get("window").width * 0.95,
-    height: Dimensions.get("window").height * 0.9,
+    width: width * 0.95,
+    height: height * 0.9,
   },
 });

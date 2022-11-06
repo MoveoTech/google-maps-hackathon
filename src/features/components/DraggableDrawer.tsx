@@ -56,21 +56,24 @@ export const DraggableDrawer = ({
 };
 
 export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'red',
-        width: Dimensions.get("window").width,
-    },
-    cardContainers: {
-        marginTop: 20,
-    },
-    bottomContainer: {
-        marginTop: 15,
-        borderBottomColor: "lightgrey",
-        borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-    topViewWrapper: {
-        position: "absolute",
-        zIndex: 200,
-    },
+  container: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+  },
+  cardContainers: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "center",
+    display: "flex",
+    marginTop: 20,
+  },
+  bottomContainer: {
+    marginTop: 15,
+    borderBottomColor: "lightgrey",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  topViewWrapper: {
+    position: "absolute",
+    zIndex: 200,
+  },
 });

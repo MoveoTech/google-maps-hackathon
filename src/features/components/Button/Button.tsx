@@ -35,6 +35,7 @@ const Button = ({
   isSearchButton = false,
   iconName,
   icon,
+  style,
 }: IButtonProps) => (
   <PaperButton
     icon={(isSearchButton && "magnify") || iconName || icon}
@@ -42,7 +43,7 @@ const Button = ({
     color={getBackgroundColor(isDisabled, buttonType)}
     mode={getButtonMode(buttonType)}
     labelStyle={styles(isDisabled, buttonType).labelStyle}
-    style={styles(isDisabled, buttonType).buttonStyle}
+    style={{ ...styles(isDisabled, buttonType).buttonStyle, ...style }}
     disabled={isDisabled}
     onPress={onPress}
   >
@@ -68,7 +69,7 @@ const styles = (isDisabled: boolean, buttonType: ButtonType) =>
       color: getLabelText(isDisabled, buttonType),
       fontSize: 14,
       alignContent: "center",
-      fontFamily: "Avenir",
+      fontFamily: "Avenir-regular",
     },
   });
 
