@@ -18,6 +18,7 @@ import TimelineComponent from "../../components/TimelineComponent/TimelineCompon
 import Button from "../../components/Button/Button";
 import RefreshIcon from "../../../../assets/refresh.png";
 import Loader from "../../components/Loader/Loader";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -47,7 +48,7 @@ const placesIcon = {
   restaurant: require(`../../../../assets/restaurant.png`),
 };
 
-const SEARCH_RADIUS = 100;
+const SEARCH_RADIUS = 3000;
 
 interface Props {
   location: LocationObject;
@@ -62,13 +63,14 @@ export const HomePageMap = ({ location }: Props) => {
 
   const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
   const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
+  const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const maxSteps = 4;
   const title = [
     "Choose an amazing breakfast",
     "Choose and activity",
     "Choose another one",
     "Choose another one",
-    `Trip to Tel-Aviv`, // TODO: Change and receive data location from context
+    `Trip to Tel-Aviv`, // TODO: Change and receive real data location from context
   ];
 
   const [startingLocation, setStartingLocation] = useState<LatLng>({
@@ -91,7 +93,7 @@ export const HomePageMap = ({ location }: Props) => {
     setTopFourPlaces([...topFourPlaces]);
   };
 
-  const changeTitle = (activeStep) => {
+  const changeTitle = (activeStep: number) => {
     switch (activeStep) {
       case 1:
         setTopTitle(title[0]);
@@ -103,6 +105,80 @@ export const HomePageMap = ({ location }: Props) => {
         setTopTitle(title[3]);
       default:
         setTopTitle(title[4]);
+    }
+  };
+  const createMarker = (place: IPlaceOnMap): IMarker => {
+    const photoReference =
+      (place?.photos as any[])?.length > 0
+        ? place?.photos[0]?.photo_reference
+        : null;
+    return {
+      id: place.place_id,
+      coordinates: {
+        latitude: place.geometry.location.lat,
+        longitude: place.geometry.location.lng,
+      },
+      type: "pin",
+      tooltip: "dot",
+      bgImg: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
+      bgIcon: placesIcon[locationType],
+    };
+  };
+
+  const createDirection = (
+    place: IPlace,
+    baseLocation: LatLng
+  ): IDirections => ({
+    id: place.place_id,
+    origin: baseLocation,
+    destination: {
+      latitude: place.geometry.location.lat,
+      longitude: place.geometry.location.lng,
+    },
+    type: "transparent",
+  });
+
+  const createTopPlaces = (places?: IPlace[], newStartingLocation?: LatLng) => {
+    const topFourPlaces =
+      places || allPlaces.slice(allPlacesIndex * 4, allPlacesIndex * 4 + 4);
+    if (topFourPlaces.length === 0) {
+      openSnackbar({
+        title: `No more ${locationType}'s left`,
+        isCheckIcon: false,
+      });
+      return;
+    }
+    const location = newStartingLocation || startingLocation;
+    (topFourPlaces as IPlaceOnMap[]).forEach((place) => {
+      place.marker = createMarker(place);
+      place.direction = createDirection(place, location);
+      place.isSelected = false;
+    });
+    setTopFourPlaces(topFourPlaces as IPlaceOnMap[]);
+    setAllPlacesIndex((prev) => prev + 1);
+  };
+
+  const calculateStep = async (
+    newStartingLocation?: LatLng,
+    newLocationType?: GoogleMapsPlaces
+  ) => {
+    const baseLocation = newStartingLocation || startingLocation;
+    try {
+      setIsLoading(true);
+      const nearbyPlacesResponse = await getNearByPlaces(
+        baseLocation,
+        SEARCH_RADIUS,
+        newLocationType || locationType
+      );
+      setAllPlaces(nearbyPlacesResponse.data.results);
+      createTopPlaces(
+        nearbyPlacesResponse.data.results.slice(0, 4),
+        baseLocation
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,70 +203,6 @@ export const HomePageMap = ({ location }: Props) => {
 
   const replaceTopFour = () => {
     createTopPlaces();
-  };
-
-  const createMarker = (place: IPlaceOnMap): IMarker => {
-    const photoReference =
-      (place?.photos as any[])?.length > 0
-        ? place?.photos[0]?.photo_reference
-        : null;
-    return {
-      id: place.place_id,
-      coordinates: {
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-      },
-      type: "dot",
-      tooltip: "dot",
-      bgImg: `${PhotosBaseURL}&photoreference=${photoReference}&sensor=false&key=${GOOGLE_MAPS_APIKEY}`,
-      bgIcon: placesIcon[locationType],
-    };
-  };
-  const createDirection = (place: IPlace): IDirections => ({
-    id: place.place_id,
-    origin: startingLocation,
-    destination: {
-      latitude: place.geometry.location.lat,
-      longitude: place.geometry.location.lng,
-    },
-    type: "transparent",
-  });
-
-  const createTopPlaces = (places?: IPlace[]) => {
-    const topFourPlaces =
-      places || allPlaces.slice(allPlacesIndex * 4, allPlacesIndex * 4 + 4);
-    if (topFourPlaces.length === 0) {
-      //TODO: alert user for zero palces left
-      console.log("no more places");
-      return;
-    }
-    (topFourPlaces as IPlaceOnMap[]).forEach((place) => {
-      place.marker = createMarker(place);
-      place.direction = createDirection(place);
-      place.isSelected = false;
-    });
-    setTopFourPlaces(topFourPlaces as IPlaceOnMap[]);
-    setAllPlacesIndex((prev) => prev + 1);
-  };
-
-  const calculateStep = async (
-    newStartingLocation?: LatLng,
-    newLocationType?: GoogleMapsPlaces
-  ) => {
-    try {
-      setIsLoading(true);
-      const nearbyPlacesResponse = await getNearByPlaces(
-        newStartingLocation || startingLocation,
-        SEARCH_RADIUS,
-        newLocationType || locationType
-      );
-      setAllPlaces(nearbyPlacesResponse.data.results);
-      createTopPlaces(nearbyPlacesResponse.data.results.slice(0, 4));
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -219,9 +231,9 @@ export const HomePageMap = ({ location }: Props) => {
         <Map
           location={location}
           topFourPlaces={topFourPlaces}
+          tripPlaces={tripPlaces}
           onDirectionsReady={onDirectionsReady}
         />
-        <Snackbar label="bla bla" visible />
       </HomepageContainer>
 
       <DraggableDrawer
@@ -263,6 +275,12 @@ export const HomePageMap = ({ location }: Props) => {
           </>
         )}
       </DraggableDrawer>
+      <Snackbar
+        label={snackbar.title}
+        isCheckIcon={snackbar.isCheckIcon}
+        visible={snackbar.isVisible}
+        hide={hideSnackbar}
+      />
     </>
   );
 };
