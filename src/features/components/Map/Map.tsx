@@ -1,18 +1,15 @@
-import { LocationObject } from "expo-location/build/Location.types";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Region } from "react-native-maps";
 import { Directions } from "./components/Directions";
 import { CustomMarker } from "./components/CustomMarker";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 
 const { height, width } = Dimensions.get("window");
-const LATITUDE_DELTA = 0.008;
-const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
 interface Props {
-  location: LocationObject;
+  location: Region;
   topFourPlaces: IPlaceOnMap[];
   tripPlaces: IPlaceOnMap[];
   onDirectionsReady: (
@@ -29,12 +26,7 @@ const Map = ({
 }: Props) => {
   return (
     <MapView
-      initialRegion={{
-        latitude: location?.coords?.latitude,
-        longitude: location?.coords?.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }}
+      region={location}
       style={styles.map}
       provider="google"
       showsUserLocation
@@ -42,13 +34,13 @@ const Map = ({
       zoomEnabled
       zoomControlEnabled
       showsMyLocationButton
-      followsUserLocation
+      // followsUserLocation
       userLocationCalloutEnabled
     >
       <>
         {tripPlaces?.map((tripPlace, index) => (
           <CustomMarker
-            key={tripPlace.marker.id}
+            key={index}
             coordinates={{
               latitude: tripPlace.marker.coordinates.latitude,
               longitude: tripPlace.marker.coordinates.longitude,
@@ -74,7 +66,7 @@ const Map = ({
         ))}
         {tripPlaces?.map((tripPlace, index) => (
           <Directions
-            key={tripPlace.direction.id}
+            key={index}
             type="dashedLight"
             origin={{
               latitude: tripPlace.direction.origin.latitude,
@@ -106,7 +98,7 @@ const Map = ({
   );
 };
 
-export default Map;
+export default memo(Map);
 
 const styles = StyleSheet.create({
   map: {
