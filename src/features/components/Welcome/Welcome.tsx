@@ -7,7 +7,6 @@ import {
   Dimensions,
   Text,
 } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import backgroundImage from "../../../../assets/welcome.png";
 import { MAIN } from "../../globalStyle";
@@ -17,13 +16,11 @@ const Welcome = ({ navigation }) => {
     navigation.navigate("OnBoarding");
   };
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Image source={backgroundImage} />
-        <Button title="Let's explore the area!" onPress={handleOnPress} />
-        <Text>Hey guys, sorry for the design. Stav is busy :)</Text>
-      </View>
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <Image source={backgroundImage} />
+      <Button title="Let's explore the area!" onPress={handleOnPress} />
+      <Text>Hey guys, sorry for the design. Stav is busy :)</Text>
+    </View>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import LottieView from "lottie-react-native";
 
 import defaultAnimation from "../../../lotties/loader.json";
@@ -16,7 +16,6 @@ const Loader: FC<ILoaderProps> = ({
 }) => {
   return (
     <View style={styles.animationContainer}>
-      <StatusBar />
       <LottieView
         autoPlay
         loop
