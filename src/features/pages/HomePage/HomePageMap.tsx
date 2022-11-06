@@ -4,7 +4,6 @@ import { HomepageContainer } from "./styles";
 import { getNearByPlaces, IPlace } from "../../../api/googleApi";
 import { Cards } from "../../components/Card/Cards";
 import { DraggableDrawer } from "../../components/DraggableDrawer";
-import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 import { LocationObject } from "expo-location";
 import { LatLng } from "react-native-maps";
 import { MapDirectionsResponse } from "react-native-maps-directions";
@@ -15,6 +14,7 @@ import { Button } from "react-native";
 import { PhotosBaseURL } from "../../components/Card/InfoCard";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import Snackbar from "../../components/Snackbar/Snackbar";
+import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -226,7 +226,6 @@ export const HomePageMap = ({ location }: Props) => {
           title="next"
           onPress={onNextStep}
         />
-        <TimelineComponent />
       </DraggableDrawer>
     </>
   );

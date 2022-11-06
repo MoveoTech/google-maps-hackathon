@@ -68,6 +68,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     marginTop: 20,
+    paddingBottom: 250,
   },
   bottomContainer: {
     marginTop: 15,
