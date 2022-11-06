@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect, useMemo, useRef} from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import BottomSheet, {BottomSheetView} from "@gorhom/bottom-sheet";
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import Typography from "./Typography/Typography";
-import {Button} from "react-native-paper";
 
 interface Props {
     children;
@@ -19,18 +18,17 @@ export const DraggableDrawer = ({
                                 }: Props) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["25%", "60%", "88%"], []);
+
     const handleSheetChanges = useCallback((index: number) => {
         // console.log("handleSheetChanges", index);
     }, []);
-
-    useEffect(() => {
-    });
 
     return (
         <BottomSheet
             ref={bottomSheetRef}
             index={1}
             snapPoints={snapPoints}
+            enablePanDownToClose={true}
             onChange={handleSheetChanges}
         >
             <View style={{alignItems: "center"}}>
@@ -38,11 +36,11 @@ export const DraggableDrawer = ({
                 <Typography>{subTitle}</Typography>
             </View>
             <View style={styles.bottomContainer}/>
-            <View style={styles.container}>
+            <BottomSheetView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.cardContainers}>
                     {children}
                 </ScrollView>
-            </View>
+            </BottomSheetView>
         </BottomSheet>
     );
 };

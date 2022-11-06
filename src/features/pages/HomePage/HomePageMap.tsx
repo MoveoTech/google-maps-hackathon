@@ -291,11 +291,11 @@ export const HomePageMap = ({location}: Props) => {
                 visible={snackbar.isVisible}
                 hide={hideSnackbar}
             />
-            {!showTimeline &&
-                (<View style={{width: Dimensions.get("window").width, height: 200}}>
-                    <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}/>
-                </View>)
-            }
+
+            <View style={{width: Dimensions.get("window").width, zIndex: 4000}}>
+                <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}/>
+            </View>
+
         </>
     );
 };
