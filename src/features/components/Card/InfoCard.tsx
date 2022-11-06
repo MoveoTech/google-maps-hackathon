@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Card } from "react-native-paper";
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 
@@ -71,7 +71,7 @@ const styles = (isPressed) =>
   StyleSheet.create({
     cardWrapper: {
       margin: 5,
-      width: 180,
+      width: Dimensions.get("window").width * 0.45,
       borderWidth: 2,
       borderColor: isPressed ? "#0AC2A1" : "transparent",
     },

@@ -3,20 +3,20 @@ import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { Snackbar as SnackbarPaper } from "react-native-paper";
 import Svg, { Path } from "react-native-svg";
 import Typography from "../Typography/Typography";
-import Test from "../../../../assets/check.svg";
 
 type ISnackbarProps = {
   visible?: boolean;
   label?: string;
-  isCheckIcon?: any;
+  isCheckIcon?: boolean;
+  hide: () => void;
 };
 
-const Snackbar = ({ visible, label, isCheckIcon }: ISnackbarProps) => (
+const Snackbar = ({ visible, label, isCheckIcon, hide }: ISnackbarProps) => (
   <View style={styles.container}>
     <SnackbarPaper
       visible={visible}
-      duration={15}
-      onDismiss={() => {}}
+      duration={2000}
+      onDismiss={hide}
       style={styles.snackbar}
     >
       <View style={styles.snackbarViewContainer}>

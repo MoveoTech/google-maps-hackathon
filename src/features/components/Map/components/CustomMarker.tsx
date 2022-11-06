@@ -30,14 +30,21 @@ export const CustomMarker = ({
   return (
     <Marker coordinate={coordinates}>
       <View style={styles.MarkerContainer}>
-        {isSelected ? (
-          <View style={styles.BgImageContainer}>
-            <ImageBackground source={{ uri: bgImg }} style={styles.BgImage} />
-          </View>
-        ) : (
-          <View style={styles.BgImageContainer}>
-            <ImageBackground source={bgIcon} style={styles.BgImage} />
-          </View>
+        {(bgIcon || bgImg) && (
+          <>
+            {isSelected ? (
+              <View style={styles.BgImageContainer}>
+                <ImageBackground
+                  source={{ uri: bgImg }}
+                  style={styles.BgImage}
+                />
+              </View>
+            ) : (
+              <View style={styles.BgImageContainer}>
+                <ImageBackground source={bgIcon} style={styles.BgImage} />
+              </View>
+            )}
+          </>
         )}
         <Image source={MARKERS[type]} />
       </View>
