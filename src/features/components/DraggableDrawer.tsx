@@ -5,19 +5,15 @@ import Typography from "./Typography/Typography";
 import {Button} from "react-native-paper";
 
 interface Props {
-    activeStep: number;
     children;
     maxSteps;
-    setActiveStep: (activeStep: number) => void;
     topTitle: string;
     subTitle: string;
 }
 
 export const DraggableDrawer = ({
                                     children,
-                                    activeStep,
                                     maxSteps,
-                                    setActiveStep,
                                     topTitle,
                                     subTitle,
                                 }: Props) => {
@@ -37,13 +33,6 @@ export const DraggableDrawer = ({
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
         >
-            <View style={styles.topViewWrapper}>
-                <Button
-                    icon={require("../../../assets/chevron.png")}
-                    onPress={() => setActiveStep(activeStep - 1)}
-                    children={""}
-                />
-            </View>
             <View style={{alignItems: "center"}}>
                 <Typography style={{fontWeight: "500"}}>{topTitle}</Typography>
                 <Typography>{subTitle}</Typography>

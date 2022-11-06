@@ -14,12 +14,12 @@ import {PhotosBaseURL} from "../../components/Card/InfoCard";
 import {GOOGLE_MAPS_APIKEY} from "@env";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
-import Button from "../../components/Button/Button";
 import RefreshIcon from "../../../../assets/refresh.png";
 import Loader from "../../components/Loader/Loader";
 import {useSnackbar} from "../../hooks/useSnackbar";
 import {Dimensions, View} from "react-native";
 import {StickyFooter} from "../../components/Card/StickyFooter";
+import {Button} from "react-native-paper";
 
 export interface IPlaceOnMap extends IPlace {
     marker: IMarker;
@@ -250,10 +250,7 @@ export const HomePageMap = ({location}: Props) => {
                     onDirectionsReady={onDirectionsReady}
                 />
             </HomepageContainer>
-
             <DraggableDrawer
-                setActiveStep={setActiveStep}
-                activeStep={activeStep}
                 maxSteps={maxSteps}
                 topTitle={topTitle}
                 subTitle={
@@ -272,31 +269,33 @@ export const HomePageMap = ({location}: Props) => {
                 ) : (
                     <>
                         <Button
-                            title="Please offer me something else"
+                            mode="outlined"
                             onPress={replaceTopFour}
                             icon={RefreshIcon}
-                            buttonType="secondary"
                             style={{
-                                width: "80%",
                                 margin: 8,
-                                marginBottom: 340,
-                                marginTop: 20
+                                marginBottom: '50%',
+                                marginTop: 20,
+                                borderRadius: 10,
                             }}
-                        />
+                            labelStyle={{color: 'black'}}
+                        >
+                            Please offer me something else
+                        </Button>
                     </>
                 )}
             </DraggableDrawer>
-            {!showTimeline &&
-                (<View style={{width: Dimensions.get("window").width, height: 50}}>
-                    <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}/>
-                </View>)
-            }
             <Snackbar
                 label={snackbar.title}
                 isCheckIcon={snackbar.isCheckIcon}
                 visible={snackbar.isVisible}
                 hide={hideSnackbar}
             />
+            {!showTimeline &&
+                (<View style={{width: Dimensions.get("window").width, height: 200}}>
+                    <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}/>
+                </View>)
+            }
         </>
     );
 };
