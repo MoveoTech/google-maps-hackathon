@@ -18,6 +18,8 @@ import TimelineComponent from "../../components/TimelineComponent/TimelineCompon
 import Button from "../../components/Button/Button";
 import RefreshIcon from "../../../../assets/refresh.png";
 import {useSnackbar} from "../../hooks/useSnackbar";
+import {StickyFooter} from "../../components/Card/StickyFooter";
+import {Dimensions, View} from "react-native";
 
 export interface IPlaceOnMap extends IPlace {
     marker: IMarker;
@@ -239,9 +241,12 @@ export const HomePageMap = ({location}: Props) => {
                     onPress={replaceTopFour}
                     icon={RefreshIcon}
                     buttonType="secondary"
-                    style={{width: "80%", margin: 8, marginBottom: 50}}
+                    style={{width: "80%", margin: 8, marginBottom: 150, marginTop: 20}}
                 />
             </DraggableDrawer>
+            <View style={{width: Dimensions.get("window").width, height: 50}}>
+                <StickyFooter next={onNextStep}/>
+            </View>
             <Snackbar
                 label={snackbar.title}
                 isCheckIcon={snackbar.isCheckIcon}

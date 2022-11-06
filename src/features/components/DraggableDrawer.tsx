@@ -49,7 +49,6 @@ export const DraggableDrawer = ({
                     {children}
                 </ScrollView>
             </View>
-            <StickyFooter next={next} disabled={disabled}/>
         </BottomSheet>
     );
 };
