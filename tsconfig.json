@@ -5,5 +5,6 @@
   },
   "typeRoots": ["./types"],
   "include": ["custom.d.ts"],
+  "resolveJsonModule": true,
   "extends": "expo/tsconfig.base"
 }
