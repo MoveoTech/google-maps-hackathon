@@ -44,7 +44,9 @@ export const DraggableDrawer = ({
       <View style={{ alignItems: "center" }}>
         <Typography style={{ fontWeight: "500" }}>{topTitle}</Typography>
         <Typography>
-          Step {activeStep.toString()} out of {maxSteps.toString()}
+          {(activeStep <= 4 &&
+            `Step ${activeStep.toString()} out of ${maxSteps.toString()}`) ||
+            "<Duration of the trip>"}
         </Typography>
       </View>
       <View style={styles.bottomContainer} />

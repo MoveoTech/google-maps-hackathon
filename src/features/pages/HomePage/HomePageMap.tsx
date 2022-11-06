@@ -17,6 +17,7 @@ import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 import Button from "../../components/Button/Button";
 import RefreshIcon from "../../../../assets/refresh.png";
+import Loader from "../../components/Loader/Loader";
 import { useSnackbar } from "../../hooks/useSnackbar";
 
 export interface IPlaceOnMap extends IPlace {
@@ -54,11 +55,14 @@ interface Props {
 }
 
 export const HomePageMap = ({ location }: Props) => {
-  const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>(null);
+  const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>([]);
   const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
   const [allPlacesIndex, setAllPlacesIndex] = useState(0);
   const [activeStep, setActiveStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
+  const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const maxSteps = 4;
   const title = [
@@ -66,9 +70,8 @@ export const HomePageMap = ({ location }: Props) => {
     "Choose and activity",
     "Choose another one",
     "Choose another one",
+    `Trip to Tel-Aviv`, // TODO: Change and receive real data location from context
   ];
-
-  const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>(null);
 
   const [startingLocation, setStartingLocation] = useState<LatLng>({
     latitude: location.coords.latitude,
@@ -90,7 +93,7 @@ export const HomePageMap = ({ location }: Props) => {
     setTopFourPlaces([...topFourPlaces]);
   };
 
-  const changeTitle = (activeStep) => {
+  const changeTitle = (activeStep: number) => {
     switch (activeStep) {
       case 1:
         setTopTitle(title[0]);
@@ -100,30 +103,10 @@ export const HomePageMap = ({ location }: Props) => {
         setTopTitle(title[2]);
       case 4:
         setTopTitle(title[3]);
+      default:
+        setTopTitle(title[4]);
     }
   };
-
-  const onNextStep = () => {
-    const selectedPlace = topFourPlaces.find((place) => place.isSelected);
-    setTripPlaces((prev) => [...(prev || []), selectedPlace]);
-    const newStartingLocation: LatLng = {
-      latitude: selectedPlace.geometry.location.lat,
-      longitude: selectedPlace.geometry.location.lng,
-    };
-    setStartingLocation(newStartingLocation);
-    const newLocationType: GoogleMapsPlaces = "cafe";
-    setLocationType(newLocationType);
-    openSnackbar({ title: `You've added it to your trip`, isCheckIcon: true });
-    setAllPlacesIndex(0);
-    setActiveStep((activeStep) => activeStep + 1);
-    calculateStep(newStartingLocation, newLocationType);
-    changeTitle(activeStep);
-  };
-
-  const replaceTopFour = () => {
-    createTopPlaces();
-  };
-
   const createMarker = (place: IPlaceOnMap): IMarker => {
     const photoReference =
       (place?.photos as any[])?.length > 0
@@ -141,6 +124,7 @@ export const HomePageMap = ({ location }: Props) => {
       bgIcon: placesIcon[locationType],
     };
   };
+
   const createDirection = (
     place: IPlace,
     baseLocation: LatLng
@@ -179,8 +163,8 @@ export const HomePageMap = ({ location }: Props) => {
     newLocationType?: GoogleMapsPlaces
   ) => {
     const baseLocation = newStartingLocation || startingLocation;
-
     try {
+      setIsLoading(true);
       const nearbyPlacesResponse = await getNearByPlaces(
         baseLocation,
         SEARCH_RADIUS,
@@ -193,7 +177,32 @@ export const HomePageMap = ({ location }: Props) => {
       );
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const onNextStep = () => {
+    const selectedPlace = topFourPlaces.find((place) => place.isSelected);
+    if (selectedPlace) {
+      setTripPlaces((prev) => [...prev, selectedPlace]);
+      const newStartingLocation: LatLng = {
+        latitude: selectedPlace.geometry.location.lat,
+        longitude: selectedPlace.geometry.location.lng,
+      };
+      setStartingLocation(newStartingLocation);
+      const newLocationType: GoogleMapsPlaces = "cafe";
+      setLocationType(newLocationType);
+      //TODO: trigger indication Toast for user
+      setAllPlacesIndex(0);
+      setActiveStep((activeStep) => activeStep + 1);
+      calculateStep(newStartingLocation, newLocationType);
+      changeTitle(activeStep);
+    }
+  };
+
+  const replaceTopFour = () => {
+    createTopPlaces();
   };
 
   useEffect(() => {
@@ -226,27 +235,45 @@ export const HomePageMap = ({ location }: Props) => {
           onDirectionsReady={onDirectionsReady}
         />
       </HomepageContainer>
+
       <DraggableDrawer
         activeStep={activeStep}
         maxSteps={maxSteps}
         setActiveStep={setActiveStep}
         topTitle={topTitle}
       >
-        <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
-        <Button
-          title="Please offer me something else"
-          onPress={replaceTopFour}
-          icon={RefreshIcon}
-          buttonType="secondary"
-          style={{ width: "80%", margin: 8 }}
-        />
-        <Button
-          disabled={
-            !Boolean(topFourPlaces?.find((place) => place.isSelected === true))
-          }
-          title="next"
-          onPress={onNextStep}
-        />
+        {activeStep > 4 ? (
+          <TimelineComponent />
+        ) : (
+          <>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <>
+                <Cards
+                  topFourPlaces={topFourPlaces}
+                  onCardSelect={onSelectPlace}
+                />
+                <Button
+                  title="Please offer me something else"
+                  onPress={replaceTopFour}
+                  icon={RefreshIcon}
+                  buttonType="secondary"
+                  style={{ width: "80%", margin: 8 }}
+                />
+                <Button
+                  disabled={
+                    !Boolean(
+                      topFourPlaces?.find((place) => place.isSelected === true)
+                    )
+                  }
+                  title="next"
+                  onPress={onNextStep}
+                />
+              </>
+            )}
+          </>
+        )}
       </DraggableDrawer>
       <Snackbar
         label={snackbar.title}
