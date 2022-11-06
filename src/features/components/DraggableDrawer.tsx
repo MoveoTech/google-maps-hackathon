@@ -10,6 +10,7 @@ interface Props {
   maxSteps;
   setActiveStep: (activeStep: number) => void;
   topTitle: string;
+  subTitle: string;
 }
 
 export const DraggableDrawer = ({
@@ -18,11 +19,12 @@ export const DraggableDrawer = ({
   maxSteps,
   setActiveStep,
   topTitle,
+  subTitle,
 }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "60%", "88%"], []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    // console.log("handleSheetChanges", index);
   }, []);
 
   useEffect(() => {});
@@ -43,9 +45,7 @@ export const DraggableDrawer = ({
       </View>
       <View style={{ alignItems: "center" }}>
         <Typography style={{ fontWeight: "500" }}>{topTitle}</Typography>
-        <Typography>
-          Step {activeStep.toString()} out of {maxSteps.toString()}
-        </Typography>
+        <Typography>{subTitle}</Typography>
       </View>
       <View style={styles.bottomContainer} />
       <View style={styles.container}>

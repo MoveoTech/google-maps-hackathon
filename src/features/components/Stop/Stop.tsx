@@ -28,15 +28,15 @@ export interface IStopProps {
   image?: ImageSourcePropType;
   stopType?: GoogleMapsPlaces;
   displayLineIcon?: boolean;
-  time?: string;
-  duration?: string;
-  distance?: string;
+  timeAtPlace?: number;
+  duration?: number;
+  distance?: number;
 }
 const Stop: FC<IStopProps> = ({
   image,
   stopType,
   addressName,
-  time,
+  timeAtPlace,
   duration,
   distance,
   displayLineIcon = true,
@@ -59,11 +59,11 @@ const Stop: FC<IStopProps> = ({
                 textTransform: "capitalize",
               }}
             >
-              {duration} &#x2022;&nbsp;
+              {Math.round(duration) + " Min"} &#x2022;&nbsp;
             </Typography>
 
             <Typography fontSize="s" color={SECONDARY}>
-              {distance}
+              {parseFloat(distance + "").toFixed(2) + " mi"}
             </Typography>
           </DurationAndDistance>
         </TripInfo>
@@ -86,7 +86,7 @@ const Stop: FC<IStopProps> = ({
             )}
           </StopInfo>
         </Left>
-        <Right>{time && <Time>{time}</Time>}</Right>
+        <Right>{timeAtPlace && <Time>{timeAtPlace}</Time>}</Right>
       </Row>
     </Container>
   );
