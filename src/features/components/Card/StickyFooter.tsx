@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const StickyFooter = ({next, disabled}: Props) => (
-    <Card style={{marginTop: 'auto', height: 100, justifyContent: 'center', backgroundColor: 'green'}}>
+    <Card style={{marginTop: 'auto', height: 100, justifyContent: 'center'}}>
         <Card.Content style={styles.container}>
             <Text style={styles.skipButton}> Skip Experience</Text>
             <Button buttonColor={'black'} mode={'contained'} labelStyle={{color: "white"}}

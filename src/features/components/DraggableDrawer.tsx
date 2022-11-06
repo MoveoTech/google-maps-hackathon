@@ -2,6 +2,7 @@ import React, {useCallback, useMemo, useRef} from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import Typography from "./Typography/Typography";
+import {Button} from "react-native-paper";
 import {StickyFooter} from "./Card/StickyFooter";
 
 interface Props {
@@ -48,32 +49,30 @@ export const DraggableDrawer = ({
                     {children}
                 </ScrollView>
             </View>
-            <View>
-                <StickyFooter next={next} disabled={disabled}/>
-            </View>
+            <StickyFooter next={next} disabled={disabled}/>
         </BottomSheet>
     );
 };
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: Dimensions.get("window").width,
-  },
-  cardContainers: {
-    flexWrap: "wrap",
-    flexDirection: "row",
-    justifyContent: "center",
-    display: "flex",
-    marginTop: 20,
-  },
-  bottomContainer: {
-    marginTop: 15,
-    borderBottomColor: "lightgrey",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  topViewWrapper: {
-    position: "absolute",
-    zIndex: 200,
-  },
+    container: {
+        flex: 1,
+        width: Dimensions.get("window").width,
+    },
+    cardContainers: {
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "center",
+        display: "flex",
+        marginTop: 20,
+    },
+    bottomContainer: {
+        marginTop: 15,
+        borderBottomColor: "lightgrey",
+        borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    topViewWrapper: {
+        position: "absolute",
+        zIndex: 200,
+    },
 });
