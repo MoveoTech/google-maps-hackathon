@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 export const BACKGROUND_COLOR = "#78b9e4";
 export const BLUE_COLOR = "#fff";
 export const NAVY_BLUE_COLOR = "#3367df";
+export const GRAY_LIGHT = "#717171";
 
 export const PRIMARY = "#222222";
 export const SECONDARY = "#707173";

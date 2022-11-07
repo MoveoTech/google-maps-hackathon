@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, StyleSheet, Dimensions } from "react-native";
 
+import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import { IUser } from "../../types";
 import { addUser } from "../../../api/api";
 import { useAuthentication } from "../../hooks/useAuthentication";
@@ -9,10 +10,9 @@ import AllowLocation from "../AllowLocation/AllowLocation";
 import Button from "../../components/Button/Button";
 import Loader from "../../components/Loader/Loader";
 import Location from "../Location/Location";
-import backgroundImage from "../../../../assets/welcome.png";
-import logo from "../../../../assets/pin.png";
-import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import Typography from "../../components/Typography/Typography";
+import backgroundImage from "../../../../assets/welcome.png";
+import { GRAY_LIGHT } from "../../globalStyle";
 
 const Auth = ({ navigation }) => {
   const { status } = requestLocationPermission();
@@ -52,7 +52,7 @@ const Auth = ({ navigation }) => {
   return (
     <UserProvider>
       {user ? (
-        status.granted ? (
+        status?.granted ? (
           <Location />
         ) : (
           <AllowLocation
@@ -62,24 +62,30 @@ const Auth = ({ navigation }) => {
         )
       ) : (
         <View style={styles.container}>
-          <Image source={logo} style={styles.logo} />
-          <Image source={backgroundImage} />
+          <Image source={backgroundImage} style={{ height: "55%" }} />
           <View style={styles.labelWrapper}>
-            <Typography fontSize="xl" weight="900">
-              Welcome to
+            <Typography fontSize="xxl" weight="900">
+              Trip app
             </Typography>
-            <Typography fontSize="l" weight="500">
+            <Typography
+              fontSize="l"
+              weight="500"
+              style={{ marginVertical: 12 }}
+            >
               Every day is a new adventure
             </Typography>
+            <Typography fontSize="l" color={GRAY_LIGHT}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Scelerisque ipsum mollis id tellus adipiscing faucibus luctus
+              pellentesque faucibus.
+            </Typography>
           </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              style={styles.loginButton}
-              title="Login with Google"
-              disabled={!request}
-              onPress={() => promptAsync({ useProxy: true })}
-            />
-          </View>
+          <Button
+            style={styles.loginButton}
+            title="Login and start you tour now!"
+            disabled={!request}
+            onPress={() => promptAsync({ useProxy: true })}
+          />
         </View>
       )}
     </UserProvider>
@@ -100,26 +106,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 16,
   },
-  logo: {
-    position: "absolute",
-    zIndex: 1,
-    top: 52,
-  },
+
   loginButton: {
     width: Dimensions.get("window").width - 16,
-    marginBottom: 100,
+    marginBottom: 22,
   },
-  buttonWrapper: {
-    marginTop: 130,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+
   labelWrapper: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: 72,
   },
 });
