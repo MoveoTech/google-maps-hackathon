@@ -10,16 +10,15 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 
+import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import Typography from "../../components/Typography/Typography";
-import backgroundImage from "../../../../assets/welcome.png";
-import likeImage from "../../../../assets/like.png";
-import locationImage from "../../../../assets/location.png";
-import { MAIN, TERTIARY } from "../../globalStyle";
 import Button from "../../components/Button/Button";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import { useSnackbar } from "../../hooks/useSnackbar";
-import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import { useAppStateChange } from "../../hooks/useAppStateChange";
+import likeImage from "../../../../assets/like.png";
+import locationImage from "../../../../assets/location.png";
+import { MAIN, TERTIARY } from "../../globalStyle";
 
 const onOpen = {
   title: "Permission to access location was denied",
@@ -59,17 +58,15 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={backgroundImage} />
       <View style={styles.titleWrapper}>
         <Typography fontSize="xxl" weight="900">
           We need access to Location
         </Typography>
         <Typography style={styles.subTitle} fontSize="l" weight="400">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit nulla
-          ut vestibulum erat accumsan sagittis interdum quam.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Typography>
       </View>
-      <Image source={locationImage} />
+      <Image source={locationImage} style={{ marginTop: 24 }} />
       <Snackbar
         label={snackbar.title}
         isCheckIcon={snackbar.isCheckIcon}
@@ -77,7 +74,7 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
         hide={hideSnackbar}
       />
       <View style={styles.footer}>
-        <Image source={likeImage} />
+        <Image source={likeImage} style={{ marginBottom: 12 }} />
         <Typography fontSize="l" style={styles.textFooter}>
           It is very important that you choose the Always Allow option in the
           next dialog. It makes the system work better. Thank you.
@@ -113,10 +110,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   titleWrapper: {
-    position: "absolute",
-    top: 0,
     width: "100%",
-    marginTop: 70,
+    marginTop: 16,
   },
   subTitle: {
     marginTop: 16,
