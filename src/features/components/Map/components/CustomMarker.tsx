@@ -12,12 +12,15 @@ interface MarkerProps {
   isSelected: boolean;
 }
 type MarkersObj = {
-  [key in MarkerTypes]?: number;
+  [key in MarkerTypes]?: { path: number; style: {} };
 };
 const MARKERS: MarkersObj = {
-  dot: require("../../../../../assets/dot.png"),
-  circle: require("../../../../../assets/circle.png"),
-  pin: require("../../../../../assets/pin.png"),
+  dot: { path: require("../../../../../assets/dot.png"), style: {} },
+  circle: { path: require("../../../../../assets/circle.png"), style: {} },
+  pin: {
+    path: require("../../../../../assets/pin.png"),
+    style: { width: 25, height: 30 },
+  },
 };
 export const CustomMarker = ({
   type,
@@ -29,52 +32,70 @@ export const CustomMarker = ({
 }: MarkerProps) => {
   return (
     <Marker coordinate={coordinates}>
+      {tooltip && (
+        <View style={styles.tooltip}>
+          <Text style={styles.tooltipText}>{tooltip}</Text>
+        </View>
+      )}
       <View style={styles.MarkerContainer}>
         {(bgIcon || bgImg) && (
           <>
             {isSelected ? (
-              <View style={styles.BgImageContainer}>
+              <View
+                style={{ ...styles.BgImageContainer, width: 55, height: 55 }}
+              >
                 <ImageBackground
                   source={{ uri: bgImg }}
-                  style={styles.BgImage}
+                  style={{ ...styles.BgImage, width: 45, height: 45 }}
                 />
               </View>
             ) : (
-              <View style={styles.BgImageContainer}>
-                <ImageBackground source={bgIcon} style={styles.BgImage} />
+              <View
+                style={{
+                  ...styles.BgImageContainer,
+                  width: 45,
+                  height: 45,
+                }}
+              >
+                <ImageBackground
+                  source={bgIcon}
+                  style={{
+                    ...styles.BgImage,
+                    width: 35,
+                    height: 35,
+                    backgroundColor: "#F3F3F3",
+                  }}
+                />
               </View>
             )}
           </>
         )}
-        <Image source={MARKERS[type]} />
+        <Image source={MARKERS[type].path} style={MARKERS[type].style} />
       </View>
-      {tooltip && (
-        <Callout tooltip style={styles.Callout}>
-          <Text>{tooltip}</Text>
-        </Callout>
-      )}
     </Marker>
   );
 };
 
 const styles = StyleSheet.create({
-  Callout: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 250,
+  tooltip: {
+    backgroundColor: "#fff",
     paddingHorizontal: 7,
     paddingVertical: 1,
-    height: 18,
     borderRadius: 40,
+    height: 18,
+    marginBottom: 3,
+  },
+  tooltipText: {
+    color: "#222222",
+    fontWeight: "400",
+    fontSize: 12,
+    lineHeight: 16,
   },
   MarkerContainer: {
     display: "flex",
     alignItems: "center",
   },
   BgImageContainer: {
-    width: 55,
-    height: 55,
     position: "relative",
     top: 25,
     display: "flex",
@@ -84,8 +105,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   BgImage: {
-    width: 45,
-    height: 45,
     borderRadius: 6,
     overflow: "hidden",
   },

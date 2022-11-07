@@ -20,19 +20,19 @@ type DirectionProps = Omit<
 
 export const Directions = ({ type = "primary", ...props }: DirectionProps) => {
   return (
-    <>
-      {type !== "transparent" && (
-        <MapViewDirections
-          mode="WALKING"
-          apikey={GOOGLE_MAPS_APIKEY}
-          strokeWidth={type === "dashedLight" ? 1 : 2}
-          strokeColor={
-            type === "dashedLight" ? "rgba(10, 194, 160, 0.5)" : "#0ac2a0"
-          }
-          lineDashPattern={type === "primary" ? [] : [30, 30]}
-          {...props}
-        />
-      )}
-    </>
+    <MapViewDirections
+      mode="WALKING"
+      apikey={GOOGLE_MAPS_APIKEY}
+      strokeWidth={type === "dashedLight" ? 1 : 2}
+      strokeColor={
+        type === "transparent"
+          ? "transparent"
+          : type === "dashedLight"
+          ? "rgba(10, 194, 160, 0.5)"
+          : "#0ac2a0"
+      }
+      lineDashPattern={type === "primary" ? [] : [30, 30]}
+      {...props}
+    />
   );
 };
