@@ -298,17 +298,7 @@ export const HomePageMap = ({ location }: Props) => {
         }
       >
         {isLoading ? (
-          <View
-            style={{
-              display: "flex",
-              width,
-              height,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Loader />
-          </View>
+          <Loader />
         ) : (
           <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
         )}
