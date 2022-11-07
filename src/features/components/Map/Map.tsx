@@ -30,7 +30,7 @@ const Map = ({
       style={styles.map}
       provider="google"
       showsUserLocation
-      showsCompass
+      tintColor="#0AC2A1"
       zoomEnabled
       zoomControlEnabled
       showsMyLocationButton
