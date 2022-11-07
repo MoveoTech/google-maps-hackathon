@@ -28,7 +28,7 @@ const Map = ({
     <MapView
       region={location}
       style={styles.map}
-      // provider="google"
+      provider="google"
       showsUserLocation
       tintColor="#0AC2A1"
       zoomEnabled
