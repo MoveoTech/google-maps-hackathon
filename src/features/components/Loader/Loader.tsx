@@ -1,11 +1,16 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import LottieView from "lottie-react-native";
+import LottieView, { AnimationObject } from "lottie-react-native";
 
 import defaultAnimation from "../../../lotties/loader.json";
 
 export interface ILoaderProps {
-  animationData?: JSON;
+  animationData?:
+    | string
+    | AnimationObject
+    | {
+        uri: string;
+      };
   height?: number;
   width?: number;
 }
