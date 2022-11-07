@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -7,7 +7,6 @@ import {
   NativeModules,
   Platform,
   Linking,
-  AppState,
 } from "react-native";
 import * as Location from "expo-location";
 
@@ -20,6 +19,7 @@ import Button from "../../components/Button/Button";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
+import { useAppStateChange } from "../../hooks/useAppStateChange";
 
 const onOpen = {
   title: "Permission to access location was denied",
@@ -32,10 +32,8 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
   const [locationPermission, setLocationPermission] =
     useState<Location.LocationPermissionResponse>(currentLocationPermission);
   const { status, requestPermission } = requestLocationPermission();
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [recheckPermissionTrigger, setRecheckPermissionTrigger] =
-    useState(true);
+
+  useAppStateChange(() => checkLocationPermission());
 
   const checkLocationPermission = async () => {
     try {
@@ -50,32 +48,6 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    checkLocationPermission();
-  }, [recheckPermissionTrigger]);
-
-  const _handleAppStateChange = async (nextAppState) => {
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-      setRecheckPermissionTrigger((prev) => !prev);
-    }
-
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   const openAppSettings = () => {
     if (Platform.OS === "ios") {
