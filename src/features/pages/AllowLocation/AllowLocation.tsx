@@ -1,5 +1,15 @@
-import React from "react";
-import { Dimensions, StyleSheet, View, Image } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  Image,
+  NativeModules,
+  Platform,
+  Linking,
+  AppState,
+} from "react-native";
+import * as Location from "expo-location";
 
 import Typography from "../../components/Typography/Typography";
 import backgroundImage from "../../../../assets/welcome.png";
@@ -7,7 +17,6 @@ import likeImage from "../../../../assets/like.png";
 import locationImage from "../../../../assets/location.png";
 import { MAIN, TERTIARY } from "../../globalStyle";
 import Button from "../../components/Button/Button";
-import { useLocationPermissionStatus } from "../../hooks/useLocationPermissionStatus";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
@@ -16,23 +25,63 @@ const onOpen = {
   title: "Permission to access location was denied",
   isCheckIcon: false,
 };
-const RequestLocation = async () => {
-  return await requestLocationPermission();
-};
+const { RNAndroidOpenSettings } = NativeModules;
 
-const AllowLocation = ({ navigation }) => {
+const AllowLocation = ({ navigation, currentLocationPermission }) => {
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
+  const [locationPermission, setLocationPermission] =
+    useState<Location.LocationPermissionResponse>(currentLocationPermission);
+  const { status, requestPermission } = requestLocationPermission();
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const [recheckPermissionTrigger, setRecheckPermissionTrigger] =
+    useState(true);
 
-  const handleGrantAccessPressed = () => {
+  const checkLocationPermission = async () => {
     try {
-      (async () => {
-        const status = await RequestLocation();
-        if (status === "granted") {
-          navigation.navigate("Location");
-        } else openSnackbar(onOpen);
-      })();
+      const status = await requestPermission();
+      if (status.granted) {
+        navigation.navigate("Location");
+      } else {
+        setLocationPermission(status);
+        openSnackbar(onOpen);
+      }
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    checkLocationPermission();
+  }, [recheckPermissionTrigger]);
+
+  const _handleAppStateChange = async (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      setRecheckPermissionTrigger((prev) => !prev);
+    }
+
+    appState.current = nextAppState;
+    setAppStateVisible(appState.current);
+  };
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      _handleAppStateChange
+    );
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const openAppSettings = () => {
+    if (Platform.OS === "ios") {
+      Linking.openURL("app-settings:");
+    } else {
+      RNAndroidOpenSettings.appDetailsSettings();
     }
   };
 
@@ -62,8 +111,16 @@ const AllowLocation = ({ navigation }) => {
           next dialog. It makes the system work better. Thank you.
         </Typography>
         <Button
-          title="Grant access to location"
-          onPress={handleGrantAccessPressed}
+          title={
+            locationPermission?.status === "denied"
+              ? "Open settings to grant location permission"
+              : "Grant access to location"
+          }
+          onPress={
+            locationPermission?.status === "denied"
+              ? openAppSettings
+              : checkLocationPermission
+          }
         />
       </View>
     </View>
