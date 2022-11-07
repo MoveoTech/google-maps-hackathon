@@ -9,10 +9,11 @@ export const useLocationPermissionStatus = () => {
   const RequestLocation = async () => {
     const status = await requestLocationPermission();
     setLocationStatus(status);
+    return status;
   };
 
   useEffect(() => {
     RequestLocation();
   }, []);
-  return { locationStatus };
+  return { locationStatus, RequestLocation };
 };

@@ -4,12 +4,14 @@ import { ColorValue } from "react-native";
 
 import { PRIMARY } from "../../globalStyle";
 
-export type TFontSize = "s" | "m" | "l"; // 12px, 14px, 16px
+export type TFontSize = "s" | "m" | "l" | "xl" | "xxl"; // 12px, 14px, 16px, 19px
 
 const getFontSize: { [size in TFontSize]: number } = {
   s: 12,
   m: 14,
   l: 16,
+  xl: 19,
+  xxl: 32,
 };
 
 export interface ITypographyProps {
