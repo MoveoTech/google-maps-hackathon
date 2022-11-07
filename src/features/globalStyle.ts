@@ -15,8 +15,8 @@ export const AppContainer = styled.View`
   background-color: ${MAIN};
   align-items: center;
   justify-content: center;
-  height: ${Dimensions.get("window").height};
-  width: ${Dimensions.get("window").width};
+  height: ${Dimensions.get("window").height}px;
+  width: ${Dimensions.get("window").width}px;
 `;
 
 export const FlexedView = styled.View`
