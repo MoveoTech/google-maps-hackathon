@@ -13,7 +13,6 @@ interface UserContextProps {
 }
 export const UserProvider: FC<UserContextProps> = ({ children }) => {
   const { location: currentLocation, errorMsg } = useCurrentLocation();
-  console.log("ccccc", currentLocation);
 
   const value = {
     currentLocation,

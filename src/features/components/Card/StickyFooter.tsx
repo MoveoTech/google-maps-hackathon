@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const StickyFooter = ({ next, isLast, skip, isNextDisabled }: Props) => (
-  <Card style={{ marginTop: "auto", height: 100, justifyContent: "center" }}>
+  <Card style={{ marginTop: "auto", height: 200, justifyContent: "center" }}>
     <Card.Content style={styles.container}>
       <Text style={styles.skipButton} onPress={() => skip(isLast)}>
         Skip Experience
