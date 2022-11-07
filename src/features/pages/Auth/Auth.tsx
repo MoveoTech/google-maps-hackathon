@@ -39,17 +39,6 @@ const Auth = ({ navigation }) => {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
 
-  //   const showUserInfo = () => {
-  //     if (userInfo) {
-  //       return (
-  //         <View style={styles.userInfo}>
-  //           <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
-  //           <Text>Welcome {userInfo.name}</Text>
-  //           <Text>{userInfo.email}</Text>
-  //         </View>
-  //       );
-  //     }
-  //   };
   if (isLoading)
     return (
       <View style={styles.container}>
