@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 import Loader from "./src/features/components/Loader/Loader";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
 // Fonts
 import AvenirRegular from "./assets/fonts/Avenir-Regular.ttf";
@@ -32,7 +33,10 @@ export default function App() {
         })}
       >
         <Stack.Screen name="Auth" component={Auth} />
-        <Stack.Screen name="Location" component={Location} />
+        <Stack.Screen
+          name="Location"
+          component={gestureHandlerRootHOC(Location)}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
