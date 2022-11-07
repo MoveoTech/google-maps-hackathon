@@ -330,7 +330,7 @@ export const HomePageMap = ({ location }: Props) => {
         hide={hideSnackbar}
       />
       {!showTimeline && (
-        <View style={{ width: Dimensions.get("window").width, height: 200 }}>
+        <View style={{ width: Dimensions.get("window").width, height: 100 }}>
           <StickyFooter
             next={onNextStep}
             isNextDisabled={
