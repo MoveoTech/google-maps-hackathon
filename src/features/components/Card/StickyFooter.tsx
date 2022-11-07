@@ -4,15 +4,17 @@ import {Dimensions, StyleSheet, Text, View} from "react-native";
 
 interface Props {
     next: (isLastStep: boolean) => void;
-    isLast: boolean
+    isLast: boolean;
+    isDisabled: boolean;
 }
 
-export const StickyFooter = ({next, isLast}: Props) => (
+export const StickyFooter = ({next, isLast, isDisabled}: Props) => (
     <Card style={{marginTop: 'auto', height: 180, justifyContent: 'center'}}>
         <Card.Content style={styles.container}>
             <Text style={styles.skipButton}> Skip Experience</Text>
             <Button buttonColor={'black'} mode={'contained'} labelStyle={{color: "white"}}
-                    style={{width: 120, borderRadius: 10}} onPress={() => next(isLast)}>Next</Button>
+                    style={{width: 120, borderRadius: 10}} onPress={() => next(isLast)}
+                    disabled={isDisabled}>Next</Button>
         </Card.Content>
     </Card>
 );

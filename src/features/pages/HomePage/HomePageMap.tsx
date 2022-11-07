@@ -20,6 +20,7 @@ import {useSnackbar} from "../../hooks/useSnackbar";
 import {Dimensions, View} from "react-native";
 import {StickyFooter} from "../../components/Card/StickyFooter";
 import {Button} from "react-native-paper";
+import {useCurrentLocation} from "../../hooks/useCurrentLocation";
 
 export interface IPlaceOnMap extends IPlace {
     marker: IMarker;
@@ -66,7 +67,6 @@ export const HomePageMap = ({location}: Props) => {
     const [allPlacesIndex, setAllPlacesIndex] = useState(0);
     const [activeStep, setActiveStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-
     const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
     const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
     const {openSnackbar, hideSnackbar, snackbar} = useSnackbar();
@@ -240,6 +240,8 @@ export const HomePageMap = ({location}: Props) => {
         setTopFourPlaces([...topFourPlaces]);
     };
 
+    const disabled = !Boolean(topFourPlaces?.find((place) => place.isSelected === true))
+
     return (
         <>
             <HomepageContainer>
@@ -292,9 +294,12 @@ export const HomePageMap = ({location}: Props) => {
                 hide={hideSnackbar}
             />
 
-            <View style={{width: Dimensions.get("window").width}}>
-                <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}/>
-            </View>
+            {!showTimeline &&
+                (<View style={{width: Dimensions.get("window").width}}>
+                    <StickyFooter next={() => onNextStep(activeStep === maxSteps)} isLast={activeStep === maxSteps}
+                                  isDisabled={disabled}/>
+                </View>)
+            }
 
         </>
     );
