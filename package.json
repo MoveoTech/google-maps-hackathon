@@ -24,6 +24,7 @@
     "expo-random": "12.3.0",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "1.4.0",
+    "expo-updates": "~0.14.6",
     "expo-web-browser": "11.0.0",
     "lodash": "4.17.21",
     "lottie-react-native": "5.1.4",
@@ -48,8 +49,7 @@
     "react-native-wizard": "2.1.0",
     "react-vertical-timeline-component": "3.5.2",
     "styled-components": "5.3.6",
-    "typescript": "4.6.3",
-    "expo-updates": "~0.14.6"
+    "typescript": "4.6.3"
   },
   "devDependencies": {
     "@babel/core": "7.12.9",

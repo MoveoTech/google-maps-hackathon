@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import { useAuthentication } from "./src/features/hooks/useAuthentication";
 import { addUser } from "./src/api/api";
 import Loader from "./src/features/components/Loader/Loader";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 // import { IUser } from "./src/features/types";
 
 // Fonts
@@ -72,7 +73,10 @@ export default function App() {
       >
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Auth" component={Auth} />
-        <Stack.Screen name="Location" component={Location} />
+        <Stack.Screen
+          name="Location"
+          component={gestureHandlerRootHOC(Location)}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

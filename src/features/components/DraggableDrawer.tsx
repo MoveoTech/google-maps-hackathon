@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 import Typography from "./Typography/Typography";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface Props {
   children;
