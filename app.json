@@ -1,8 +1,15 @@
 {
   "expo": {
-    "scheme": "com.googleMaps.dayway",
     "name": "dayway",
+    "description": "trip planning",
     "slug": "dayway",
+    "icon": "./assets/favicon.png",
+    // "scheme": "com.googleMaps.dayway",
+    "splash": {
+      "image": "./assets/favicon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
 
