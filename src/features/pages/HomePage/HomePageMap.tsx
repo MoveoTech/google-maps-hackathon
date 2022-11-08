@@ -20,6 +20,7 @@ import { useSnackbar } from "../../hooks/useSnackbar";
 import { Dimensions, View } from "react-native";
 import { StickyFooter } from "../../components/Card/StickyFooter";
 import { Button } from "react-native-paper";
+import { cleanText } from "../../utils";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -107,7 +108,7 @@ export const HomePageMap = ({ location }: Props) => {
   const [locationType, setLocationType] = useState<GoogleMapsPlaces>("cafe");
 
   const onSelectPlace = (place_id: string) => {
-    let lat, lng;
+    let lat: number, lng: number;
     topFourPlaces.forEach((place) => {
       if (place.place_id === place_id) {
         place.isSelected = true;
@@ -127,7 +128,7 @@ export const HomePageMap = ({ location }: Props) => {
   };
 
   const getNewLocationType = (): GoogleMapsPlaces => {
-    if (activeStep === 2) return "restaurant";
+    if (activeStep % 2 == 0) return "restaurant";
 
     const locationTypes: GoogleMapsPlaces[] = [
       "tourist_attraction",
@@ -139,13 +140,15 @@ export const HomePageMap = ({ location }: Props) => {
 
   const addStep = () => {
     const selectedPlace = topFourPlaces.find((place) => place.isSelected);
-    setTripPlaces((prev) => [...(prev || []), selectedPlace]);
-    const newStartingLocation: LatLng = {
-      latitude: selectedPlace.geometry.location.lat,
-      longitude: selectedPlace.geometry.location.lng,
-    };
-    setStartingLocation(newStartingLocation);
-    return newStartingLocation;
+    if (selectedPlace) {
+      setTripPlaces((prev) => [...(prev || []), selectedPlace]);
+      const newStartingLocation: LatLng = {
+        latitude: selectedPlace.geometry.location.lat,
+        longitude: selectedPlace.geometry.location.lng,
+      };
+      setStartingLocation(newStartingLocation);
+      return newStartingLocation;
+    }
   };
   const createNextPlace = (
     isLastStep: boolean,
@@ -156,13 +159,14 @@ export const HomePageMap = ({ location }: Props) => {
     setAllPlacesIndex(0);
     setActiveStep((activeStep) => activeStep + 1);
     if (isLastStep) {
+      //TODO: handle case which the user skips all experiences
       setTopFourPlaces([]);
       setShowTimeline(true);
       setTopTitle("Trip summary");
       return;
     }
     calculateStep(newStartingLocation, newLocationType);
-    setTopTitle(`Choose a ${newLocationType}`);
+    setTopTitle(`Choose a ${cleanText(newLocationType)}`);
   };
 
   const onNextStep = (isLastStep: boolean) => {
@@ -220,7 +224,7 @@ export const HomePageMap = ({ location }: Props) => {
       places || allPlaces.slice(allPlacesIndex * 4, allPlacesIndex * 4 + 4);
     if (topFourPlaces.length === 0) {
       openSnackbar({
-        title: `No more ${locationType}'s left`,
+        title: `No more ${cleanText(locationType)}'s left`,
         isCheckIcon: false,
       });
       return;
