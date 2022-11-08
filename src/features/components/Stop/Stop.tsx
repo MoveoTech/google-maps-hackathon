@@ -1,11 +1,8 @@
 import React, { FC, ReactNode } from "react";
-import { Image, ImageSourcePropType } from "react-native";
+import { Image, ImageSourcePropType, View } from "react-native";
 import { capitalize } from "lodash";
 
-import locationIcon from "../../../icons/location.png";
-import walkIcon from "../../../icons/walk.png";
 import { FlexedView, SECONDARY } from "../../globalStyle";
-
 import { GoogleMapsPlaces } from "../../types";
 import Typography from "../Typography/Typography";
 import {
@@ -21,10 +18,13 @@ import {
   Time,
   TripInfo,
 } from "./styles";
+import { getDistance, LocationDefaultImage, WalkLineIcon } from "./utils";
+import { cleanText } from "../../utils";
+import { useShowMore } from "../../hooks/useShowMore";
 
 //TODO: pass the place object and then spread here
 export interface IStopProps {
-  addressName: string | ReactNode;
+  addressName: ReactNode;
   image?: ImageSourcePropType;
   stopType?: GoogleMapsPlaces;
   displayLineIcon?: boolean;
@@ -41,16 +41,19 @@ const Stop: FC<IStopProps> = ({
   distance,
   displayLineIcon = true,
 }) => {
-  const imageToDisplay = image ? { uri: image } : locationIcon;
+  const isAddressIsString = typeof addressName === "string";
+  const addressNameByType: string = isAddressIsString ? addressName : "";
+  const { text: slicedAddressName } = useShowMore(
+    capitalize(addressNameByType)
+  );
 
   return (
     <Container>
       {displayLineIcon && (
         <TripInfo>
-          <Image
-            source={walkIcon}
-            style={{ width: 16, height: 48, marginLeft: 11.5 }}
-          />
+          <View style={{ marginLeft: 7.5 }}>
+            <WalkLineIcon />
+          </View>
           <DurationAndDistance>
             <Typography
               fontSize="s"
@@ -59,34 +62,39 @@ const Stop: FC<IStopProps> = ({
                 textTransform: "capitalize",
               }}
             >
-              {Math.round(duration) + " Min"} &#x2022;&nbsp;
+              {Math.round(duration || 0) + " Min"} &#x2022;&nbsp;
             </Typography>
 
             <Typography fontSize="s" color={SECONDARY}>
-              {parseFloat(distance + "").toFixed(2) + " mi"}
+              {getDistance(distance || 0)}
             </Typography>
           </DurationAndDistance>
         </TripInfo>
       )}
       <Row>
         <Left>
-          <LocationImage source={imageToDisplay} />
+          {image ? (
+            <LocationImage source={{ uri: image }} />
+          ) : (
+            <LocationDefaultImage />
+          )}
           <StopInfo>
             {stopType && (
               <StopType fontSize="s" ellipsizeMode="tail" numberOfLines={1}>
-                {capitalize(stopType)}
+                {cleanText(capitalize(stopType))}
               </StopType>
             )}
-            {typeof addressName === "string" ? (
+            {isAddressIsString ? (
               <StopAddressName llipsizeMode="tail" numberOfLines={1}>
-                {capitalize(addressName)}
+                {slicedAddressName}
+                {/* {addressName} */}
               </StopAddressName>
             ) : (
               <FlexedView>{addressName}</FlexedView>
             )}
           </StopInfo>
         </Left>
-        <Right>{timeAtPlace && <Time>{timeAtPlace}</Time>}</Right>
+        <Right>{timeAtPlace && <Time>Avg. {timeAtPlace} hours</Time>}</Right>
       </Row>
     </Container>
   );

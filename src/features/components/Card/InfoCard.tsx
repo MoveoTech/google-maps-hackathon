@@ -6,7 +6,10 @@ import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 import Typography from "../Typography/Typography";
 import { MAIN, PRIMARY, SECONDARY } from "../../globalStyle";
 import { cleanText } from "../../utils";
-import { PhotosBaseURL, pricing, StarIcon, WalkIcon } from "./utils";
+import { pricing, StarIcon, WalkIcon } from "./utils";
+
+const PhotosBaseURL =
+  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
 
 interface ICardComponentProps {
   isPressed: boolean;
@@ -21,7 +24,7 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
   index,
   place,
 }) => {
-  const photoReference = place?.photos?.[0]?.photo_reference;
+  const photoReference = place?.photos?.[0]?.photo_reference || null;
 
   const duration = place?.direction?.duration || 0;
 
@@ -87,13 +90,14 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
   );
 };
 
-const styles = (isPressed) =>
+const styles = (isPressed: boolean) =>
   StyleSheet.create({
     cardWrapper: {
       margin: 5,
       width: Dimensions.get("window").width * 0.45,
-      borderWidth: 2,
+      borderWidth: 1,
       borderColor: isPressed ? MAIN : "transparent",
+      borderRadius: 7,
     },
     rating: {
       display: "flex",

@@ -36,6 +36,3 @@ export const WalkIcon = () => (
     />
   </Svg>
 );
-
-export const PhotosBaseURL =
-  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";

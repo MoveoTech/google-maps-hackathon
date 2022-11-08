@@ -7,9 +7,11 @@ import { Container, StartPoint, EndPoint } from "./styles";
 import { FlexedView, MAIN } from "../../globalStyle";
 import Typography from "../Typography/Typography";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
-import { PhotosBaseURL } from "../Card/InfoCard";
 import { openGoogleMaps } from "../../../api/googleApi";
 import Button from "../Button/Button";
+
+const PhotosBaseURL =
+  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
 
 export interface NavigationPlaces {
   destinationId: string;
@@ -29,8 +31,8 @@ const TimelineComponent = ({ tripPlaces }: Timeline) => {
     const destination = navigationPlaces.pop();
 
     return {
-      destinationId: destination.id,
-      destinationName: destination.name,
+      destinationId: destination?.id || "",
+      destinationName: destination?.name || "",
       waypointsIds: navigationPlaces.map((place) => place.id).join("%7C"),
       waypointsNames: navigationPlaces.map((place) => place.name).join("%7C"),
     };
