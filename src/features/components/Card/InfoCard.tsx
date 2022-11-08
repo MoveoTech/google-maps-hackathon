@@ -7,9 +7,7 @@ import Typography from "../Typography/Typography";
 import { MAIN, PRIMARY, SECONDARY } from "../../globalStyle";
 import { cleanText } from "../../utils";
 import { pricing, StarIcon, WalkIcon } from "./utils";
-
-const PhotosBaseURL =
-  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
+import { PhotosBaseURL } from "../../../api/googleApi";
 
 interface ICardComponentProps {
   isPressed: boolean;
@@ -40,7 +38,7 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
       ) : (
         <Card.Cover
           style={{ height: 130 }}
-          source={{ uri: "../../../../assets/default.png" }}
+          source={require("../../../../assets/default.png")}
         />
       )}
       <Card.Content>

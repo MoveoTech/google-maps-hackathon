@@ -8,7 +8,7 @@ export const Container = styled.View`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: ${Dimensions.get("window").width};
+  width: ${Dimensions.get("window").width}px;
 `;
 
 export const StartPoint = styled(Stop)`

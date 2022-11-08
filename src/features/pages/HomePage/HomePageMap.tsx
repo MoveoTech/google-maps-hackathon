@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../components/Map/Map";
 import { HomepageContainer } from "./styles";
-import { getNearByPlaces, IPlace } from "../../../api/googleApi";
+import { getNearByPlaces, IPlace, PhotosBaseURL } from "../../../api/googleApi";
 import { Cards } from "../../components/Card/Cards";
 import { DraggableDrawer } from "../../components/DraggableDrawer";
 import { LocationObject } from "expo-location";
@@ -47,11 +47,7 @@ export interface IDirections {
   distance?: number;
   duration?: number;
 }
-const PhotosBaseURL =
-  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
-const { height, width } = Dimensions.get("window");
-const LATITUDE_DELTA = 0.04;
-const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
+
 const placesIcon = {
   restaurant: require(`../../../../assets/restaurant.png`),
   cafe: require(`../../../../assets/cafe.png`),
@@ -78,26 +74,14 @@ export const HomePageMap = ({ location }: Props) => {
   const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const [showTimeline, setShowTimeline] = useState(false);
-  const [region, setRegion] = useState<Region>({
+  const [region, setRegion] = useState<LatLng>({
     latitude: location?.coords?.latitude,
     longitude: location?.coords?.longitude,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
   });
-  const changeRegion = ({
-    lat,
-    lng,
-    zoom,
-  }: {
-    lat: number;
-    lng: number;
-    zoom?: number;
-  }) => {
+  const changeRegion = ({ lat, lng }: { lat: number; lng: number }) => {
     setRegion({
       latitude: lat,
       longitude: lng,
-      latitudeDelta: zoom || LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
     });
   };
   const maxSteps = 4;
@@ -116,9 +100,11 @@ export const HomePageMap = ({ location }: Props) => {
         place.direction.type = "dashed";
         [lat, lng] = [place.geometry.location.lat, place.geometry.location.lng];
         const newRegion = {
-          lat: (lat + region.latitude) / 2 - 0.004,
+          lat: (lat + region.latitude) / 2,
           lng: (lng + region.longitude) / 2,
         };
+        newRegion.lat =
+          lat < region.latitude ? newRegion.lat + 0.008 : newRegion.lat - 0.008;
         changeRegion(newRegion);
       } else {
         place.isSelected = false;
@@ -180,7 +166,11 @@ export const HomePageMap = ({ location }: Props) => {
   };
 
   const replaceTopFour = () => {
+    setIsLoading(true);
     createTopPlaces();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const createMarker = (
@@ -225,7 +215,7 @@ export const HomePageMap = ({ location }: Props) => {
       places || allPlaces.slice(allPlacesIndex * 4, allPlacesIndex * 4 + 4);
     if (topFourPlaces.length === 0) {
       openSnackbar({
-        title: `No more ${cleanText(locationType)}'s left`,
+        title: `No more new ${cleanText(locationType)}'s left`,
         isCheckIcon: false,
       });
       return;
@@ -303,7 +293,7 @@ export const HomePageMap = ({ location }: Props) => {
         }
       >
         {isLoading ? (
-          _.times(4).map((_) => <InfoCardSkeleton />)
+          _.times(4).map((_, index) => <InfoCardSkeleton key={index} />)
         ) : (
           <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
         )}

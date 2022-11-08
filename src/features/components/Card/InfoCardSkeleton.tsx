@@ -9,10 +9,7 @@ import { StarIcon, WalkIcon } from "./utils";
 export const InfoCardSkeleton: React.FC = ({}) => {
   return (
     <Card style={styles.cardWrapper}>
-      <Card.Cover
-        style={{ height: 130 }}
-        source={{ uri: "../../../../assets/default.png" }}
-      />
+      <Card.Cover style={{ height: 130 }} source={{}} />
 
       <Card.Content>
         <View

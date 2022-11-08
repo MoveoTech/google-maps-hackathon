@@ -7,11 +7,8 @@ import { Container, StartPoint, EndPoint } from "./styles";
 import { FlexedView, MAIN } from "../../globalStyle";
 import Typography from "../Typography/Typography";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
-import { openGoogleMaps } from "../../../api/googleApi";
+import { openGoogleMaps, PhotosBaseURL } from "../../../api/googleApi";
 import Button from "../Button/Button";
-
-const PhotosBaseURL =
-  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
 
 export interface NavigationPlaces {
   destinationId: string;
@@ -89,7 +86,7 @@ const TimelineComponent = ({ tripPlaces }: Timeline) => {
       />
 
       <Button
-        title="Navigate"
+        title="Navigate with Google maps"
         buttonColor={"black"}
         mode={"contained"}
         labelStyle={{ color: "white" }}
@@ -109,7 +106,6 @@ const TimelineComponent = ({ tripPlaces }: Timeline) => {
 
 const styles = StyleSheet.create({
   navigateButton: {
-    width: 120,
     borderRadius: 10,
     alignSelf: "center",
     marginTop: 16,

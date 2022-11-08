@@ -6,7 +6,7 @@ import { NavigationPlaces } from "../features/components/TimelineComponent/Timel
 import { GoogleMapsPlaces, Location } from "../features/types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
-
+export const PhotosBaseURL = `${baseUrl}/place/photo?maxwidth=400`;
 export interface Viewport {
   northeast: Location;
   southwest: Location;
