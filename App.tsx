@@ -2,7 +2,10 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
+import {
+  gestureHandlerRootHOC,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 
 import Loader from "./src/features/components/Loader/Loader";
 import Auth from "./src/features/pages/Auth/Auth";
@@ -26,18 +29,20 @@ export default function App() {
   if (!loaded) return <Loader />;
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={() => ({
-          title: "",
-        })}
-      >
-        <Stack.Screen name="Auth" component={Auth} />
-        <Stack.Screen
-          name="Location"
-          component={gestureHandlerRootHOC(Location)}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={() => ({
+            title: "",
+          })}
+        >
+          <Stack.Screen name="Auth" component={Auth} />
+          <Stack.Screen
+            name="Location"
+            component={gestureHandlerRootHOC(Location)}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
