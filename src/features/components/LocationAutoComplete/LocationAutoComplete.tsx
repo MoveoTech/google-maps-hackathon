@@ -16,7 +16,6 @@ export const LocationAutoComplete = ({onPredictionClicked}: Props) => {
     const [manualLocation, setManualLocation] = useState("");
     const debouncedValue = useDebounce<string>(manualLocation, 1000);
 
-    const [selectedManualLocation, setSelectedManualLocation] = useState();
     const [locationsToSelect, setLocationsToSelect] = useState<IPrediction[]>();
     const onTypeLocation = (input: string) => {
         setManualLocation(input);
@@ -25,7 +24,6 @@ export const LocationAutoComplete = ({onPredictionClicked}: Props) => {
     const handleAutoComplete = async () => {
         const locations = await autocompletePlace(debouncedValue);
         setLocationsToSelect(locations.data.predictions);
-        // console.log("locations", locations.data.predictions);
     };
 
     const onSelectLocation = (place_id: string) => {
@@ -39,10 +37,9 @@ export const LocationAutoComplete = ({onPredictionClicked}: Props) => {
 
     return (
         <View>
-            {/*<Text>select starting location:</Text>*/}
             <TextInput
                 mode="outlined"
-                label="Travel to"
+                label="I'd like to travel to..."
                 placeholder="type location"
                 value={manualLocation}
                 onChangeText={onTypeLocation}
@@ -59,7 +56,6 @@ export const LocationAutoComplete = ({onPredictionClicked}: Props) => {
                     key={location.main_text}
                     onPress={() => onSelectLocation(location.place_id)}
                 >
-                    {console.log(location)}
                     {location.structured_formatting.main_text}
                 </Button>
             ))}

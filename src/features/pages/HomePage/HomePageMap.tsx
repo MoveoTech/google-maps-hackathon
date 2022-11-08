@@ -72,7 +72,6 @@ export const HomePageMap = ({locationCoords}: Props) => {
     const [allPlacesIndex, setAllPlacesIndex] = useState(0);
     const [activeStep, setActiveStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const [specifiedLoc, setSpecifiedLoc] = useState("");
     const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
     const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
     const {openSnackbar, hideSnackbar, snackbar} = useSnackbar();
@@ -158,9 +157,10 @@ export const HomePageMap = ({locationCoords}: Props) => {
         setStartingLocation(newStartingLocation);
         return newStartingLocation;
     };
+
     const createNextPlace = (
         isLastStep: boolean,
-        newStartingLocation: LatLng = startingLocation
+        newStartingLocation: LatLng = startingLocation,
     ) => {
         const newLocationType = getNewLocationType();
         setLocationType(newLocationType);
@@ -174,6 +174,22 @@ export const HomePageMap = ({locationCoords}: Props) => {
         }
         calculateStep(newStartingLocation, newLocationType);
         setTopTitle(`Choose a ${newLocationType}`);
+    };
+
+    const NewLocationPlaces = (
+        isLastStep: boolean,
+        newStartingLocation: LatLng = startingLocation
+    ) => {
+        const newLocationType = getNewLocationType();
+        setLocationType(newLocationType);
+        setAllPlacesIndex(0);
+        if (isLastStep) {
+            setTopFourPlaces([]);
+            setShowTimeline(true);
+            setTopTitle("Trip summary");
+            return;
+        }
+        calculateStep(newStartingLocation, newLocationType);
     };
 
     const onNextStep = (isLastStep: boolean) => {
@@ -248,6 +264,11 @@ export const HomePageMap = ({locationCoords}: Props) => {
         setAllPlacesIndex((prev) => prev + 1);
     };
 
+    const continueCallback = () => {
+        setOnBoarding(false);
+        NewLocationPlaces(false, region)
+    }
+
     const calculateStep = async (
         newStartingLocation?: LatLng,
         newLocationType?: GoogleMapsPlaces
@@ -314,7 +335,7 @@ export const HomePageMap = ({locationCoords}: Props) => {
                 />
             </HomepageContainer>
             <DraggableDrawer
-                maxSteps={maxSteps}
+                onBoarding={onBoarding}
                 topTitle={topTitle}
                 subTitle={
                     activeStep > maxSteps
@@ -356,7 +377,6 @@ export const HomePageMap = ({locationCoords}: Props) => {
             {!showTimeline && (
                 <View style={{width: Dimensions.get("window").width}}>
                     <StickyFooter
-                        setOnBoarding={setOnBoarding}
                         onBoarding={onBoarding}
                         next={onNextStep}
                         isNextDisabled={
@@ -366,6 +386,7 @@ export const HomePageMap = ({locationCoords}: Props) => {
                         }
                         skip={createNextPlace}
                         isLast={activeStep === maxSteps}
+                        continueCallback={continueCallback}
                     />
                 </View>
             )}

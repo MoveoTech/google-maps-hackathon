@@ -5,16 +5,16 @@ import Typography from "./Typography/Typography";
 
 interface Props {
     children;
-    maxSteps;
     topTitle: string;
     subTitle: string;
+    onBoarding: boolean
 }
 
 export const DraggableDrawer = ({
                                     children,
-                                    maxSteps,
                                     topTitle,
                                     subTitle,
+                                    onBoarding
                                 }: Props) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["45%", "60%", "90%"], []);
@@ -30,13 +30,16 @@ export const DraggableDrawer = ({
             snapPoints={snapPoints}
             enablePanDownToClose={true}
             onChange={handleSheetChanges}
-            // enableContentPanningGesture={}
         >
-            <View style={{alignItems: "center"}}>
-                <Typography style={{fontWeight: "500"}}>{topTitle}</Typography>
-                <Typography>{subTitle}</Typography>
-            </View>
-            <View style={styles.bottomContainer}/>
+            {!onBoarding &&
+							<>
+								<View style={{alignItems: "center"}}>
+									<Typography style={{fontWeight: "500"}}>{topTitle}</Typography>
+									<Typography>{subTitle}</Typography>
+								</View>
+								<View style={styles.bottomContainer}/>
+							</>
+            }
             <BottomSheetView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.cardContainers}>
                     {children}
