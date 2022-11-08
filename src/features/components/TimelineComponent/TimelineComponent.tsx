@@ -14,6 +14,7 @@ import {
 } from "../../../api/googleApi";
 import Button from "../Button/Button";
 import { LatLng } from "react-native-maps";
+import EmptyState from "./EmptyState";
 
 export interface NavigationPlaces {
   destinationId: string;
@@ -24,8 +25,13 @@ export interface NavigationPlaces {
 interface Timeline {
   startLocation: LatLng;
   tripPlaces: IPlaceOnMap[];
+  initialWizard: () => void;
 }
-const TimelineComponent = ({ tripPlaces, startLocation }: Timeline) => {
+const TimelineComponent = ({
+  tripPlaces,
+  startLocation,
+  initialWizard,
+}: Timeline) => {
   const [startingLocationAddress, setStartingLocationAddress] = useState("");
 
   const prepareNavigationPlaces = (): NavigationPlaces => {
@@ -59,6 +65,8 @@ const TimelineComponent = ({ tripPlaces, startLocation }: Timeline) => {
   useEffect(() => {
     getReverseGeoCoding();
   }, []);
+
+  if (!tripPlaces.length) return <EmptyState initialWizard={initialWizard} />;
 
   return (
     <Container>

@@ -281,6 +281,16 @@ export const HomePageMap = ({ location }: Props) => {
     setIsLoading(false);
   };
 
+  const initialWizard = () => {
+    setTopFourPlaces([]);
+    setAllPlaces([]);
+    setAllPlacesIndex(0);
+    setActiveStep(1);
+    setTopTitle("Choose an amazing breakfast");
+    setTripPlaces([]);
+    setShowTimeline(false);
+    calculateStep();
+  };
   return (
     <>
       <HomepageContainer>
@@ -309,6 +319,7 @@ export const HomePageMap = ({ location }: Props) => {
           <TimelineComponent
             tripPlaces={tripPlaces}
             startLocation={location.coords}
+            initialWizard={initialWizard}
           />
         ) : (
           <>
