@@ -28,7 +28,6 @@ export const DraggableDrawer = ({
       ref={bottomSheetRef}
       index={1}
       snapPoints={snapPoints}
-      enablePanDownToClose={true}
       onChange={handleSheetChanges}
     >
       <View style={{ alignItems: "center" }}>
