@@ -1,10 +1,12 @@
 import {GOOGLE_MAPS_APIKEY} from "@env";
 import axios from "axios";
-import {LatLng} from "react-native-maps";
-import {GoogleMapsPlaces, Location} from "../features/types";
+import { Alert, Linking } from "react-native";
+import { LatLng } from "react-native-maps";
+import { NavigationPlaces } from "../features/components/TimelineComponent/TimelineComponent";
+import { GoogleMapsPlaces, Location } from "../features/types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
-
+export const PhotosBaseURL = `${baseUrl}/place/photo?maxwidth=400`;
 export interface Viewport {
     northeast: Location;
     southwest: Location;
@@ -110,6 +112,37 @@ interface IAutocompletePlacesApiRes {
     data: IAutocompletePlacesRes;
 }
 
+interface GeoCodingResults {
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+  formatted_address: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+    location_type: string;
+    viewport: {
+      northeast: {
+        lat: number;
+        lng: number;
+      };
+      southwest: {
+        lat: number;
+        lng: number;
+      };
+    };
+  };
+  place_id: string;
+  types: string[];
+}
+export interface IRevGeocodingRes {
+  results: GeoCodingResults[];
+}
+
 export const getNearByPlaces = (
     location: LatLng,
     radius: number,
@@ -166,3 +199,30 @@ export const getDetails = (
     return result;
 };
 
+
+export const openGoogleMaps = async (data: NavigationPlaces) => {
+  const { destinationId, destinationName, waypointsIds, waypointsNames } = data;
+  var url = `https://www.google.com/maps/dir/?api=1&travelmode=walking&dir_action=navigate&destination=${destinationName}&destination_place_id=${destinationId}&waypoints=${waypointsNames}&waypoint_place_ids=${waypointsIds}`;
+  const supported = await Linking.canOpenURL(url);
+  if (supported) await Linking.openURL(url);
+  else Alert.alert(`Don't know how to open this URL: ${url}`);
+};
+
+export const reverseGeoCoding = async (
+  lat: number,
+  lng: number
+): Promise<IRevGeocodingRes> => {
+  try {
+    const params = {
+      key: GOOGLE_MAPS_APIKEY,
+      latlng: `${lat},${lng}`,
+    };
+    const url = `${baseUrl}/geocode/json`;
+    const res = (await axios.get(url, { params })) as {
+      data: IRevGeocodingRes;
+    };
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+};

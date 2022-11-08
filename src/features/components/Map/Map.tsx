@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import MapView, { LatLng } from "react-native-maps";
 import { Directions } from "./components/Directions";
 import { CustomMarker } from "./components/CustomMarker";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
@@ -9,7 +9,7 @@ import { MapDirectionsResponse } from "react-native-maps-directions";
 const { height, width } = Dimensions.get("window");
 
 interface Props {
-  location: Region;
+  location: LatLng;
   topFourPlaces: IPlaceOnMap[];
   tripPlaces: IPlaceOnMap[];
   onDirectionsReady: (
@@ -26,7 +26,13 @@ const Map = ({
 }: Props) => {
   return (
     <MapView
-      region={location}
+      camera={{
+        center: location,
+        heading: 1,
+        pitch: 1,
+        zoom: 14,
+        altitude: 1,
+      }}
       style={styles.map}
       provider="google"
       showsUserLocation
@@ -34,8 +40,14 @@ const Map = ({
       zoomEnabled
       zoomControlEnabled
       showsMyLocationButton
-      // followsUserLocation
       userLocationCalloutEnabled
+      customMapStyle={[
+        {
+          featureType: "poi",
+          elementType: "labels",
+          stylers: [{ visibility: "off" }],
+        },
+      ]}
     >
       <>
         {tripPlaces?.map((tripPlace, index) => (
@@ -62,6 +74,7 @@ const Map = ({
             bgImg={place.marker.bgImg}
             bgIcon={place.marker.bgIcon}
             isSelected={place.isSelected}
+            timeToPlace={place.direction.duration}
           />
         ))}
         {tripPlaces?.map((tripPlace, index) => (
@@ -102,7 +115,7 @@ export default memo(Map);
 
 const styles = StyleSheet.create({
   map: {
-    width: width * 0.95,
+    width: width,
     height: height * 0.9,
   },
 });

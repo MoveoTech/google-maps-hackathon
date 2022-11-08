@@ -1,7 +1,9 @@
-import React, {useCallback, useMemo, useRef} from "react";
-import BottomSheet, {BottomSheetView} from "@gorhom/bottom-sheet";
-import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
+import React, { useCallback, useMemo, useRef } from "react";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { Dimensions, StyleSheet, View } from "react-native";
+
 import Typography from "./Typography/Typography";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface Props {
     children;
@@ -19,9 +21,7 @@ export const DraggableDrawer = ({
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["45%", "60%", "90%"], []);
 
-    const handleSheetChanges = useCallback((index: number) => {
-        // console.log("handleSheetChanges", index);
-    }, []);
+  const handleSheetChanges = useCallback((index: number) => {}, []);
 
     return (
         <BottomSheet

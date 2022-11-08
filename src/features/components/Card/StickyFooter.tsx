@@ -15,46 +15,39 @@ interface Props {
     continueCallback: () => void;
 }
 
-export const StickyFooter = ({
-                                 next,
-                                 isLast,
-                                 skip,
-                                 isNextDisabled,
-                                 onBoarding,
-                                 continueCallback,
-                             }: Props) => {
-    return (
-        <Card style={{marginTop: "auto", height: 200, justifyContent: "center"}}>
-            <Card.Content style={styles.container}>
-                {onBoarding ? (
-                    <Button
-                        mode="contained"
-                        style={styles.continue}
-                        onPress={continueCallback}
-                    >
-                        Continue
-                    </Button>
-                ) : (
-                    <>
-                        <Text style={styles.skipButton} onPress={() => skip(isLast)}>
-                            Skip Experience
-                        </Text>
-                        <Button
-                            disabled={isNextDisabled}
-                            buttonColor="black"
-                            mode="contained"
-                            labelStyle={{color: "white"}}
-                            style={{width: 120, borderRadius: 10}}
-                            onPress={() => next(isLast)}
-                        >
-                            Next
-                        </Button>
-                    </>
-                )}
-            </Card.Content>
-        </Card>
-    );
-};
+export const StickyFooter = ({ next, isLast, skip, isNextDisabled, onBoarding, continueCallback }: Props) => {
+  return(
+  <Card style={{ marginTop: "auto", height: 200, justifyContent: "center" }}>
+    <Card.Content style={styles.container}>
+      {onBoarding ? (
+          <Button
+              mode="contained"
+              style={styles.continue}
+              onPress={continueCallback}
+          >
+            Continue
+          </Button>
+      ) : (
+          <>
+      <Text style={styles.skipButton} onPress={() => skip(isLast)}>
+        Skip Experience
+      </Text>
+      <Button
+          disabled={isNextDisabled}
+          buttonColor={"black"}
+          mode={"contained"}
+          labelStyle={{ color: "white" }}
+          style={{ width: 120, borderRadius: 10 }}
+          onPress={() => next(isLast)}
+      >
+        Next
+      </Button>
+          </>
+      )}
+    </Card.Content>
+  </Card>
+  )}
+;
 
 const styles = StyleSheet.create({
     container: {
