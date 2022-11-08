@@ -15,12 +15,13 @@ import { GOOGLE_MAPS_APIKEY } from "@env";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
 import RefreshIcon from "../../../../assets/refresh.png";
-import Loader from "../../components/Loader/Loader";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { Dimensions, View } from "react-native";
 import { StickyFooter } from "../../components/Card/StickyFooter";
 import { Button } from "react-native-paper";
 import { cleanText } from "../../utils";
+import { InfoCardSkeleton } from "../../components/Card/InfoCardSkeleton";
+import _ from "lodash";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -302,16 +303,7 @@ export const HomePageMap = ({ location }: Props) => {
         }
       >
         {isLoading ? (
-          <View
-            style={{
-              display: "flex",
-              width,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Loader />
-          </View>
+          _.times(4).map((_) => <InfoCardSkeleton />)
         ) : (
           <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
         )}
