@@ -17,6 +17,7 @@ import AvenirRegular from "./assets/fonts/Avenir-Regular.ttf";
 import AvenirLight from "./assets/fonts/Avenir-Light.ttf";
 import AvenirHeavy from "./assets/fonts/Avenir-Heavy.ttf";
 import AvenirBook from "./assets/fonts/Avenir-Book.ttf";
+import {gestureHandlerRootHOC} from "react-native-gesture-handler";
 
 export default function App() {
     const [user, setUser] = useState<IUser>();
@@ -69,7 +70,7 @@ export default function App() {
                 })}
             >
                 <Stack.Screen name="Welcome" component={Welcome}/>
-                <Stack.Screen name="OnBoarding" component={OnBoarding}/>
+                <Stack.Screen name="OnBoarding" component={gestureHandlerRootHOC(OnBoarding)}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
