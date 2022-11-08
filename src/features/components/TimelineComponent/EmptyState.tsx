@@ -20,7 +20,7 @@ const EmptyState = ({ initialWizard }) => {
         Please choose at least one attraction/restaurant
       </Typography>
       <Button
-        style={{ marginTop: 24, width: "50%" }}
+        style={{ marginTop: 24, width: "50%", borderWidth: 1 }}
         title="Try again"
         buttonType="secondary"
         onPress={() => initialWizard()}
