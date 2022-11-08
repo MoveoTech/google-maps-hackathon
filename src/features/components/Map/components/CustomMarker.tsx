@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, View, Text, StyleSheet, ImageBackground } from "react-native";
-import { Callout, LatLng, Marker } from "react-native-maps";
+import { LatLng, Marker } from "react-native-maps";
 
 export type MarkerTypes = "dot" | "circle" | "pin";
 interface MarkerProps {
@@ -10,6 +10,7 @@ interface MarkerProps {
   bgImg?: string;
   bgIcon?: number;
   isSelected: boolean;
+  timeToPlace?: number;
 }
 type MarkersObj = {
   [key in MarkerTypes]?: { path: number; style: {} };
@@ -29,12 +30,27 @@ export const CustomMarker = ({
   bgImg,
   bgIcon,
   isSelected,
+  timeToPlace,
 }: MarkerProps) => {
   return (
     <Marker coordinate={coordinates}>
       {tooltip && (
         <View style={styles.tooltip}>
           <Text style={styles.tooltipText}>{tooltip}</Text>
+        </View>
+      )}
+      {isSelected && timeToPlace && (
+        <View style={styles.timeToPlace}>
+          <ImageBackground
+            source={require("../../../../../assets/WalkWhite.png")}
+            style={{
+              width: 17,
+              height: 17,
+            }}
+          />
+          <Text style={styles.timeToPlaceText}>
+            {Math.round(timeToPlace)} min
+          </Text>
         </View>
       )}
       <View style={styles.MarkerContainer}>
@@ -96,16 +112,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   BgImageContainer: {
-    position: "relative",
-    top: 25,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fff",
     borderRadius: 6,
+    position: "relative",
+    top: 10,
   },
   BgImage: {
     borderRadius: 6,
     overflow: "hidden",
+  },
+  timeToPlace: {
+    backgroundColor: "#0AC2A1",
+    borderRadius: 10,
+    height: 30,
+    width: 68,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    top: 6,
+  },
+  timeToPlaceText: {
+    color: "#ffffff",
+    fontWeight: "400",
+    fontSize: 12,
+    lineHeight: 16,
   },
 });

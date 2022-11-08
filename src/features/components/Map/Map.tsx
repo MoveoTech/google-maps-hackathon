@@ -62,6 +62,7 @@ const Map = ({
             bgImg={place.marker.bgImg}
             bgIcon={place.marker.bgIcon}
             isSelected={place.isSelected}
+            timeToPlace={place.direction.duration}
           />
         ))}
         {tripPlaces?.map((tripPlace, index) => (
