@@ -103,7 +103,7 @@ export default memo(Map);
 
 const styles = StyleSheet.create({
   map: {
-    width: width * 0.95,
+    width: width,
     height: height * 0.9,
   },
 });

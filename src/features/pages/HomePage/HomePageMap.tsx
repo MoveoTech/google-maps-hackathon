@@ -10,7 +10,6 @@ import { MapDirectionsResponse } from "react-native-maps-directions";
 import { MarkerTypes } from "../../components/Map/components/CustomMarker";
 import { DirectionsType } from "../../components/Map/components/Directions";
 import { GoogleMapsPlaces } from "../../types";
-import { PhotosBaseURL } from "../../components/Card/InfoCard";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
@@ -48,7 +47,8 @@ export interface IDirections {
   distance?: number;
   duration?: number;
 }
-
+const PhotosBaseURL =
+  "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400";
 const { height, width } = Dimensions.get("window");
 const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
@@ -129,7 +129,7 @@ export const HomePageMap = ({ location }: Props) => {
   };
 
   const getNewLocationType = (): GoogleMapsPlaces => {
-    if (activeStep % 2 == 0) return "restaurant";
+    if (activeStep % 2 != 0) return "restaurant";
 
     const locationTypes: GoogleMapsPlaces[] = [
       "tourist_attraction",
