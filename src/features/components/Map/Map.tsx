@@ -31,6 +31,7 @@ const Map = ({
         heading: 1,
         pitch: 1,
         zoom: 14,
+        altitude: 1,
       }}
       style={styles.map}
       provider="google"
