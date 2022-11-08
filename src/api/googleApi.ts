@@ -1,6 +1,8 @@
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import axios from "axios";
+import { Alert, Linking } from "react-native";
 import { LatLng } from "react-native-maps";
+import { NavigationPlaces } from "../features/components/TimelineComponent/TimelineComponent";
 import { GoogleMapsPlaces, Location } from "../features/types";
 
 const baseUrl = "https://maps.googleapis.com/maps/api";
@@ -149,4 +151,12 @@ export const getDistanceCalculation = (
   };
   const getDistance = `${baseUrl}/distancematrix/json`;
   return axios.get(getDistance, { params });
+};
+
+export const openGoogleMaps = async (data: NavigationPlaces) => {
+  const { destinationId, destinationName, waypointsIds, waypointsNames } = data;
+  var url = `https://www.google.com/maps/dir/?api=1&travelmode=walking&dir_action=navigate&destination=${destinationName}&destination_place_id=${destinationId}&waypoints=${waypointsNames}&waypoint_place_ids=${waypointsIds}`;
+  const supported = await Linking.canOpenURL(url);
+  if (supported) await Linking.openURL(url);
+  else Alert.alert(`Don't know how to open this URL: ${url}`);
 };
