@@ -15,7 +15,7 @@ const Snackbar = ({ visible, label, isCheckIcon, hide }: ISnackbarProps) => (
   <View style={styles.container}>
     <SnackbarPaper
       visible={visible}
-      duration={800}
+      duration={350}
       onDismiss={hide}
       style={styles.snackbar}
     >

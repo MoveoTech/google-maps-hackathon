@@ -33,7 +33,7 @@ export const CustomMarker = ({
   timeToPlace,
 }: MarkerProps) => {
   return (
-    <Marker coordinate={coordinates}>
+    <Marker coordinate={coordinates} zIndex={type === "pin" ? 1 : 0}>
       {tooltip && (
         <View style={styles.tooltip}>
           <Text style={styles.tooltipText}>{tooltip}</Text>
@@ -58,11 +58,11 @@ export const CustomMarker = ({
           <>
             {isSelected ? (
               <View
-                style={{ ...styles.BgImageContainer, width: 55, height: 55 }}
+                style={{ ...styles.BgImageContainer, width: 65, height: 65 }}
               >
                 <ImageBackground
                   source={{ uri: bgImg }}
-                  style={{ ...styles.BgImage, width: 45, height: 45 }}
+                  style={{ ...styles.BgImage, width: 55, height: 55 }}
                 />
               </View>
             ) : (

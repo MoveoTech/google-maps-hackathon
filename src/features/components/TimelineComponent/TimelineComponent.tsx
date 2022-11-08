@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ImageSourcePropType, StyleSheet } from "react-native";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 
@@ -7,8 +7,13 @@ import { Container, StartPoint, EndPoint } from "./styles";
 import { FlexedView, MAIN } from "../../globalStyle";
 import Typography from "../Typography/Typography";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
-import { openGoogleMaps, PhotosBaseURL } from "../../../api/googleApi";
+import {
+  openGoogleMaps,
+  PhotosBaseURL,
+  reverseGeoCoding,
+} from "../../../api/googleApi";
 import Button from "../Button/Button";
+import { LatLng } from "react-native-maps";
 
 export interface NavigationPlaces {
   destinationId: string;
@@ -17,9 +22,12 @@ export interface NavigationPlaces {
   waypointsNames;
 }
 interface Timeline {
+  startLocation: LatLng;
   tripPlaces: IPlaceOnMap[];
 }
-const TimelineComponent = ({ tripPlaces }: Timeline) => {
+const TimelineComponent = ({ tripPlaces, startLocation }: Timeline) => {
+  const [startingLocationAddress, setStartingLocationAddress] = useState("");
+
   const prepareNavigationPlaces = (): NavigationPlaces => {
     const navigationPlaces = tripPlaces.map((place) => ({
       id: place.place_id,
@@ -38,6 +46,20 @@ const TimelineComponent = ({ tripPlaces }: Timeline) => {
   const { destinationId, destinationName, waypointsIds, waypointsNames } =
     prepareNavigationPlaces();
 
+  const getReverseGeoCoding = async () => {
+    const startLocationAddress = await reverseGeoCoding(
+      startLocation.latitude,
+      startLocation.longitude
+    );
+    setStartingLocationAddress(
+      startLocationAddress?.results[0]?.address_components[0]?.short_name || ""
+    );
+  };
+
+  useEffect(() => {
+    getReverseGeoCoding();
+  }, []);
+
   return (
     <Container>
       <StartPoint
@@ -48,7 +70,7 @@ const TimelineComponent = ({ tripPlaces }: Timeline) => {
               Start:&nbsp;
             </Typography>
             <Typography fontFamily="Avenir-heavy">
-              {/* destination location */}
+              {startingLocationAddress}
             </Typography>
           </FlexedView>
         }
@@ -72,18 +94,18 @@ const TimelineComponent = ({ tripPlaces }: Timeline) => {
           />
         );
       })}
-      <EndPoint
+      {/* <EndPoint
         addressName={
           <FlexedView>
             <Typography color={MAIN} fontFamily="Avenir-heavy">
               End:&nbsp;
             </Typography>
             <Typography fontFamily="Avenir-heavy">
-              {/*origin location */}
+              {endLocationAddress}
             </Typography>
           </FlexedView>
         }
-      />
+      /> */}
 
       <Button
         title="Navigate with Google maps"

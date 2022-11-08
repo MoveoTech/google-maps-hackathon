@@ -109,6 +109,37 @@ interface IAutocompletePlacesApiRes {
   data: IAutocompletePlacesRes;
 }
 
+interface GeoCodingResults {
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+  formatted_address: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+    location_type: string;
+    viewport: {
+      northeast: {
+        lat: number;
+        lng: number;
+      };
+      southwest: {
+        lat: number;
+        lng: number;
+      };
+    };
+  };
+  place_id: string;
+  types: string[];
+}
+export interface IRevGeocodingRes {
+  results: GeoCodingResults[];
+}
+
 export const getNearByPlaces = (
   location: LatLng,
   radius: number,
@@ -159,4 +190,23 @@ export const openGoogleMaps = async (data: NavigationPlaces) => {
   const supported = await Linking.canOpenURL(url);
   if (supported) await Linking.openURL(url);
   else Alert.alert(`Don't know how to open this URL: ${url}`);
+};
+
+export const reverseGeoCoding = async (
+  lat: number,
+  lng: number
+): Promise<IRevGeocodingRes> => {
+  try {
+    const params = {
+      key: GOOGLE_MAPS_APIKEY,
+      latlng: `${lat},${lng}`,
+    };
+    const url = `${baseUrl}/geocode/json`;
+    const res = (await axios.get(url, { params })) as {
+      data: IRevGeocodingRes;
+    };
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
 };

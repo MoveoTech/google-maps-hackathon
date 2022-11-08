@@ -244,9 +244,17 @@ export const HomePageMap = ({ location }: Props) => {
         SEARCH_RADIUS,
         newLocationType || locationType
       );
-      setAllPlaces(nearbyPlacesResponse.data.results);
+      const filteredResults = nearbyPlacesResponse.data.results?.filter(
+        (place) => {
+          const isPlaceAlreadyInTrip = tripPlaces
+            .map((place) => place.place_id)
+            .includes(place.place_id);
+          return !isPlaceAlreadyInTrip;
+        }
+      );
+      setAllPlaces(filteredResults);
       createTopPlaces(
-        nearbyPlacesResponse.data.results.slice(0, 4),
+        filteredResults.slice(0, 4),
         baseLocation,
         newLocationType
       );
@@ -298,7 +306,10 @@ export const HomePageMap = ({ location }: Props) => {
           <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
         )}
         {showTimeline ? (
-          <TimelineComponent tripPlaces={tripPlaces} />
+          <TimelineComponent
+            tripPlaces={tripPlaces}
+            startLocation={location.coords}
+          />
         ) : (
           <>
             <Button
