@@ -4,7 +4,7 @@
     "description": "trip planning",
     "slug": "dayway",
     "icon": "./assets/favicon.png",
-    "scheme": "com.googleMaps.dayway",
+    "scheme": "dayway",
     "splash": {
       "image": "./assets/favicon.png",
       "resizeMode": "contain",

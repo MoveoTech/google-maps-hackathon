@@ -85,10 +85,10 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
               ? "Open settings to grant location permission"
               : "Grant access to location"
           }
-          onPress={
+          onPress={() =>
             locationPermission?.status === "denied"
-              ? openAppSettings
-              : checkLocationPermission
+              ? openAppSettings()
+              : checkLocationPermission()
           }
         />
       </View>
@@ -117,8 +117,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   footer: {
-    position: "absolute",
-    bottom: 0,
     padding: 20,
     backgroundColor: TERTIARY,
     borderTopWidth: 0.8,
