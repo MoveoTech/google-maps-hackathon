@@ -41,7 +41,7 @@ export const CustomMarker = ({
                     <Text style={styles.tooltipText}>{tooltip}</Text>
                 </View>
             )}
-            {isSelected && timeToPlace && (
+            {!!(isSelected && timeToPlace) && (
                 <View style={styles.timeToPlace}>
                     <ImageBackground
                         source={require("../../../../../assets/WalkWhite.png")}
@@ -56,9 +56,9 @@ export const CustomMarker = ({
                 </View>
             )}
             <View style={styles.MarkerContainer}>
-                {(bgIcon || bgImg) && (
+                {!!(bgIcon || bgImg) && (
                     <>
-                        {isSelected ? (
+                        {!!isSelected ? (
                             <View
                                 style={{...styles.BgImageContainer, width: 65, height: 65}}
                             >
