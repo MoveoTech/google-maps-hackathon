@@ -1,21 +1,20 @@
 import React from "react";
-import {NavigationContainer} from "@react-navigation/native";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {useFonts} from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useFonts } from "expo-font";
 import {
   gestureHandlerRootHOC,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 
 import Loader from "./src/features/components/Loader/Loader";
-import Auth from "./src/features/pages/Auth/Auth";
 
 // Fonts
 import AvenirRegular from "./assets/fonts/Avenir-Regular.ttf";
 import AvenirLight from "./assets/fonts/Avenir-Light.ttf";
 import AvenirHeavy from "./assets/fonts/Avenir-Heavy.ttf";
 import AvenirBook from "./assets/fonts/Avenir-Book.ttf";
-import {HomePageMap} from "./src/features/pages/HomePage/HomePageMap";
+import Location from "./src/features/pages/Location/Location";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -26,23 +25,23 @@ export default function App() {
     "Avenir-book": AvenirBook,
   });
 
-  if (!loaded) return <Loader/>;
+  if (!loaded) return <Loader />;
 
   return (
-      <GestureHandlerRootView style={{flex: 1}}>
-        <NavigationContainer>
-          <Stack.Navigator
-              screenOptions={() => ({
-                title: "",
-              })}
-          >
-            <Stack.Screen name="Auth" component={Auth}/>
-            <Stack.Screen
-                name="Location"
-                component={gestureHandlerRootHOC(HomePageMap)}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
-        </GestureHandlerRootView>
-    );
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={() => ({
+            title: "",
+          })}
+        >
+          {/*<Stack.Screen name="Auth" component={Auth}/>*/}
+          <Stack.Screen
+            name="Location"
+            component={gestureHandlerRootHOC(Location)}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
 }
