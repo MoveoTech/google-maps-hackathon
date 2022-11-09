@@ -349,7 +349,9 @@ export const HomePageMap = ({location}: Props) => {
                 {isLoading ? (
                     _.times(4).map((_, index) => <InfoCardSkeleton key={index}/>)
                 ) : onBoarding ? (
-                    <TripLocation onPredictionClicked={onPredictionClicked}/>
+                    <TripLocation onPredictionClicked={onPredictionClicked}
+                                  currentLocationLat={location.coords.latitude}
+                                  currentLocationLng={location.coords.longitude}/>
                 ) : (
                     <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace}/>
                 )}
