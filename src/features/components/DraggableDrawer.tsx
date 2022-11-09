@@ -19,7 +19,7 @@ export const DraggableDrawer = ({
                                     onBoarding
                                 }: Props) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const snapPoints = useMemo(() => ["45%", "60%", "90%"], []);
+    const snapPoints = useMemo(() => ["25%", "60%", "90%"], []);
 
     const handleSheetChanges = useCallback((index: number) => {
     }, []);
