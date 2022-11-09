@@ -73,7 +73,7 @@ export const HomePageMap = ({location}: Props) => {
     const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>([]);
     const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
     const [allPlacesIndex, setAllPlacesIndex] = useState(0);
-    const [activeStep, setActiveStep] = useState(1);
+    const [activeStep, setActiveStep] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [onBoarding, setOnBoarding] = useState(true);
     const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
@@ -121,7 +121,7 @@ export const HomePageMap = ({location}: Props) => {
     };
 
     const getNewLocationType = (): GoogleMapsPlaces => {
-        if (activeStep % 2 != 0) return "restaurant";
+        if (activeStep % 2 == 0) return "restaurant";
 
         const locationTypes: GoogleMapsPlaces[] = [
             "tourist_attraction",
@@ -168,14 +168,8 @@ export const HomePageMap = ({location}: Props) => {
     ) => {
         const newLocationType = getNewLocationType();
         setLocationType(newLocationType);
+        setActiveStep((activeStep) => activeStep + 1);
         setAllPlacesIndex(0);
-        if (isLastStep) {
-            //TODO: handle case which the user skips all experiences
-            setTopFourPlaces([]);
-            setShowTimeline(true);
-            setTopTitle("Trip summary");
-            return;
-        }
         calculateStep(region, newLocationType);
     };
 
