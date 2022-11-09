@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Image,
-  NativeModules,
   Platform,
   Linking,
 } from "react-native";
@@ -24,8 +23,6 @@ const onOpen = {
   title: "Permission to access location was denied",
   isCheckIcon: false,
 };
-const { RNAndroidOpenSettings } = NativeModules;
-
 const AllowLocation = ({ navigation, currentLocationPermission }) => {
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const [locationPermission, setLocationPermission] =
@@ -52,9 +49,13 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
     if (Platform.OS === "ios") {
       Linking.openURL("app-settings:");
     } else {
-      RNAndroidOpenSettings.appDetailsSettings();
+      Linking.openSettings();
     }
   };
+
+  const isPermissionStatusDenied =
+    (locationPermission?.android && locationPermission.canAskAgain) ||
+    (!locationPermission?.android && locationPermission?.status === "denied");
 
   return (
     <View style={styles.container}>
@@ -79,18 +80,17 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
           It is very important that you choose the Always Allow option in the
           next dialog. It makes the system work better. Thank you.
         </Typography>
-        <Button
-          title={
-            locationPermission?.status === "denied"
-              ? "Open settings to grant location permission"
-              : "Grant access to location"
-          }
-          onPress={() =>
-            locationPermission?.status === "denied"
-              ? openAppSettings()
-              : checkLocationPermission()
-          }
-        />
+        {isPermissionStatusDenied ? (
+          <Button
+            title={"Open settings to grant location permission"}
+            onPress={openAppSettings}
+          />
+        ) : (
+          <Button
+            title={"Grant access to location"}
+            onPress={checkLocationPermission}
+          />
+        )}
       </View>
     </View>
   );
