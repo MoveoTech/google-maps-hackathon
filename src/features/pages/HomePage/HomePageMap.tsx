@@ -346,15 +346,14 @@ export const HomePageMap = ({location}: Props) => {
                         : `Step ${activeStep.toString()} out of ${maxSteps.toString()}`
                 }
             >
-                {isLoading ? (
-                    _.times(4).map((_, index) => <InfoCardSkeleton key={index}/>)
-                ) : onBoarding ? (
+                {onBoarding ? (
                     <TripLocation onPredictionClicked={onPredictionClicked}
                                   currentLocationLat={location.coords.latitude}
                                   currentLocationLng={location.coords.longitude}/>
-                ) : (
-                    <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace}/>
-                )}
+                ) : isLoading ? (
+                    _.times(4).map((_, index) => <InfoCardSkeleton key={index}/>)
+                ) : <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace}/>
+                }
                 {showTimeline && (
                     <TimelineComponent
                         tripPlaces={tripPlaces}

@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
-import {View} from "react-native";
+import {StyleSheet, Text} from "react-native";
 import {
     autocompletePlace,
     IPrediction, reverseGeoCoding,
 } from "../../../api/googleApi";
 import useDebounce from "../../hooks/useDebounce";
-import {Button, Menu, MenuItemProps, Provider, TextInput} from "react-native-paper";
-import {Autocomplete, AutocompleteScrollView} from "react-native-paper-autocomplete";
+import {List, Provider, TextInput} from "react-native-paper";
+import hairlineWidth = StyleSheet.hairlineWidth;
+import cross from '../../../../assets/cross.png';
+import locationVector from '../../../../assets/Vector.png'
 
 interface Props {
     onPredictionClicked: (place_id: string) => void;
@@ -15,17 +17,18 @@ interface Props {
 }
 
 export const LocationAutoComplete = ({onPredictionClicked, currentLocationLat, currentLocationLng}: Props) => {
-    const [manualLocation, setManualLocation] = useState("");
-    const debouncedValue = useDebounce<string>(manualLocation, 1000);
+    const [loc, setLoc] = useState("");
+    const debouncedValue = useDebounce<string>(loc, 1000);
     const [selected, setSelected] = useState<string>("");
-    const [currentLocation, setCurrentLocation] = useState<string>("")
-    const [isDropDownItemSelected, setIsDropDownItemSelected] = React.useState(false);
-    const [newName, setNewName] = useState<string>("")
+    const [currentLocation, setCurrentLocation] = useState<string>(null)
+    const [currentLocationID, setCurrentLocationID] = useState<string>(null)
+    const [isDropDown, setIsDropDown] = React.useState(false);
+    const [focused, setFocused] = useState<boolean>(false);
 
     const [locationsToSelect, setLocationsToSelect] = useState<IPrediction[]>();
     const onTypeLocation = (input: string) => {
-        setIsDropDownItemSelected(true)
-        setManualLocation(input);
+        setIsDropDown(true)
+        setLoc(input);
         setSelected("")
     };
 
@@ -37,13 +40,13 @@ export const LocationAutoComplete = ({onPredictionClicked, currentLocationLat, c
     const onSelectLocation = (place_id: string, description: string) => {
         onPredictionClicked(place_id);
         setSelected(place_id);
-        setNewName(description)
-        setIsDropDownItemSelected(false)
+        setLoc(description)
+        setIsDropDown(false)
     };
 
     useEffect(() => {
         if (!debouncedValue) return;
-        handleAutoComplete();
+        handleAutoComplete()
     }, [debouncedValue]);
 
 
@@ -52,33 +55,56 @@ export const LocationAutoComplete = ({onPredictionClicked, currentLocationLat, c
             currentLocationLat,
             currentLocationLng
         );
-        setCurrentLocation(currentLocation.results[0].formatted_address)
+        setCurrentLocation(currentLocation.results[0].formatted_address);
+        setCurrentLocationID(currentLocation.results[0].place_id);
     };
 
     useEffect(() => {
         getReverseGeoCoding()
     }, [])
 
-    const getLabel = () => {
-        if (!selected) {
-            return currentLocation
-        } else {
-            return newName
-        }
+    const reset = () => {
+        setLocationsToSelect([]);
+        setLoc("")
     }
+
+    useEffect(() => {
+        if (loc === "" && currentLocationID) {
+            setSelected(currentLocationID);
+            onPredictionClicked(currentLocationID);
+        }
+    }, [loc])
+
+
+    const element = <TextInput.Icon icon={locationVector} size={22} style={{margin: 0, padding: 0}}/>
+    const crossElement = <TextInput.Icon icon={cross} size={10}
+                                         style={{margin: 0}}
+                                         onPress={reset}/>
+
 
     return (
         <Provider>
             <TextInput
+                numberOfLines={1}
+                style={{overflow: 'hidden'}}
                 mode="outlined"
-                label={currentLocation}
-                placeholder={"Plan a trip to..."}
-                value={selected ? newName : manualLocation}
+                placeholder={focused ? "Plan a trip to..." : currentLocation}
+                value={loc}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
                 onChangeText={onTypeLocation}
+                left={selected === currentLocationID && element}
+                right={crossElement}
             />
-            {isDropDownItemSelected && locationsToSelect?.map((location) => (
-                <Menu.Item
-                    key={location.main_text}
+            {isDropDown && locationsToSelect?.map((location) => (
+                <List.Item
+                    style={{
+                        marginTop: 10,
+                        borderBottomColor: 'lightgrey',
+                        borderBottomWidth: hairlineWidth,
+                        marginBottom: 10,
+                    }}
+                    key={location.place_id}
                     onPress={() => onSelectLocation(location.place_id, location.description)}
                     title={location.structured_formatting.main_text}
                 />
