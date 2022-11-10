@@ -5,6 +5,7 @@ import { Directions } from "./components/Directions";
 import { CustomMarker } from "./components/CustomMarker";
 import { IPlaceOnMap } from "../../pages/HomePage/HomePageMap";
 import { MapDirectionsResponse } from "react-native-maps-directions";
+import { MAIN } from "../../globalStyle";
 
 const { height, width } = Dimensions.get("window");
 
@@ -36,7 +37,7 @@ const Map = ({
       style={styles.map}
       provider="google"
       showsUserLocation
-      tintColor="#0AC2A1"
+      tintColor={MAIN}
       zoomEnabled
       zoomControlEnabled
       showsMyLocationButton
