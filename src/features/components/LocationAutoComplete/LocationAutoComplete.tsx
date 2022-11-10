@@ -12,8 +12,8 @@ import locationVector from '../../../../assets/Vector.png'
 
 interface Props {
     onPredictionClicked: (place_id: string) => void;
-    currentLocationLat: number;
-    currentLocationLng: number
+    currentLocationLat?: number;
+    currentLocationLng?: number;
 }
 
 export const LocationAutoComplete = ({onPredictionClicked, currentLocationLat, currentLocationLng}: Props) => {

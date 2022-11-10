@@ -76,7 +76,7 @@ const TimelineComponent = ({
                 displayLineIcon={false}
                 addressName={
                     <FlexedView>
-                        <Typography color={MAIN} fontFamily="Avenir-heavy">
+                        <Typography style={{marginRight: 10}} color={MAIN} fontFamily="Avenir-heavy">
                             Start:&nbsp;
                         </Typography>
                         <Typography fontFamily="Avenir-heavy">

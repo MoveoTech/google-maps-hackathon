@@ -75,6 +75,7 @@ export interface Term {
 }
 
 export interface IPrediction {
+    coords: any;
     description: string;
     matched_substrings: MatchedSubstring[];
     place_id: string;

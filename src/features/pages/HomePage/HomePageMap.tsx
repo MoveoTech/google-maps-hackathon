@@ -5,7 +5,7 @@ import {
     getDetails,
     getNearByPlaces,
     IPlace,
-    PhotosBaseURL,
+    PhotosBaseURL, reverseGeoCoding,
 } from "../../../api/googleApi";
 import {Cards} from "../../components/Card/Cards";
 import {DraggableDrawer} from "../../components/DraggableDrawer";
@@ -80,10 +80,32 @@ export const HomePageMap = ({location}: Props) => {
     const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
     const {openSnackbar, hideSnackbar, snackbar} = useSnackbar();
     const [showTimeline, setShowTimeline] = useState(false);
+    const [newLocation, setNewLocation] = useState<LatLng>({
+        latitude: location?.coords?.latitude,
+        longitude: location?.coords?.longitude
+    })
     const [region, setRegion] = useState<LatLng>({
         latitude: location?.coords?.latitude,
         longitude: location?.coords?.longitude,
     });
+
+    const onPredictionClicked = useCallback(async (place_id: string) => {
+        const details = await getDetails(place_id);
+        if (details) {
+            const latitude = details?.data.result.geometry.location.lat;
+            const longitude = details?.data.result.geometry.location.lng;
+            setRegion((prevRegion) => ({
+                ...prevRegion,
+                latitude,
+                longitude,
+            }))
+            setNewLocation({
+                latitude,
+                longitude
+            })
+        }
+    }, []);
+
     const changeRegion = ({lat, lng}: { lat: number; lng: number }) => {
         setRegion({
             latitude: lat,
@@ -93,9 +115,10 @@ export const HomePageMap = ({location}: Props) => {
     const maxSteps = 4;
 
     const [startingLocation, setStartingLocation] = useState<LatLng>({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: newLocation?.latitude,
+        longitude: newLocation?.longitude,
     });
+
     const [locationType, setLocationType] = useState<GoogleMapsPlaces>("cafe");
 
     const onSelectPlace = (place_id: string) => {
@@ -303,18 +326,6 @@ export const HomePageMap = ({location}: Props) => {
         setIsLoading(false);
     };
 
-    const onPredictionClicked = useCallback(async (place_id: string) => {
-        const details = await getDetails(place_id);
-        if (details) {
-            const latitude = details?.data.result.geometry.location.lat;
-            const longitude = details?.data.result.geometry.location.lng;
-            setRegion((prevRegion) => ({
-                ...prevRegion,
-                latitude,
-                longitude,
-            }));
-        }
-    }, []);
 
     const initialWizard = () => {
         setTopFourPlaces([]);
@@ -326,6 +337,7 @@ export const HomePageMap = ({location}: Props) => {
         setShowTimeline(false);
         calculateStep();
     };
+
     return (
         <>
             <HomepageContainer>
@@ -345,10 +357,12 @@ export const HomePageMap = ({location}: Props) => {
                         : `Step ${activeStep.toString()} out of ${maxSteps.toString()}`
                 }
             >
+
                 {onBoarding ? (
                     <TripLocation onPredictionClicked={onPredictionClicked}
                                   currentLocationLat={location.coords.latitude}
-                                  currentLocationLng={location.coords.longitude}/>
+                                  currentLocationLng={location.coords.longitude}
+                    />
                 ) : isLoading ? (
                     _.times(4).map((_, index) => <InfoCardSkeleton key={index}/>)
                 ) : <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace}/>
@@ -356,7 +370,7 @@ export const HomePageMap = ({location}: Props) => {
                 {showTimeline && (
                     <TimelineComponent
                         tripPlaces={tripPlaces}
-                        startLocation={{latitude: region.latitude, longitude: region.longitude}}
+                        startLocation={{latitude: newLocation?.latitude, longitude: newLocation?.longitude}}
                         initialWizard={initialWizard}
                     />
                 )}

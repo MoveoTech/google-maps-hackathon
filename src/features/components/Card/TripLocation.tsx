@@ -6,7 +6,7 @@ import {LocationAutoComplete} from "../LocationAutoComplete/LocationAutoComplete
 interface Props {
     onPredictionClicked: (place_id: string) => void;
     currentLocationLat: number;
-    currentLocationLng: number
+    currentLocationLng: number;
 }
 
 export const TripLocation = ({onPredictionClicked, currentLocationLat, currentLocationLng}: Props) => {
