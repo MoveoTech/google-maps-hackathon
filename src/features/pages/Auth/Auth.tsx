@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  Text,
+} from "react-native";
 
 import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import { IUser } from "../../types";
@@ -13,12 +20,15 @@ import Location from "../Location/Location";
 import Typography from "../../components/Typography/Typography";
 import backgroundImage from "../../../../assets/welcome.png";
 import { GRAY_LIGHT } from "../../globalStyle";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { capitalize } from "lodash";
 
 const Auth = ({ navigation }) => {
   const { status } = requestLocationPermission();
 
   const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
+  const [skipLogin, setSkipLogin] = useState(false);
 
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
@@ -51,17 +61,18 @@ const Auth = ({ navigation }) => {
     );
   return (
     <UserProvider>
-      {user ? (
+      {user || skipLogin ? (
         status?.granted ? (
           <Location />
         ) : (
           <AllowLocation
+            username={capitalize(userInfo?.name || "") || ""}
             navigation={navigation}
             currentLocationPermission={status}
           />
         )
       ) : (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <Image source={backgroundImage} style={{ height: "55%" }} />
           <View style={styles.labelWrapper}>
             <Typography fontSize="xxl" weight="900">
@@ -84,9 +95,14 @@ const Auth = ({ navigation }) => {
             style={styles.loginButton}
             title="Login and start you tour now!"
             disabled={!request}
-            onPress={() => promptAsync({ useProxy: true })}
+            onPress={() => promptAsync()}
           />
-        </View>
+          <Pressable onPress={() => setSkipLogin(true)}>
+            <Text style={{ textDecorationLine: "underline" }}>
+              Continue as a guest
+            </Text>
+          </Pressable>
+        </SafeAreaView>
       )}
     </UserProvider>
   );

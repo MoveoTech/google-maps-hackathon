@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "dayway",
-    "description": "trip planning",
+    "name": "Day Trip",
+    "description": "Planning an amazing day trip in seconds - Wherever you are, whenever you want to start your day - we will help you choose the best places to visit (or places to eat at) around your location",
     "slug": "dayway",
     "icon": "./assets/favicon.png",
-    "scheme": "dayway",
+    "scheme": "com.googlemaps.dayway",
     "splash": {
       "image": "./assets/favicon.png",
       "resizeMode": "contain",
@@ -21,13 +21,13 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.googleMaps.dayway"
+      "bundleIdentifier": "com.googlemaps.dayway"
     },
     "android": {
-      "package": "com.googleMaps.dayway",
+      "package": "com.googlemaps.dayway",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCiy2F_V4mgzcnbh3TmaYeJgw7w_rBiMt8"
+          "apiKey": "AIzaSyA1yDFpHEFveYa4tTjL8KXxDPrdjzWLurs"
         }
       }
     },

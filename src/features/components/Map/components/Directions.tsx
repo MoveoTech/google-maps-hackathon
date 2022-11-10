@@ -23,7 +23,7 @@ export const Directions = ({ type = "primary", ...props }: DirectionProps) => {
     <MapViewDirections
       mode="WALKING"
       apikey={GOOGLE_MAPS_APIKEY}
-      strokeWidth={type === "dashedLight" ? 1 : 2}
+      strokeWidth={type === "dashedLight" ? 4 : 5}
       strokeColor={
         type === "transparent"
           ? "transparent"
