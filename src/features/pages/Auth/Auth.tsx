@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, Dimensions, Pressable } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  Text,
+} from "react-native";
 
 import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import { IUser } from "../../types";
@@ -13,6 +20,8 @@ import Location from "../Location/Location";
 import Typography from "../../components/Typography/Typography";
 import backgroundImage from "../../../../assets/welcome.png";
 import { GRAY_LIGHT } from "../../globalStyle";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { capitalize } from "lodash";
 
 const Auth = ({ navigation }) => {
   const { status } = requestLocationPermission();
@@ -57,20 +66,18 @@ const Auth = ({ navigation }) => {
           <Location />
         ) : (
           <AllowLocation
-            username={userInfo.name}
+            username={capitalize(userInfo?.name || "") || ""}
             navigation={navigation}
             currentLocationPermission={status}
           />
         )
       ) : (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <Image source={backgroundImage} style={{ height: "55%" }} />
           <View style={styles.labelWrapper}>
-            <Pressable onPress={() => setSkipLogin(true)}>
-              <Typography fontSize="xxl" weight="900">
-                Trip app
-              </Typography>
-            </Pressable>
+            <Typography fontSize="xxl" weight="900">
+              Trip app
+            </Typography>
             <Typography
               fontSize="l"
               weight="500"
@@ -90,7 +97,12 @@ const Auth = ({ navigation }) => {
             disabled={!request}
             onPress={() => promptAsync()}
           />
-        </View>
+          <Pressable onPress={() => setSkipLogin(true)}>
+            <Text style={{ textDecorationLine: "underline" }}>
+              Continue as a guest
+            </Text>
+          </Pressable>
+        </SafeAreaView>
       )}
     </UserProvider>
   );
