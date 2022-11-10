@@ -46,7 +46,7 @@ export const DraggableDrawer = ({
         <ScrollView
           contentContainerStyle={[
             styles.cardContainers,
-            { minHeight: snapIndex === 1 ? 330 : 0 },
+            { minHeight: snapIndex === 1 ? 430 : 0 },
           ]}
         >
           {children}

@@ -9,12 +9,12 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { UserProvider } from "../../contexts/UserContext";
 import AllowLocation from "../AllowLocation/AllowLocation";
 import Button from "../../components/Button/Button";
-import Loader from "../../components/Loader/Loader";
 import Location from "../Location/Location";
 import Typography from "../../components/Typography/Typography";
 import { GRAY_LIGHT } from "../../globalStyle";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { capitalize } from "lodash";
+import CircularLoader from "../../components/CircularLoader/CircularLoader";
 
 const WelcomeImage = () => (
   <Svg width="364" height="326" viewBox="0 0 364 326" fill="none">
@@ -657,7 +657,7 @@ const Auth = ({ navigation }) => {
   if (isLoading)
     return (
       <View style={styles.container}>
-        <Loader />
+        <CircularLoader />
       </View>
     );
   return (
