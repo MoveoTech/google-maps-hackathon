@@ -23,7 +23,7 @@ const onOpen = {
   title: "Permission to access location was denied",
   isCheckIcon: false,
 };
-const AllowLocation = ({ navigation, currentLocationPermission }) => {
+const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const [locationPermission, setLocationPermission] =
     useState<Location.LocationPermissionResponse>(currentLocationPermission);
@@ -61,7 +61,7 @@ const AllowLocation = ({ navigation, currentLocationPermission }) => {
     <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <Typography fontSize="xxl" weight="900">
-          We need access to Location
+          {`Hi ${username?.split(" ")[0]}, We need access to Location`}
         </Typography>
         <Typography style={styles.subTitle} fontSize="l" weight="400">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.

@@ -319,7 +319,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.googleMaps.dayway";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.googlemaps.dayway";
 				PRODUCT_NAME = "dayway";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -344,7 +344,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.googleMaps.dayway";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.googlemaps.dayway";
 				PRODUCT_NAME = "dayway";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
