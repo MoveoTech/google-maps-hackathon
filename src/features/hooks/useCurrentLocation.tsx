@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LocationObject } from "expo-location";
+import * as Location from "expo-location";
 
 const mockLocation = {
   coords: {
@@ -15,13 +15,13 @@ const mockLocation = {
 };
 
 export const useCurrentLocation = () => {
-  const [location, setLocation] = useState<LocationObject>();
+  const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     (async () => {
       try {
-        let currentLocation = mockLocation; // await CurrentLocation.getCurrentPositionAsync({});
+        let currentLocation = await Location.getCurrentPositionAsync({});
         setLocation(currentLocation);
       } catch (e) {
         setErrorMsg(e);

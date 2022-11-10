@@ -148,6 +148,7 @@ export const getNearByPlaces = (
   const params = {
     radius,
     type,
+    keyword: type,
     key: GOOGLE_MAPS_APIKEY,
   };
   const nearbyPlacesUrl = `${baseUrl}/place/nearbysearch/json?location=${location.latitude}%2C${location.longitude}`;

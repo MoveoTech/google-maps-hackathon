@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Image, StyleSheet, Dimensions, Pressable } from "react-native";
 
 import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
 import { IUser } from "../../types";
@@ -19,6 +19,7 @@ const Auth = ({ navigation }) => {
 
   const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
+  const [skipLogin, setSkipLogin] = useState(false);
 
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
@@ -51,7 +52,7 @@ const Auth = ({ navigation }) => {
     );
   return (
     <UserProvider>
-      {user ? (
+      {user || skipLogin ? (
         status?.granted ? (
           <Location />
         ) : (
@@ -64,9 +65,11 @@ const Auth = ({ navigation }) => {
         <View style={styles.container}>
           <Image source={backgroundImage} style={{ height: "55%" }} />
           <View style={styles.labelWrapper}>
-            <Typography fontSize="xxl" weight="900">
-              Trip app
-            </Typography>
+            <Pressable onPress={() => setSkipLogin(true)}>
+              <Typography fontSize="xxl" weight="900">
+                Trip app
+              </Typography>
+            </Pressable>
             <Typography
               fontSize="l"
               weight="500"
@@ -84,7 +87,7 @@ const Auth = ({ navigation }) => {
             style={styles.loginButton}
             title="Login and start you tour now!"
             disabled={!request}
-            onPress={() => promptAsync({ useProxy: true })}
+            onPress={() => promptAsync()}
           />
         </View>
       )}

@@ -5,7 +5,7 @@ import { getNearByPlaces, IPlace, PhotosBaseURL } from "../../../api/googleApi";
 import { Cards } from "../../components/Card/Cards";
 import { DraggableDrawer } from "../../components/DraggableDrawer";
 import { LocationObject } from "expo-location";
-import { LatLng, Region } from "react-native-maps";
+import { LatLng } from "react-native-maps";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 import { MarkerTypes } from "../../components/Map/components/CustomMarker";
 import { DirectionsType } from "../../components/Map/components/Directions";
@@ -57,7 +57,7 @@ const placesIcon = {
   beach: require(`../../../../assets/beach.png`),
 };
 
-const SEARCH_RADIUS = 3000;
+const SEARCH_RADIUS = 500;
 
 interface Props {
   location: LocationObject;
@@ -115,7 +115,7 @@ export const HomePageMap = ({ location }: Props) => {
   };
 
   const getNewLocationType = (): GoogleMapsPlaces => {
-    if (activeStep % 2 != 0) return "restaurant";
+    if (activeStep === 2) return "restaurant";
 
     const locationTypes: GoogleMapsPlaces[] = [
       "tourist_attraction",
@@ -146,7 +146,6 @@ export const HomePageMap = ({ location }: Props) => {
     setAllPlacesIndex(0);
     setActiveStep((activeStep) => activeStep + 1);
     if (isLastStep) {
-      //TODO: handle case which the user skips all experiences
       setTopFourPlaces([]);
       setShowTimeline(true);
       setTopTitle("Trip summary");
