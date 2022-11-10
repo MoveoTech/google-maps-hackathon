@@ -3,6 +3,7 @@ import { GOOGLE_MAPS_APIKEY } from "@env";
 import MapViewDirections, {
   MapViewDirectionsProps,
 } from "react-native-maps-directions";
+import { MAIN } from "../../../globalStyle";
 
 export type DirectionsType =
   | "primary"
@@ -28,8 +29,8 @@ export const Directions = ({ type = "primary", ...props }: DirectionProps) => {
         type === "transparent"
           ? "transparent"
           : type === "dashedLight"
-          ? "rgba(10, 194, 160, 0.5)"
-          : "#0ac2a0"
+          ? "#E56000"
+          : MAIN
       }
       lineDashPattern={type === "primary" ? [] : [30, 30]}
       {...props}

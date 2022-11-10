@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import LottieView, { AnimationObject } from "lottie-react-native";
 

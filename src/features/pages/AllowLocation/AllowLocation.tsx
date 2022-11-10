@@ -15,9 +15,7 @@ import Button from "../../components/Button/Button";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { useAppStateChange } from "../../hooks/useAppStateChange";
-import likeImage from "../../../../assets/like.png";
 import locationImage from "../../../../assets/location.png";
-import { MAIN, TERTIARY } from "../../globalStyle";
 
 const onOpen = {
   title: "Permission to access location was denied",
@@ -64,10 +62,11 @@ const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
           {`Hi ${username?.split(" ")[0]}, We need access to Location`}
         </Typography>
         <Typography style={styles.subTitle} fontSize="l" weight="400">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          In order to find the best places to visit around your location - we
+          need to have access to your mobile device’s GPS
         </Typography>
       </View>
-      <Image source={locationImage} style={{ marginTop: 24 }} />
+      <Image source={locationImage} />
       <Snackbar
         label={snackbar.title}
         isCheckIcon={snackbar.isCheckIcon}
@@ -75,11 +74,6 @@ const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
         hide={hideSnackbar}
       />
       <View style={styles.footer}>
-        <Image source={likeImage} style={{ marginBottom: 12 }} />
-        <Typography fontSize="l" style={styles.textFooter}>
-          It is very important that you choose the Always Allow option in the
-          next dialog. It makes the system work better. Thank you.
-        </Typography>
         {isPermissionStatusDenied ? (
           <Button
             title={"Open settings to grant location permission"}
@@ -110,7 +104,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   titleWrapper: {
-    width: "100%",
+    width: "90%",
     marginTop: 16,
   },
   subTitle: {
@@ -118,10 +112,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 20,
-    backgroundColor: TERTIARY,
-    borderTopWidth: 0.8,
-    borderTopColor: MAIN,
-    height: "32%",
     width: Dimensions.get("window").width,
   },
   textFooter: {
