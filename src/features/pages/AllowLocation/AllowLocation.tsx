@@ -1026,7 +1026,7 @@ const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
           />
         ) : (
           <Button
-            title={"Grant access to location"}
+            title={"Allow location access"}
             onPress={checkLocationPermission}
           />
         )}
