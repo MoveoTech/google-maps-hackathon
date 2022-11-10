@@ -350,7 +350,7 @@ export const HomePageMap = ({ location }: Props) => {
             : `Step ${activeStep.toString()} out of ${maxSteps.toString()}`
         }
       >
-        {onBoarding ? (
+        {onBoarding && !showTimeline ? (
           <TripLocation
             onPredictionClicked={onPredictionClicked}
             currentLocationLat={location.coords.latitude}
