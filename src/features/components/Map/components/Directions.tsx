@@ -19,7 +19,7 @@ type DirectionProps = Omit<
   "apikey" | "stokeWidth" | "strokeColor" | "lineDashPattern" | "mode"
 >;
 
-export const Directions = ({ type = "primary", ...props }: DirectionProps) => {
+export const Directions = ({ type = "dashed", ...props }: DirectionProps) => {
   return (
     <MapViewDirections
       mode="WALKING"
