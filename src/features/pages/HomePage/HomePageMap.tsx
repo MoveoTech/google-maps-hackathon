@@ -80,6 +80,8 @@ export const HomePageMap = ({location}: Props) => {
     const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
     const {openSnackbar, hideSnackbar, snackbar} = useSnackbar();
     const [showTimeline, setShowTimeline] = useState(false);
+    const [locationPlaceId, setLocationPlaceId] = useState<string>("")
+    const [formattedAddress, setFormattedAddress] = useState<string>("")
     const [newLocation, setNewLocation] = useState<LatLng>({
         latitude: location?.coords?.latitude,
         longitude: location?.coords?.longitude
@@ -103,6 +105,8 @@ export const HomePageMap = ({location}: Props) => {
                 latitude,
                 longitude
             })
+            setLocationPlaceId(details.data.result.place_id)
+            setFormattedAddress(details.data.result.formatted_address)
         }
     }, []);
 
@@ -397,22 +401,24 @@ export const HomePageMap = ({location}: Props) => {
                 visible={snackbar.isVisible}
                 hide={hideSnackbar}
             />
-            {!showTimeline && (
-                <View style={{width: Dimensions.get("window").width, height: 100}}>
-                    <StickyFooter
-                        onBoarding={onBoarding}
-                        next={onNextStep}
-                        isNextDisabled={
-                            !Boolean(
-                                topFourPlaces?.find((place) => place.isSelected === true)
-                            )
-                        }
-                        skip={createNextPlace}
-                        isLast={activeStep === maxSteps}
-                        continueCallback={continueCallback}
-                    />
-                </View>
-            )}
+            <View style={{width: Dimensions.get("window").width, height: 100}}>
+                <StickyFooter
+                    address={formattedAddress}
+                    addressID={locationPlaceId}
+                    tripPlaces={tripPlaces}
+                    showTimeline={showTimeline}
+                    onBoarding={onBoarding}
+                    next={onNextStep}
+                    isNextDisabled={
+                        !Boolean(
+                            topFourPlaces?.find((place) => place.isSelected === true)
+                        )
+                    }
+                    skip={createNextPlace}
+                    isLast={activeStep === maxSteps}
+                    continueCallback={continueCallback}
+                />
+            </View>
         </>
     );
 };

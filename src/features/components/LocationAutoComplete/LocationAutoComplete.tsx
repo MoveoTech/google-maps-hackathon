@@ -85,7 +85,7 @@ export const LocationAutoComplete = ({onPredictionClicked, currentLocationLat, c
     return (
         <Provider>
             <TextInput
-                activeOutlineColor="black"
+                activeOutlineColor="grey"
                 numberOfLines={1}
                 style={{overflow: 'hidden'}}
                 mode="outlined"
