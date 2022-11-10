@@ -308,7 +308,6 @@ export const HomePageMap = ({location}: Props) => {
         if (details) {
             const latitude = details?.data.result.geometry.location.lat;
             const longitude = details?.data.result.geometry.location.lng;
-            console.log("PLACE", latitude);
             setRegion((prevRegion) => ({
                 ...prevRegion,
                 latitude,
@@ -357,7 +356,7 @@ export const HomePageMap = ({location}: Props) => {
                 {showTimeline && (
                     <TimelineComponent
                         tripPlaces={tripPlaces}
-                        startLocation={location.coords}
+                        startLocation={{latitude: region.latitude, longitude: region.longitude}}
                         initialWizard={initialWizard}
                     />
                 )}
