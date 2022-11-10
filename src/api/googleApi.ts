@@ -198,8 +198,7 @@ export const getDetails = (place_id: any): Promise<any> => {
     key: GOOGLE_MAPS_APIKEY,
   };
   const getDetails = `${baseUrl}/place/details/json`;
-  const result = axios.get(getDetails, { params });
-  return result;
+  return axios.get(getDetails, { params });
 };
 
 export const openGoogleMaps = async (data: NavigationPlaces) => {

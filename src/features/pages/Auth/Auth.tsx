@@ -88,7 +88,7 @@ const Auth = ({ navigation }) => {
             style={styles.loginButton}
             title="Login and start you tour now!"
             disabled={!request}
-            onPress={() => promptAsync({ useProxy: true })}
+            onPress={() => promptAsync()}
           />
         </View>
       )}

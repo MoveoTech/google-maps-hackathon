@@ -80,10 +80,13 @@ export const HomePageMap = ({ location }: Props) => {
   const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const [showTimeline, setShowTimeline] = useState(false);
-  const [newLocation, setNewLocation] = useState<LatLng>({
+  const [startingLocationAddress, setStartingLocationAddress] = useState("");
+  const [startingLocation, setStartingLocation] = useState<LatLng>({
     latitude: location?.coords?.latitude,
     longitude: location?.coords?.longitude,
   });
+
+  const [locationType, setLocationType] = useState<GoogleMapsPlaces>("cafe");
   const [region, setRegion] = useState<LatLng>({
     latitude: location?.coords?.latitude,
     longitude: location?.coords?.longitude,
@@ -99,10 +102,11 @@ export const HomePageMap = ({ location }: Props) => {
         latitude,
         longitude,
       }));
-      setNewLocation({
+      setStartingLocation({
         latitude,
         longitude,
       });
+      setStartingLocationAddress(details?.data?.result?.formatted_address);
     }
   }, []);
 
@@ -113,13 +117,6 @@ export const HomePageMap = ({ location }: Props) => {
     });
   };
   const maxSteps = 4;
-
-  const [startingLocation, setStartingLocation] = useState<LatLng>({
-    latitude: newLocation?.latitude,
-    longitude: newLocation?.longitude,
-  });
-
-  const [locationType, setLocationType] = useState<GoogleMapsPlaces>("cafe");
 
   const onSelectPlace = (place_id: string) => {
     let lat: number, lng: number;
@@ -268,7 +265,7 @@ export const HomePageMap = ({ location }: Props) => {
     newStartingLocation?: LatLng,
     newLocationType?: GoogleMapsPlaces
   ) => {
-    const baseLocation = region || newStartingLocation || startingLocation;
+    const baseLocation = newStartingLocation || startingLocation;
     try {
       setIsLoading(true);
       const nearbyPlacesResponse = await getNearByPlaces(
@@ -276,6 +273,7 @@ export const HomePageMap = ({ location }: Props) => {
         SEARCH_RADIUS,
         newLocationType || locationType
       );
+
       const filteredResults = nearbyPlacesResponse.data.results?.filter(
         (place) => {
           const isPlaceAlreadyInTrip = tripPlaces
@@ -357,10 +355,7 @@ export const HomePageMap = ({ location }: Props) => {
         {showTimeline && (
           <TimelineComponent
             tripPlaces={tripPlaces}
-            startLocation={{
-              latitude: newLocation?.latitude,
-              longitude: newLocation?.longitude,
-            }}
+            startingLocationAddress={startingLocationAddress}
             initialWizard={initialWizard}
           />
         )}
