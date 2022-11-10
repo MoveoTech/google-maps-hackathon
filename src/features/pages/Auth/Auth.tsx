@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Dimensions, Pressable, Text } from "react-native";
+import { View, StyleSheet, Dimensions, Pressable } from "react-native";
 import Svg, { Defs, Path, Rect } from "react-native-svg";
 
 import { requestLocationPermission } from "../../../permissions/requestLocationPermission";
@@ -705,10 +705,13 @@ const Auth = ({ navigation }) => {
             disabled={!request}
             onPress={() => promptAsync()}
           />
-          <Pressable onPress={() => setSkipLogin(true)}>
-            <Text style={{ textDecorationLine: "underline" }}>
+          <Pressable
+            onPress={() => setSkipLogin(true)}
+            style={{ marginBottom: 24 }}
+          >
+            <Typography style={{ textDecorationLine: "underline" }}>
               Continue as a guest
-            </Text>
+            </Typography>
           </Pressable>
         </SafeAreaView>
       )}
@@ -733,7 +736,6 @@ const styles = StyleSheet.create({
 
   loginButton: {
     width: Dimensions.get("window").width - 16,
-    marginBottom: 22,
   },
 
   labelWrapper: {

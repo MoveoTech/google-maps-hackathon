@@ -72,14 +72,20 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
       <View style={styles(isPressed).bottomContainer} />
       <Card.Content
         style={{
+          position: "relative",
+          top: 8,
           display: "flex",
+          flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
         <Typography style={styles(isPressed).distanceDetails}>
           {pricing(place?.price_level)} •
-          <WalkIcon />
+        </Typography>
+
+        <WalkIcon />
+        <Typography style={styles(isPressed).distanceDetails}>
           {duration <= 10 ? Math.round(duration) : Math.round(duration - 4.99)}-
           {Math.round(duration + 4.99)} min
         </Typography>
@@ -93,6 +99,7 @@ const styles = (isPressed: boolean) =>
     cardWrapper: {
       margin: 5,
       width: Dimensions.get("window").width * 0.45,
+      //   height: 260,
       borderWidth: 1,
       borderColor: isPressed ? MAIN : "transparent",
       borderRadius: 7,
@@ -122,7 +129,6 @@ const styles = (isPressed: boolean) =>
     },
     distanceDetails: {
       display: "flex",
-      marginTop: 5,
       color: SECONDARY,
     },
     user_ratings_total: {
