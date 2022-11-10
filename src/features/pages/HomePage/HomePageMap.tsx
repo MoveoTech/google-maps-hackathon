@@ -97,6 +97,12 @@ export const HomePageMap = ({ location }: Props) => {
     longitude: location?.coords?.longitude,
   });
 
+  const [snapIndex, setSnapIndex] = useState<0 | 1 | 2>(1);
+
+  const handleSheetChanges = useCallback((index: 0 | 1 | 2) => {
+    setSnapIndex(index);
+  }, []);
+
   const onPredictionClicked = useCallback(async (place_id: string) => {
     const details = await getDetails(place_id);
     if (details) {
@@ -199,11 +205,7 @@ export const HomePageMap = ({ location }: Props) => {
   };
 
   const replaceTopFour = () => {
-    // setIsLoading(true);
     createTopPlaces();
-    // setTimeout(() => {
-    //     setIsLoading(false);
-    // }, 1000);
   };
 
   const createMarker = (
@@ -342,6 +344,8 @@ export const HomePageMap = ({ location }: Props) => {
         />
       </HomepageContainer>
       <DraggableDrawer
+        handleSheetChanges={handleSheetChanges as (index: number) => void}
+        snapIndex={snapIndex}
         onBoarding={onBoarding}
         topTitle={topTitle}
         subTitle={
@@ -352,6 +356,7 @@ export const HomePageMap = ({ location }: Props) => {
       >
         {onBoarding ? (
           <TripLocation
+            handleSheetChanges={handleSheetChanges}
             onPredictionClicked={onPredictionClicked}
             currentLocationLat={location.coords.latitude}
             currentLocationLng={location.coords.longitude}

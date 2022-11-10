@@ -10,6 +10,8 @@ interface Props {
   topTitle: string;
   subTitle: string;
   onBoarding: boolean;
+  snapIndex: 0 | 1 | 2;
+  handleSheetChanges: (index: number) => void;
 }
 
 export const DraggableDrawer = ({
@@ -17,19 +19,16 @@ export const DraggableDrawer = ({
   topTitle,
   subTitle,
   onBoarding,
+  snapIndex,
+  handleSheetChanges,
 }: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "60%", "90%"], []);
-  const [snapIndex, setSnapIndex] = useState<number>(1);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    setSnapIndex(index);
-  }, []);
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={2}
+      index={snapIndex}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
     >

@@ -9,6 +9,7 @@ interface Props {
   currentLocationLat: number;
   currentLocationLng: number;
   setStartingLocationAddress: IStartLocation;
+  handleSheetChanges: (index: 0 | 1 | 2) => void;
 }
 
 export const TripLocation = ({
@@ -16,6 +17,7 @@ export const TripLocation = ({
   currentLocationLat,
   currentLocationLng,
   setStartingLocationAddress,
+  handleSheetChanges,
 }: Props) => {
   return (
     <View style={{ width: Dimensions.get("window").width * 0.9 }}>
@@ -26,6 +28,7 @@ export const TripLocation = ({
         Where would you like to travel to?
       </Typography>
       <LocationAutoComplete
+        handleSheetChanges={handleSheetChanges}
         onPredictionClicked={onPredictionClicked}
         currentLocationLat={currentLocationLat}
         currentLocationLng={currentLocationLng}

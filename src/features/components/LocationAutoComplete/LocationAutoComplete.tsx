@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Keyboard } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { List, Provider, TextInput } from "react-native-paper";
 
@@ -27,6 +27,7 @@ interface Props {
   currentLocationLat?: number;
   currentLocationLng?: number;
   setStartingLocationAddress: IStartLocation;
+  handleSheetChanges: (index: 0 | 1 | 2) => void;
 }
 
 export const LocationAutoComplete = ({
@@ -34,6 +35,7 @@ export const LocationAutoComplete = ({
   currentLocationLat,
   currentLocationLng,
   setStartingLocationAddress,
+  handleSheetChanges,
 }: Props) => {
   const [loc, setLoc] = useState("");
   const debouncedValue = useDebounce<string>(loc, 1000);
@@ -58,6 +60,7 @@ export const LocationAutoComplete = ({
   };
 
   const onSelectLocation = (place_id: string, description: string) => {
+    Keyboard.dismiss();
     onPredictionClicked(place_id);
     setSelected(place_id);
     setLoc(description);
@@ -97,6 +100,15 @@ export const LocationAutoComplete = ({
     setLoc("");
   };
 
+  const onFocus = () => {
+    handleSheetChanges(2);
+    setFocused(true);
+  };
+  const onBlur = () => {
+    handleSheetChanges(1);
+    setFocused(false);
+  };
+
   useEffect(() => {
     if (loc === "" && currentLocationID) {
       setSelected(currentLocationID);
@@ -125,8 +137,8 @@ export const LocationAutoComplete = ({
         mode="outlined"
         placeholder={focused ? "Trip to" : currentLocation}
         value={loc}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocus={onFocus}
+        onBlur={onBlur}
         onChangeText={onTypeLocation}
         left={(selected === currentLocationID || loc === "") && element}
         right={crossElement}
