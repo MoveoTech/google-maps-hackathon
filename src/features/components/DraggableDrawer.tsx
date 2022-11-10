@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from "react";
+import React, {useCallback, useMemo, useRef, useState} from "react";
 import BottomSheet, {BottomSheetView} from "@gorhom/bottom-sheet";
 import {Dimensions, StyleSheet, View} from "react-native";
 
@@ -20,8 +20,10 @@ export const DraggableDrawer = ({
                                 }: Props) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const snapPoints = useMemo(() => ["25%", "60%", "90%"], []);
+    const [snapIndex, setSnapIndex] = useState<number>(1);
 
     const handleSheetChanges = useCallback((index: number) => {
+        setSnapIndex(index);
     }, []);
 
     return (
@@ -41,7 +43,7 @@ export const DraggableDrawer = ({
 							</>
             }
             <BottomSheetView style={styles.container}>
-                <ScrollView contentContainerStyle={styles.cardContainers}>
+                <ScrollView contentContainerStyle={[styles.cardContainers, {minHeight: snapIndex === 1 ? 330 : 0}]}>
                     {children}
                 </ScrollView>
             </BottomSheetView>
@@ -60,7 +62,6 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         display: "flex",
         marginTop: 20,
-        height: 400
     },
     bottomContainer: {
         marginTop: 15,

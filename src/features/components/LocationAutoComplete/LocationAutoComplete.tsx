@@ -93,7 +93,7 @@ export const LocationAutoComplete = ({onPredictionClicked, currentLocationLat, c
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 onChangeText={onTypeLocation}
-                left={selected === currentLocationID && element}
+                left={(selected === currentLocationID || loc === "") && element}
                 right={crossElement}
             />
             {isDropDown && locationsToSelect?.map((location) => (
