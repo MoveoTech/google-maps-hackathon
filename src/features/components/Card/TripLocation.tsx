@@ -7,9 +7,15 @@ interface Props {
     onPredictionClicked: (place_id: string) => void;
     currentLocationLat: number;
     currentLocationLng: number;
+    setStartingLocationAddress: any
 }
 
-export const TripLocation = ({onPredictionClicked, currentLocationLat, currentLocationLng}: Props) => {
+export const TripLocation = ({
+                                 onPredictionClicked,
+                                 currentLocationLat,
+                                 currentLocationLng,
+                                 setStartingLocationAddress
+                             }: Props) => {
 
 
     return (
@@ -21,7 +27,8 @@ export const TripLocation = ({onPredictionClicked, currentLocationLat, currentLo
                 Where would you like to travel to?
             </Typography>
             <LocationAutoComplete onPredictionClicked={onPredictionClicked} currentLocationLat={currentLocationLat}
-                                  currentLocationLng={currentLocationLng}/>
+                                  currentLocationLng={currentLocationLng}
+                                  setStartingLocationAddress={setStartingLocationAddress}/>
         </View>
     );
 };

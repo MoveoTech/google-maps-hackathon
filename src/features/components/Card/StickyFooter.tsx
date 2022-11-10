@@ -16,8 +16,7 @@ interface Props {
     continueCallback: () => void;
     showTimeline: boolean;
     tripPlaces: IPlaceOnMap[];
-    address: string;
-    addressID: string
+    startingLocation: { id: string, name: string }
 }
 
 export interface NavigationPlaces {
@@ -25,8 +24,8 @@ export interface NavigationPlaces {
     destinationName: string;
     waypointsIds: string;
     waypointsNames;
-    locationID: string;
-    fullName: string;
+    addressID: string;
+    encodedName: string
 }
 
 export const StickyFooter = ({
@@ -38,29 +37,20 @@ export const StickyFooter = ({
                                  isNextDisabled,
                                  onBoarding,
                                  continueCallback,
-                                 address,
-                                 addressID
+                                 startingLocation
                              }: Props) => {
 
-    const openGoogleMaps = async (data: NavigationPlaces) => {
-        console.log("DATA: ", data)
-        const {destinationId, destinationName, waypointsIds, waypointsNames, addressID, encodedName} = data;
-        var url = `https://www.google.com/maps/dir/?api=1&origin=${encodedName}&origin_place_id=${addressID}&travelmode=walking&dir_action=navigate&destination=${destinationName}&destination_place_id=${destinationId}&waypoints=${waypointsNames}&waypoint_place_ids=${waypointsIds}`;
-        const supported = await Linking.canOpenURL(url);
-        if (supported) await Linking.openURL(url);
-        else Alert.alert(`Don't know how to open this URL: ${url}`);
-    };
-
+   
     const prepareNavigationPlaces = (): NavigationPlaces => {
         const navigationPlaces = tripPlaces.map((place) => ({
             id: place.place_id,
             name: place.name.replace(/ /g, "+"),
         }));
         const destination = navigationPlaces.pop();
-        const encodedName = encodeURIComponent(address)
+        const encodedName = encodeURIComponent(startingLocation?.name)
 
         return {
-            addressID: addressID || "",
+            addressID: startingLocation?.id || "",
             encodedName: encodedName || "",
             destinationId: destination?.id || "",
             destinationName: destination?.name || "",
@@ -69,7 +59,7 @@ export const StickyFooter = ({
         };
     };
 
-    const {destinationId, destinationName, waypointsIds, waypointsNames} =
+    const {destinationId, destinationName, waypointsIds, waypointsNames, addressID, encodedName} =
         prepareNavigationPlaces();
 
     return (
@@ -108,8 +98,8 @@ export const StickyFooter = ({
 										style={styles.navigateButton}
 										onPress={() =>
                         openGoogleMaps({
-                            address,
                             addressID,
+                            encodedName,
                             destinationId,
                             destinationName,
                             waypointsIds,
