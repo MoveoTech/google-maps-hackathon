@@ -18,7 +18,6 @@ import { GoogleMapsPlaces } from "../../types";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import TimelineComponent from "../../components/TimelineComponent/TimelineComponent";
-import RefreshIcon from "../../../../assets/refresh.png";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { Dimensions, View } from "react-native";
 import { StickyFooter } from "../../components/Card/StickyFooter";
@@ -27,6 +26,8 @@ import { TripLocation } from "../../components/Card/TripLocation";
 import { cleanText } from "../../utils";
 import { InfoCardSkeleton } from "../../components/Card/InfoCardSkeleton";
 import _ from "lodash";
+import Svg, {Path} from "react-native-svg";
+import {PRIMARY} from "../../globalStyle";
 
 export interface IPlaceOnMap extends IPlace {
   marker: IMarker;
@@ -74,23 +75,32 @@ export interface IStartLocation {
   name: string;
 }
 
-export const HomePageMap = ({ location }: Props) => {
-  const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>([]);
-  const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
-  const [allPlacesIndex, setAllPlacesIndex] = useState(0);
-  const [activeStep, setActiveStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [onBoarding, setOnBoarding] = useState(true);
-  const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
-  const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
-  const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
-  const [showTimeline, setShowTimeline] = useState(false);
-  const [startingLocationAddress, setStartingLocationAddress] =
-    useState<IStartLocation>();
-  const [startingLocation, setStartingLocation] = useState<LatLng>({
-    latitude: location?.coords?.latitude,
-    longitude: location?.coords?.longitude,
-  });
+
+export const Refresh = () => (
+    <Svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <Path
+            d="M1.94308 9.87393C2.20901 10.1398 2.64034 10.1398 2.90641 9.87393L4.62466 7.88331C4.89059 7.61741 4.80132 7.40165 4.42516 7.40165H3.31447C3.22051 6.15234 3.66573 4.91311 4.58192 3.99691C6.28451 2.29447 9.0545 2.29447 10.7569 3.99691C11.5816 4.82163 12.0358 5.918 12.0358 7.08435C12.0358 8.25067 11.5815 9.34706 10.7569 10.1718C9.57565 11.3531 7.858 11.7557 6.27264 11.2225C5.81336 11.0673 5.31503 11.315 5.16032 11.7747C5.00562 12.2344 5.25283 12.7323 5.71251 12.887C6.36118 13.1054 7.0255 13.2116 7.6828 13.2116C9.27607 13.2116 10.8261 12.5861 11.9985 11.4136C13.155 10.2572 13.7919 8.71975 13.7919 7.0842C13.7919 5.44863 13.155 3.9113 11.9985 2.75478C9.61123 0.367546 5.72701 0.367546 3.33991 2.75478C2.08621 4.00849 1.45936 5.69321 1.55229 7.4015H0.560596C0.184465 7.4015 0.0951917 7.61707 0.361123 7.88317L1.94308 9.87393Z"
+            fill={PRIMARY}/>
+    </Svg>
+);
+
+export const HomePageMap = ({location}: Props) => {
+    const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>([]);
+    const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
+    const [allPlacesIndex, setAllPlacesIndex] = useState(0);
+    const [activeStep, setActiveStep] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [onBoarding, setOnBoarding] = useState(true);
+    const [topTitle, setTopTitle] = useState("Choose an amazing breakfast");
+    const [tripPlaces, setTripPlaces] = useState<IPlaceOnMap[]>([]);
+    const {openSnackbar, hideSnackbar, snackbar} = useSnackbar();
+    const [showTimeline, setShowTimeline] = useState(false);
+    const [startingLocationAddress, setStartingLocationAddress] =
+        useState<IStartLocation>();
+    const [startingLocation, setStartingLocation] = useState<LatLng>({
+        latitude: location?.coords?.latitude,
+        longitude: location?.coords?.longitude,
+    });
 
   const [locationType, setLocationType] = useState<GoogleMapsPlaces>("cafe");
   const [region, setRegion] = useState<LatLng>({
@@ -334,85 +344,86 @@ export const HomePageMap = ({ location }: Props) => {
     calculateStep();
   };
 
-  return (
-    <>
-      <HomepageContainer>
-        <Map
-          location={region}
-          topFourPlaces={onBoarding ? [] : topFourPlaces}
-          tripPlaces={onBoarding ? [] : tripPlaces}
-          onDirectionsReady={onBoarding ? () => {} : onDirectionsReady}
-        />
-      </HomepageContainer>
-      <DraggableDrawer
-        handleSheetChanges={handleSheetChanges as (index: number) => void}
-        snapIndex={snapIndex}
-        onBoarding={onBoarding}
-        topTitle={topTitle}
-        subTitle={
-          activeStep > maxSteps
-            ? "10:00 AM - 18:00 PM"
-            : `Step ${activeStep.toString()} out of ${maxSteps.toString()}`
-        }
-      >
-        {onBoarding && !showTimeline ? (
-          <TripLocation
-            handleSheetChanges={handleSheetChanges}
-            onPredictionClicked={onPredictionClicked}
-            currentLocationLat={location.coords.latitude}
-            currentLocationLng={location.coords.longitude}
-            setStartingLocationAddress={setStartingLocationAddress}
-          />
-        ) : isLoading ? (
-          _.times(4).map((_, index) => <InfoCardSkeleton key={index} />)
-        ) : (
-          <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace} />
-        )}
-        {showTimeline && (
-          <TimelineComponent
-            tripPlaces={tripPlaces}
-            startingLocationAddress={startingLocationAddress}
-            initialWizard={initialWizard}
-          />
-        )}
-        {!onBoarding && !showTimeline && (
-          <Button
-            mode="outlined"
-            onPress={replaceTopFour}
-            icon={RefreshIcon}
-            style={{
-              margin: 8,
-              marginBottom: "50%",
-              marginTop: 20,
-              borderRadius: 10,
-            }}
-            labelStyle={{ color: "black" }}
-          >
-            Please offer me something else
-          </Button>
-        )}
-      </DraggableDrawer>
-      <Snackbar
-        label={snackbar.title}
-        isCheckIcon={snackbar.isCheckIcon}
-        visible={snackbar.isVisible}
-        hide={hideSnackbar}
-      />
-      <View style={{ width: Dimensions.get("window").width, height: 100 }}>
-        <StickyFooter
-          tripPlaces={tripPlaces}
-          showTimeline={showTimeline}
-          startingLocation={startingLocationAddress}
-          onBoarding={onBoarding}
-          next={onNextStep}
-          isNextDisabled={
-            !Boolean(topFourPlaces?.find((place) => place.isSelected === true))
-          }
-          skip={createNextPlace}
-          isLast={activeStep === maxSteps}
-          continueCallback={continueCallback}
-        />
-      </View>
-    </>
-  );
+    return (
+        <>
+            <HomepageContainer>
+                <Map
+                    location={region}
+                    topFourPlaces={onBoarding ? [] : topFourPlaces}
+                    tripPlaces={onBoarding ? [] : tripPlaces}
+                    onDirectionsReady={onBoarding ? () => {
+                    } : onDirectionsReady}
+                />
+            </HomepageContainer>
+            <DraggableDrawer
+                handleSheetChanges={handleSheetChanges as (index: number) => void}
+                snapIndex={snapIndex}
+                onBoarding={onBoarding}
+                topTitle={topTitle}
+                subTitle={
+                    activeStep > maxSteps
+                        ? "10:00 AM - 18:00 PM"
+                        : `Step ${activeStep.toString()} out of ${maxSteps.toString()}`
+                }
+            >
+                {onBoarding && !showTimeline ? (
+                    <TripLocation
+                        handleSheetChanges={handleSheetChanges}
+                        onPredictionClicked={onPredictionClicked}
+                        currentLocationLat={location.coords.latitude}
+                        currentLocationLng={location.coords.longitude}
+                        setStartingLocationAddress={setStartingLocationAddress}
+                    />
+                ) : isLoading ? (
+                    _.times(4).map((_, index) => <InfoCardSkeleton key={index}/>)
+                ) : (
+                    <Cards topFourPlaces={topFourPlaces} onCardSelect={onSelectPlace}/>
+                )}
+                {showTimeline && (
+                    <TimelineComponent
+                        tripPlaces={tripPlaces}
+                        startingLocationAddress={startingLocationAddress}
+                        initialWizard={initialWizard}
+                    />
+                )}
+                {!onBoarding && !showTimeline && (
+                    <Button
+                        mode="outlined"
+                        onPress={replaceTopFour}
+                        icon={Refresh}
+                        style={{
+                            margin: 8,
+                            marginBottom: "50%",
+                            marginTop: 20,
+                            borderRadius: 10,
+                        }}
+                        labelStyle={{color: "black"}}
+                    >
+                        Please offer me something else
+                    </Button>
+                )}
+            </DraggableDrawer>
+            <Snackbar
+                label={snackbar.title}
+                isCheckIcon={snackbar.isCheckIcon}
+                visible={snackbar.isVisible}
+                hide={hideSnackbar}
+            />
+            <View style={{width: Dimensions.get("window").width, height: 100}}>
+                <StickyFooter
+                    tripPlaces={tripPlaces}
+                    showTimeline={showTimeline}
+                    startingLocation={startingLocationAddress}
+                    onBoarding={onBoarding}
+                    next={onNextStep}
+                    isNextDisabled={
+                        !Boolean(topFourPlaces?.find((place) => place.isSelected === true))
+                    }
+                    skip={createNextPlace}
+                    isLast={activeStep === maxSteps}
+                    continueCallback={continueCallback}
+                />
+            </View>
+        </>
+    );
 };
