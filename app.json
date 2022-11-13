@@ -27,7 +27,7 @@
       "package": "com.googlemaps.dayway",
       "config": {
         "googleMaps": {
-          "apiKey": ""
+          "apiKey": "" // Place your own key
         }
       }
     },
