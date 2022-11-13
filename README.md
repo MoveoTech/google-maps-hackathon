@@ -1,6 +1,6 @@
-# DayTripper App
+# DayTrip App
 
-DayTripper is a mobile App for planning a day trip using Google Maps APIs
+DayTrip is a mobile App for planning a day trip using Google Maps APIs
 
 
 ## Run project in development
