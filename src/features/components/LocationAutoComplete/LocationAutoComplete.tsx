@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Keyboard, View } from "react-native";
+import { StyleSheet, Keyboard, View, KeyboardStatic } from "react-native";
 import Svg, { Path, Rect } from "react-native-svg";
 import { List, Provider, TextInput } from "react-native-paper";
 
@@ -59,6 +59,7 @@ export const LocationItemImage = () => (
     />
   </Svg>
 );
+
 interface Props {
   onPredictionClicked: (place_id: string) => void;
   currentLocationLat?: number;
@@ -172,7 +173,7 @@ export const LocationAutoComplete = ({
   );
 
   const truncate = (value: string, limit: number) => {
-    if (!value) return;
+    if (!value) return "";
     return value.length < limit ? value : value.slice(0, limit) + "...";
   };
 
@@ -188,7 +189,7 @@ export const LocationAutoComplete = ({
         }}
         mode="outlined"
         placeholder={focused ? "Trip to" : truncate(currentLocation, 28)}
-        value={truncate(loc, 10)}
+        value={truncate(loc, 28)}
         onFocus={onFocus}
         onBlur={onBlur}
         onChangeText={onTypeLocation}

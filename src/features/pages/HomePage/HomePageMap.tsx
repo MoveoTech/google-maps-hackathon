@@ -73,6 +73,7 @@ export interface IStartLocation {
   id: string;
   name: string;
 }
+
 export const HomePageMap = ({ location }: Props) => {
   const [topFourPlaces, setTopFourPlaces] = useState<IPlaceOnMap[]>([]);
   const [allPlaces, setAllPlaces] = useState<IPlace[]>([]);
@@ -97,7 +98,7 @@ export const HomePageMap = ({ location }: Props) => {
     longitude: location?.coords?.longitude,
   });
 
-  const [snapIndex, setSnapIndex] = useState<0 | 1 | 2>(1);
+  const [snapIndex, setSnapIndex] = useState<0 | 1 | 2>(2);
 
   const handleSheetChanges = useCallback((index: 0 | 1 | 2) => {
     setSnapIndex(index);
@@ -285,6 +286,7 @@ export const HomePageMap = ({ location }: Props) => {
         newLocationType || locationType
       );
       setIsLoading(false);
+
       const filteredResults = nearbyPlacesResponse.data.results?.filter(
         (place) => {
           const isPlaceAlreadyInTrip = tripPlaces
