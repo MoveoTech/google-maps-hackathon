@@ -284,7 +284,7 @@ export const HomePageMap = ({ location }: Props) => {
         SEARCH_RADIUS,
         newLocationType || locationType
       );
-
+      setIsLoading(false);
       const filteredResults = nearbyPlacesResponse.data.results?.filter(
         (place) => {
           const isPlaceAlreadyInTrip = tripPlaces
@@ -319,7 +319,6 @@ export const HomePageMap = ({ location }: Props) => {
     topFourPlaces[placesIndex].direction.distance = args.distance;
     topFourPlaces[placesIndex].direction.duration = args.duration;
     setTopFourPlaces([...topFourPlaces]);
-    setIsLoading(false);
   };
 
   const initialWizard = () => {

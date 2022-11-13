@@ -1,8 +1,6 @@
-import { Dimensions } from "react-native";
 import styled from "styled-components/native";
-import { BACKGROUND_COLOR } from "../../globalStyle";
 
-export const HomepageContainer = styled.SafeAreaView`
+export const HomepageContainer = styled.View`
   display: flex;
   height: 100%;
   width: 100%;

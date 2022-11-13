@@ -35,7 +35,11 @@ export default function App() {
             title: "",
           })}
         >
-          <Stack.Screen name="Auth" component={Auth} />
+          <Stack.Screen
+            name="Auth"
+            component={Auth}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Location"
             component={gestureHandlerRootHOC(Location)}

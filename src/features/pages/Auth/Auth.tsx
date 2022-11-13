@@ -17,7 +17,7 @@ import { capitalize } from "lodash";
 import CircularLoader from "../../components/CircularLoader/CircularLoader";
 
 const WelcomeImage = () => (
-  <Svg width="364" height="326" viewBox="0 0 364 326" fill="none">
+  <Svg width="320" height="300" viewBox="0 0 364 326" fill="none">
     <Path
       d="M352.79 134.901C352.79 134.901 308.392 77.7059 242.663 63.2788C176.934 48.8517 161.418 130.199 134 174C106.576 217.795 68.5493 203.947 38.512 226.105C8.47465 248.262 1.51057 282.78 3.24721 297.207C4.98968 311.634 12.825 322.453 18.0466 324H329.284C329.284 324 354.532 322.453 361.496 298.234C368.46 274.016 359.321 254.439 353.228 225.585C347.135 196.731 377.167 185.392 352.796 134.901H352.79Z"
       fill="#FFF8F0"
@@ -625,11 +625,10 @@ const WelcomeImage = () => (
   </Svg>
 );
 const Auth = ({ navigation }) => {
-  const { status } = requestLocationPermission();
+  const { status, requestPermission } = requestLocationPermission();
 
   const [user, setUser] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(false);
-  const [skipLogin, setSkipLogin] = useState(false);
 
   const { promptAsync, request, getUserData, accessToken, userInfo } =
     useAuthentication();
@@ -654,6 +653,14 @@ const Auth = ({ navigation }) => {
     if (userInfo) getOrAddUser();
   }, [userInfo]);
 
+  useEffect(() => {
+    if (user && status?.granted) {
+      navigation.navigate("Location");
+    }
+  }, [user, status]);
+
+  // console.log("!status?.granted", status);
+
   if (isLoading)
     return (
       <View style={styles.container}>
@@ -662,23 +669,20 @@ const Auth = ({ navigation }) => {
     );
   return (
     <UserProvider>
-      {user || skipLogin ? (
-        status?.granted ? (
-          <Location />
-        ) : (
-          <AllowLocation
-            username={capitalize(userInfo?.name || "") || ""}
-            navigation={navigation}
-            currentLocationPermission={status}
-          />
-        )
+      {user && !status?.granted ? (
+        <AllowLocation
+          username={capitalize(userInfo?.name || "") || ""}
+          navigation={navigation}
+          currentLocationPermission={status}
+          requestPermission={requestPermission}
+        />
       ) : (
         <SafeAreaView style={styles.container}>
           <View style={{ marginTop: "10%" }}>
             <WelcomeImage />
           </View>
           <View style={styles.labelWrapper}>
-            <Typography fontSize="xxl" weight="900">
+            <Typography fontSize="xxl" weight="900" fontFamily="Avenir-heavy">
               DayTrip
             </Typography>
             <Typography
@@ -699,20 +703,23 @@ const Auth = ({ navigation }) => {
               just a few clicks away from the BEST vacation!
             </Typography>
           </View>
-          <Button
-            style={styles.loginButton}
-            title="Login and start the DayTrip planning!"
-            disabled={!request}
-            onPress={() => promptAsync()}
-          />
-          <Pressable
-            onPress={() => setSkipLogin(true)}
-            style={{ marginBottom: 24 }}
-          >
-            <Typography style={{ textDecorationLine: "underline" }}>
-              Continue as a guest
-            </Typography>
-          </Pressable>
+          <View style={styles.buttonsWrapper}>
+            <Button
+              style={styles.loginButton}
+              title="Login and start the DayTrip planning!"
+              disabled={!request}
+              onPress={() => promptAsync()}
+            />
+            <Pressable
+              onPress={() =>
+                setUser({ _id: "", username: "", email: "", picture: "" })
+              }
+            >
+              <Typography style={{ textDecorationLine: "underline" }}>
+                Continue as a guest
+              </Typography>
+            </Pressable>
+          </View>
         </SafeAreaView>
       )}
     </UserProvider>
@@ -735,14 +742,22 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    width: Dimensions.get("window").width - 16,
+    width: Dimensions.get("window").width * 0.9,
   },
 
   labelWrapper: {
     display: "flex",
     flexDiRection: "column",
-    justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
+    height: "35%",
+    width: Dimensions.get("window").width * 0.9,
+  },
+  buttonsWrapper: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: "20%",
+    width: "100%",
   },
 });

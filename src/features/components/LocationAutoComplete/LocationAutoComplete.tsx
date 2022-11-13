@@ -161,9 +161,7 @@ export const LocationAutoComplete = ({
     }
   }, [loc]);
 
-  const element = (
-    <TextInput.Icon icon={SetLocationIcon} size={22} style={{}} />
-  );
+  const element = <TextInput.Icon icon={SetLocationIcon} size={8} />;
   const crossElement = (
     <TextInput.Icon
       icon={cross}
@@ -173,15 +171,24 @@ export const LocationAutoComplete = ({
     />
   );
 
+  const truncate = (value: string, limit: number) => {
+    if (!value) return;
+    return value.length < limit ? value : value.slice(0, limit) + "...";
+  };
+
   return (
     <Provider>
       <TextInput
         activeOutlineColor="black"
         numberOfLines={1}
-        style={{ overflow: "hidden" }}
+        theme={{ roundness: 10 }}
+        style={{
+          overflow: "hidden",
+          backgroundColor: "#fff",
+        }}
         mode="outlined"
-        placeholder={focused ? "Trip to" : currentLocation}
-        value={loc}
+        placeholder={focused ? "Trip to" : truncate(currentLocation, 28)}
+        value={truncate(loc, 10)}
         onFocus={onFocus}
         onBlur={onBlur}
         onChangeText={onTypeLocation}

@@ -22,7 +22,7 @@ export const TripLocation = ({
   return (
     <View style={{ width: Dimensions.get("window").width * 0.9 }}>
       <Typography
-        style={{ marginBottom: 20, fontSize: 18 }}
+        style={{ marginBottom: 8, fontSize: 18 }}
         fontFamily="Avenir-heavy"
       >
         Where would you like to travel to?

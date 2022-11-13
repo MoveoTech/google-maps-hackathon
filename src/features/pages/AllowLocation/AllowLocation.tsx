@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View, Platform, Linking } from "react-native";
 import * as Location from "expo-location";
 import Svg, { Defs, Path, Rect } from "react-native-svg";
@@ -966,11 +966,16 @@ const onOpen = {
   title: "Permission to access location was denied",
   isCheckIcon: false,
 };
-const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
+const AllowLocation = ({
+  navigation,
+  currentLocationPermission,
+  username,
+  requestPermission,
+}) => {
   const { openSnackbar, hideSnackbar, snackbar } = useSnackbar();
   const [locationPermission, setLocationPermission] =
     useState<Location.LocationPermissionResponse>(currentLocationPermission);
-  const { status, requestPermission } = requestLocationPermission();
+  // const { requestPermission } = requestLocationPermission();
 
   useAppStateChange(() => checkLocationPermission());
 
@@ -978,7 +983,7 @@ const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
     try {
       const status = await requestPermission();
       if (status.granted) {
-        navigation.navigate("Location");
+        setLocationPermission(status);
       } else {
         setLocationPermission(status);
         openSnackbar(onOpen);
@@ -995,6 +1000,12 @@ const AllowLocation = ({ navigation, currentLocationPermission, username }) => {
       Linking.openSettings();
     }
   };
+
+  useEffect(() => {
+    if (locationPermission?.granted) {
+      navigation.navigate("Location");
+    }
+  }, [locationPermission]);
 
   const isPermissionStatusDenied =
     (locationPermission?.android && locationPermission.canAskAgain) ||
@@ -1049,13 +1060,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   titleWrapper: {
-    marginTop: 16,
+    marginTop: "20%",
   },
   subTitle: {
     marginTop: 16,
   },
   footer: {
     padding: 20,
+    marginBottom: "5%",
     width: Dimensions.get("window").width,
   },
   textFooter: {
