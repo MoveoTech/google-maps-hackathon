@@ -21,7 +21,7 @@ export const useCurrentLocation = () => {
   useEffect(() => {
     (async () => {
       try {
-        let currentLocation = mockLocation; // await Location.getCurrentPositionAsync({});
+        let currentLocation = await Location.getCurrentPositionAsync({});
         setLocation(currentLocation);
       } catch (e) {
         setErrorMsg(e);
