@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from "react";
 import BottomSheet, {BottomSheetView} from "@gorhom/bottom-sheet";
-import {Dimensions, StyleSheet, View} from "react-native";
+import {Dimensions, StyleSheet, View, Text} from "react-native";
 
 import Typography from "./Typography/Typography";
 import {ScrollView} from "react-native-gesture-handler";
@@ -35,8 +35,19 @@ export const DraggableDrawer = ({
             {!onBoarding && (
                 <>
                     <View style={{alignItems: "center"}}>
-                        <Typography style={{fontWeight: "500"}}>{topTitle}</Typography>
-                        <Typography>{subTitle}</Typography>
+                        <Typography style={{fontWeight: "500", fontFamily: "Avenir-regular"}}>{topTitle}</Typography>
+                        <View style={{display: 'flex', flexDirection: 'row'}}>
+                            {subTitle.split(' ').map((word, index) => {
+                                const isBold = !!Number(word) && index === 1
+                                return <Typography
+                                    key={word + index}
+                                    style={{
+                                        fontFamily: 'Avenir-regular',
+                                        fontWeight: isBold ? '900' : 'normal'
+                                    }}>{word}{" "}</Typography>
+                            })}
+                        </View>
+
                     </View>
                     <View style={styles.bottomContainer}/>
                 </>
@@ -46,7 +57,7 @@ export const DraggableDrawer = ({
                     keyboardShouldPersistTaps='handled'
                     contentContainerStyle={[
                         styles.cardContainers,
-                        {minHeight: snapIndex === 1 ? 430 : 0},
+                        {minHeight: snapIndex === 1 ? 350 : 0},
                     ]}
                 >
                     {children}
