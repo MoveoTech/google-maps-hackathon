@@ -3,7 +3,6 @@ import { View } from "react-native";
 import Button from "../Button/Button";
 import Typography from "../Typography/Typography";
 import Svg, { Path } from "react-native-svg";
-import { MAIN } from "../../globalStyle";
 
 export const EmptyStateIcon = () => (
   <Svg width="400" height="400" viewBox="0 0 500 500" fill="none">
