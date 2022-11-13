@@ -76,7 +76,7 @@ export const InfoCard: React.FC<ICardComponentProps> = ({
                     top: 8,
                     display: 'flex',
                     flexDirection: "row",
-                    justifyContent: "start",
+                    justifyContent: "flex-start",
                     alignItems: "center",
                 }}
             >

@@ -36,14 +36,14 @@ export const CustomMarker = ({
                                  timeToPlace,
                              }: MarkerProps) => {
     return (
-        <Marker coordinate={coordinates} zIndex={type === "pin" ? 1 : 0}>
+        <Marker coordinate={coordinates} zIndex={type === "pin" ? (isSelected ? 2 : 1) : 0}>
             {!!tooltip && (
                 <View style={styles.tooltip}>
                     <Text style={styles.tooltipText}>{tooltip}</Text>
                 </View>
             )}
             {!!(isSelected && timeToPlace) && (
-                <View style={styles.timeToPlace}>
+                <View style={{...styles.timeToPlace,}}>
                     <ImageBackground
                         source={require("../../../../../assets/WalkWhite.png")}
                         style={{
@@ -60,14 +60,19 @@ export const CustomMarker = ({
                 {!!(bgIcon || bgImg) && (
                     <>
                         {!!isSelected ? (
-                            <View
-                                style={{...styles.BgImageContainer, width: 65, height: 65}}
-                            >
-                                <ImageBackground
-                                    source={{uri: bgImg}}
-                                    style={{...styles.BgImage, width: 55, height: 55}}
-                                />
-                            </View>
+                            <>
+                                <View style={{height: 6}}></View>
+                                <View
+                                    style={{...styles.BgImageContainer, width: 65, height: 65}}
+                                >
+
+
+                                    <ImageBackground
+                                        source={{uri: bgImg}}
+                                        style={{...styles.BgImage, width: 55, height: 55}}
+                                    />
+                                </View>
+                            </>
                         ) : (
                             <View
                                 style={{
@@ -89,7 +94,6 @@ export const CustomMarker = ({
                         )}
                     </>
                 )}
-                {/*<Image source={MARKERS[type].path} style={MARKERS[type].style} />*/}
             </View>
         </Marker>
     );
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
-        top: 6,
+
     },
     timeToPlaceText: {
         color: "#ffffff",
