@@ -2,6 +2,7 @@ import React from "react";
 import {Image, View, Text, StyleSheet, ImageBackground} from "react-native";
 import {LatLng, Marker} from "react-native-maps";
 import {DARK_NAVY} from "../../../globalStyle";
+import {GoogleMapsPlaces} from "../../../types";
 
 export type MarkerTypes = "dot" | "circle" | "pin";
 
@@ -10,9 +11,10 @@ interface MarkerProps {
     tooltip?: string;
     coordinates: LatLng;
     bgImg?: string;
-    bgIcon?: number;
+    bgIcon?: GoogleMapsPlaces;
     isSelected: boolean;
     timeToPlace?: number;
+    getIconByPlaceType?: (type: GoogleMapsPlaces) => JSX.Element
 }
 
 type MarkersObj = {
@@ -34,7 +36,9 @@ export const CustomMarker = ({
                                  bgIcon,
                                  isSelected,
                                  timeToPlace,
+                                 getIconByPlaceType
                              }: MarkerProps) => {
+
     return (
         <Marker coordinate={coordinates} zIndex={type === "pin" ? (isSelected ? 2 : 1) : 0}>
             {!!tooltip && (
@@ -81,15 +85,8 @@ export const CustomMarker = ({
                                     height: 45,
                                 }}
                             >
-                                <ImageBackground
-                                    source={bgIcon}
-                                    style={{
-                                        ...styles.BgImage,
-                                        width: 35,
-                                        height: 35,
-                                        backgroundColor: "#F3F3F3",
-                                    }}
-                                />
+
+                                {getIconByPlaceType(bgIcon as GoogleMapsPlaces)}
                             </View>
                         )}
                     </>
